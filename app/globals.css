@@ -103,7 +103,7 @@ h2 { margin:0; font-size:var(--text-4xl); line-height:1.04; letter-spacing:-.05e
 .expertise-card ul{margin:auto 0 0;padding:0;list-style:none;display:grid;gap:10px}
 .expertise-card li{color:var(--muted);line-height:1.55}
 
-.card-index { display:inline-flex; align-items:center; justify-content:center; min-width:30px; height:22px; padding:0 8px; background:var(--gold); color:var(--ink); font:600 var(--text-sm)/1 var(--font-mono); }
+.card-index { display:inline-flex; align-items:center; justify-content:center; align-self:flex-start; width:max-content; flex:0 0 auto; min-width:30px; height:22px; padding:0 8px; background:var(--gold); color:var(--ink); font:600 var(--text-sm)/1 var(--font-mono); }
 
 .aima{background:var(--ink);color:var(--paper)}.aima-grid{display:grid;grid-template-columns:1fr 390px;gap:110px;align-items:center}.aima-copy h2{max-width:780px}.aima-copy>p:not(.section-number,.version){font-size:var(--text-lg);line-height:1.7;color:var(--text-on-dark-muted);max-width:720px;margin:28px 0 36px}.version{color:var(--text-on-dark-faint);margin-bottom:25px}
 .decision-diagram{border:var(--border-w) solid var(--hairline-on-dark);padding:14px 28px}.decision-diagram div{min-height:70px;position:relative;display:flex;align-items:center;gap:28px;border-bottom:var(--border-w) solid var(--hairline-on-dark)}.decision-diagram div:last-child{border:0}.decision-diagram span{font:500 var(--text-xs) var(--font-mono);color:var(--gold)}.decision-diagram strong{font-size:19px}.decision-diagram i{position:absolute;bottom:-9px;right:4px;color:var(--gold);font-style:normal;background:var(--ink)}
