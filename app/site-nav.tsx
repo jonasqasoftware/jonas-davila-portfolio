@@ -31,7 +31,7 @@ export default function SiteNav() {
 
   return (
     <header className="nav-wrap">
-      <nav className="nav container" aria-label="Navegação principal">
+      <nav className="nav shell" aria-label="Navegação principal">
         <a className="brand" href="#top" aria-label="Jonas Dávila — início">
           JD<span>.</span>
         </a>

@@ -78,19 +78,36 @@ test("globals.css keeps the h1 fluid clamp from flooring back to an oversized mo
   );
 });
 
-test("globals.css keeps the mobile hero heading softened (letter-spacing and line-height overrides)", async () => {
+test("globals.css defines a moderate, non-crushing h1 letter-spacing", async () => {
   const css = await readFile(cssUrl, "utf8");
-  const mobileBlock = css.match(/@media\(max-width:600px\)\s*{([\s\S]*?)}\s*@media\(prefers-reduced-motion/);
-  assert.ok(mobileBlock, "expected the <=600px media query block to be present");
-  assert.match(mobileBlock[1], /h1\s*{[^}]*letter-spacing/, "expected a mobile h1 letter-spacing override");
-  assert.match(mobileBlock[1], /h1\s*{[^}]*line-height/, "expected a mobile h1 line-height override");
+  const h1Rule = css.match(/(?<![\w-])h1\s*{[^}]*}/);
+  assert.ok(h1Rule, "expected a base h1 rule");
+  const spacing = h1Rule[0].match(/letter-spacing:\s*(-[\d.]+)em/);
+  assert.ok(spacing, "expected h1 to declare a letter-spacing in em units");
+  assert.ok(
+    Math.abs(Number(spacing[1])) <= 0.03,
+    `expected h1 letter-spacing to stay moderate (<=.03em), found ${spacing[1]}em`,
+  );
 });
 
-test("globals.css keeps the mobile hero single-column layout", async () => {
+test("globals.css places the hero photo alongside the copy on desktop via a named grid area", async () => {
+  const css = await readFile(cssUrl, "utf8");
+  const heroRule = css.match(/\.hero\s*{[^}]*grid-template-areas:[^;]*;[^}]*}/);
+  assert.ok(heroRule, "expected the base .hero rule to define grid-template-areas");
+  assert.match(heroRule[0], /photo/, "expected a 'photo' grid area in the hero layout");
+  assert.match(css, /\.portrait-frame\s*{[^}]*grid-area:photo/, "expected the portrait frame to occupy the photo grid area");
+});
+
+test("globals.css resets the hero grid areas for the stacked mobile/tablet order", async () => {
   const css = await readFile(cssUrl, "utf8");
   const tabletBlock = css.match(/@media\(max-width:900px\)\s*{([\s\S]*?)}\s*@media\(max-width:600px\)/);
   assert.ok(tabletBlock, "expected the <=900px media query block to be present");
   assert.match(tabletBlock[1], /\.hero\s*{[^}]*grid-template-columns:1fr/);
+  assert.match(
+    tabletBlock[1],
+    /grid-area:auto/,
+    "expected the hero children to reset to grid-area:auto so DOM order (eyebrow, photo, title...) drives the stacked layout",
+  );
 });
 
 test("globals.css no longer collapses small labels to line-height:1", async () => {
@@ -98,7 +115,7 @@ test("globals.css no longer collapses small labels to line-height:1", async () =
   const flaggedSelectors = [
     /\.portrait-frame figcaption\s*{[^}]*}/,
     /\.contact-links span\s*{[^}]*}/,
-    /footer \.container\s*{[^}]*}/,
+    /footer \.shell\s*{[^}]*}/,
     /\.profile-tags span\s*{[^}]*}/,
   ];
   for (const selectorPattern of flaggedSelectors) {

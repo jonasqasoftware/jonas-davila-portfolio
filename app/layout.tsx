@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Jonas Dávila | Senior QA Engineer e Quality Engineer",
   description: "Portfólio de Jonas Dávila, Senior QA Engineer com 10 anos em Qualidade de Software. Estratégia de testes, automação, APIs, performance, segurança, CI/CD e IA aplicada à qualidade.",
   alternates: { canonical: "/" },
-  openGraph: { title: "Jonas Dávila | Senior QA Engineer e Quality Engineer", description: "Qualidade de Software com estratégia, engenharia e visão de negócio.", images: ["/jonas-davila.jpeg"], locale: "pt_BR", type: "website" },
+  openGraph: { title: "Jonas Dávila | Senior QA Engineer e Quality Engineer", description: "Engenharia de qualidade para produtos mais confiáveis.", images: ["/jonas-davila.jpeg"], locale: "pt_BR", type: "website" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
