@@ -63,26 +63,36 @@ export default function Home() {
       <a className="skip-link" href="#top">Pular para o conteúdo</a>
       <SiteNav />
       <main>
-        <section className="hero container" id="top">
-          <div className="hero-copy">
-            <p className="eyebrow">SENIOR QA ENGINEER · QUALITY ENGINEER · QA AUTOMATION ENGINEER</p>
-            <h1>Qualidade de Software com estratégia, engenharia e <em>visão de negócio</em>.</h1>
-            <p className="hero-lead">
-              Sou Jonas Dávila, Senior QA Engineer e Quality Engineer com 18 anos em tecnologia, sendo 10
-              dedicados à Qualidade de Software. Atuo com estratégia baseada em risco, automação, APIs,
-              performance, segurança e integração da qualidade ao CI/CD.
-            </p>
-            <p className="hero-note">
-              Em evolução contínua por meio da pós-graduação em Engenharia de Qualidade e Teste de Software
-              e de estudos em IA aplicada à Qualidade.
-            </p>
-            <div className="actions">
-              <a className="button button-dark" href="#experiencia">Ver experiência</a>
-              <a className="button button-light" href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer">
-                Acessar LinkedIn <span>↗</span>
-              </a>
-              <a className="button button-light" href="#contato">Entrar em contato</a>
-            </div>
+        <section className="hero shell" id="top">
+          <p className="eyebrow">SENIOR QA ENGINEER · QUALITY ENGINEER</p>
+          <figure className="portrait-frame">
+            <img
+              src="/jonas-davila.jpeg"
+              alt="Retrato profissional de Jonas Dávila"
+              width={390}
+              height={520}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+            <figcaption>JONAS DÁVILA · QUALITY ENGINEER</figcaption>
+          </figure>
+          <h1>Engenharia de qualidade para produtos <em>mais confiáveis</em>.</h1>
+          <p className="hero-lead">
+            Sou Jonas Dávila, profissional de Quality Engineering com 18 anos em tecnologia, sendo 10
+            dedicados à Qualidade de Software. Conecto estratégia baseada em risco, automação, APIs,
+            performance, segurança e CI/CD para aumentar a confiança nas entregas.
+          </p>
+          <p className="hero-note">
+            Pós-graduando em Engenharia de Qualidade e Teste de Software, com estudos em IA aplicada à
+            Qualidade.
+          </p>
+          <div className="actions">
+            <a className="button button-dark" href="#experiencia">Ver experiência</a>
+            <a className="button button-light" href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer">
+              Acessar LinkedIn <span>↗</span>
+            </a>
+            <a className="button button-light" href="#contato">Entrar em contato</a>
           </div>
           <aside className="hero-index" aria-label="Resumo profissional">
             <div><strong>18</strong><span>anos em tecnologia</span></div>
@@ -92,39 +102,26 @@ export default function Home() {
         </section>
 
         <section className="about section" id="sobre">
-          <div className="container about-grid">
-            <figure className="portrait-frame">
-              <img
-                src="/jonas-davila.jpeg"
-                alt="Retrato profissional de Jonas Dávila"
-                width={390}
-                height={520}
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>JONAS DÁVILA · QUALITY ENGINEER</figcaption>
-            </figure>
-            <div className="about-copy">
-              <p className="section-number light">01 — SOBRE</p>
-              <h2>Qualidade não é produzida por testes. É construída por decisões.</h2>
-              <p>
-                Sou Jonas Dávila, Senior QA Engineer e Quality Engineer com 18 anos em tecnologia, sendo 10
-                dedicados à Qualidade de Software. Minha atuação combina engenharia, automação, estratégia e
-                liderança técnica para ampliar o papel da qualidade dentro das organizações.
-              </p>
-              <p>
-                Atuo com estratégia de testes baseada em risco, automação web, mobile e de APIs, testes de
-                performance, segurança, integração e contrato, além de CI/CD, métricas e melhoria contínua —
-                sempre traduzindo sinais técnicos em decisões que fazem sentido para o negócio.
-              </p>
-              <div className="profile-tags" aria-label="Principais tecnologias">
-                <span>Cypress</span><span>Playwright</span><span>Selenium</span><span>Java/JUnit</span><span>REST</span><span>SQL</span>
-              </div>
+          <div className="shell about-copy">
+            <p className="section-number light">01 — SOBRE</p>
+            <h2>Qualidade não é produzida por testes. É construída por decisões.</h2>
+            <p>
+              Minha trajetória combina engenharia, automação, estratégia e liderança técnica para ampliar
+              o papel da qualidade dentro das organizações — da estruturação de frentes de QA do zero à
+              atuação em produtos financeiros e plataformas de grande escala.
+            </p>
+            <p>
+              Atuo com estratégia de testes baseada em risco, automação web, mobile e de APIs, testes de
+              performance, segurança, integração e contrato, além de CI/CD, métricas e melhoria contínua —
+              sempre traduzindo sinais técnicos em decisões que fazem sentido para o negócio.
+            </p>
+            <div className="profile-tags" aria-label="Principais tecnologias">
+              <span>Cypress</span><span>Playwright</span><span>Selenium</span><span>Java/JUnit</span><span>REST</span><span>SQL</span>
             </div>
           </div>
         </section>
 
-        <section className="section container" id="experiencia">
+        <section className="section shell" id="experiencia">
           <div className="section-heading">
             <div><p className="section-number">02 — EXPERIÊNCIA</p><h2>Experiência e impacto</h2></div>
             <p>Evidências de atuação dentro de empresas, com foco em resultado e redução de risco.</p>
@@ -142,7 +139,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section container" id="competencias">
+        <section className="section shell" id="competencias">
           <div className="section-heading">
             <div><p className="section-number">03 — COMPETÊNCIAS</p><h2>Competências técnicas e estratégicas</h2></div>
             <p>Da estratégia de qualidade à execução técnica, organizadas como empresas costumam avaliar.</p>
@@ -157,7 +154,7 @@ export default function Home() {
         </section>
 
         <section className="aima section" id="projetos">
-          <div className="container aima-grid">
+          <div className="shell aima-grid">
             <div className="aima-copy">
               <p className="section-number light">PROJETO AUTORAL</p>
               <p className="version">AIMA 2.0 / PREVIEW EDITION</p>
@@ -182,7 +179,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section container" id="formacao">
+        <section className="section shell" id="formacao">
           <div className="section-heading">
             <div><p className="section-number">04 — FORMAÇÃO</p><h2>Formação e evolução contínua</h2></div>
             <p>Atualização constante alinhada à próxima evolução da Engenharia de Qualidade.</p>
@@ -195,7 +192,7 @@ export default function Home() {
         </section>
 
         <section className="contact section" id="contato">
-          <div className="container contact-grid">
+          <div className="shell contact-grid">
             <div>
               <p className="section-number light">05 — CONTATO</p>
               <h2>Procurando experiência sênior em Qualidade de Software?</h2>
@@ -214,7 +211,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer><div className="container"><span>JONAS DÁVILA · QUALITY ENGINEERING</span><span>PORTO ALEGRE · BRASIL</span><span>© {new Date().getFullYear()}</span></div></footer>
+      <footer><div className="shell"><span>JONAS DÁVILA · QUALITY ENGINEERING</span><span>PORTO ALEGRE · BRASIL</span><span>© {new Date().getFullYear()}</span></div></footer>
     </>
   );
 }

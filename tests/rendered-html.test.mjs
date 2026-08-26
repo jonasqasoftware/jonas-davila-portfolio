@@ -48,15 +48,33 @@ test("renders title, description and canonical metadata for employability", () =
   assert.match(html, /<link rel="canonical" href="https:\/\/jonasdavila\.com\.br\/?"/);
 });
 
-test("renders the main heading with the professional positioning", () => {
-  assert.match(html, /Qualidade de Software com estratégia, engenharia e/);
+test("renders the new short hero heading and drops the previous long title", () => {
+  assert.match(html, /Engenharia de qualidade para produtos[\s\S]{0,20}mais confiáveis/);
+  assert.doesNotMatch(html, /Qualidade de Software com estratégia, engenharia e/);
 });
 
-test("mentions 18 years in tech and 10 in Quality as Senior QA Engineer", () => {
+test("mentions 18 years in tech and 10 in Quality as a Quality Engineering professional", () => {
   assert.match(
     html,
-    /Sou Jonas Dávila, Senior QA Engineer e Quality Engineer com 18 anos em tecnologia, sendo 10 dedicados à Qualidade de Software/,
+    /Sou Jonas Dávila, profissional de Quality Engineering com 18 anos em tecnologia, sendo 10 dedicados à Qualidade de Software/,
   );
+});
+
+test("places the profile photo inside the hero section, before the Sobre section", () => {
+  const heroStart = html.indexOf('id="top"');
+  const heroPhotoIndex = html.indexOf('src="/jonas-davila.jpeg"');
+  const sobreIndex = html.indexOf('id="sobre"');
+  assert.ok(heroStart > -1, "expected the hero section to be present");
+  assert.ok(heroPhotoIndex > -1, "expected the profile photo to be present");
+  assert.ok(sobreIndex > -1, "expected the Sobre section to be present");
+  assert.ok(heroStart < heroPhotoIndex, "expected the photo to be inside the hero section");
+  assert.ok(heroPhotoIndex < sobreIndex, "expected the photo to appear before the Sobre section in the HTML");
+});
+
+test("hero CTAs point to experience, LinkedIn and contact", () => {
+  assert.match(html, /href="#experiencia">Ver experiência/);
+  assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/jonasdavila\/"[^>]*>\s*Acessar LinkedIn/);
+  assert.match(html, /href="#contato">Entrar em contato/);
 });
 
 test("mentions the PUC Minas postgraduate program and ISTQB certification", () => {
