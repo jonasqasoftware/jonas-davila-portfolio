@@ -58,6 +58,8 @@ const education = [
 ];
 
 export default function Home() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
   return (
     <>
       <a className="skip-link" href="#top">Pular para o conteúdo</a>
@@ -67,7 +69,7 @@ export default function Home() {
           <p className="eyebrow">SENIOR QA ENGINEER · QUALITY ENGINEER</p>
           <figure className="portrait-frame">
             <img
-              src="/jonas-davila.jpeg"
+              src={`${basePath}/jonas-davila.jpeg`}
               alt="Retrato profissional de Jonas Dávila"
               width={390}
               height={520}
