@@ -4,9 +4,10 @@ import { useEffect, useId, useRef, useState } from "react";
 
 const NAV_LINKS = [
   { href: "#sobre", label: "Sobre" },
-  { href: "#especialidades", label: "Especialidades" },
+  { href: "#experiencia", label: "Experiência" },
+  { href: "#competencias", label: "Competências" },
   { href: "#projetos", label: "Projetos" },
-  { href: "#conteudos", label: "Conteúdo" },
+  { href: "#formacao", label: "Formação" },
 ];
 
 export default function SiteNav() {
@@ -52,7 +53,7 @@ export default function SiteNav() {
           <span className="sr-only">{open ? "Fechar menu" : "Abrir menu"}</span>
           <span aria-hidden="true">{open ? "✕" : "☰"}</span>
         </button>
-        <a className="nav-cta" href="#contato">Vamos conversar</a>
+        <a className="nav-cta" href="#contato">Contato</a>
       </nav>
     </header>
   );
