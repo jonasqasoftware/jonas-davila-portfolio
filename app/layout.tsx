@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://jonasdavila.com.br"),
   title: "Jonas Dávila | Engenharia de Qualidade",
   description: "Senior Quality Engineer, autor do AIMA 2.0. Estratégia, automação, métricas e IA aplicadas à Qualidade de Software.",
+  alternates: { canonical: "/" },
   openGraph: { title: "Jonas Dávila | Engenharia de Qualidade", description: "Engenharia de Qualidade que transforma evidências em decisões.", images: ["/jonas-davila.jpeg"], locale: "pt_BR", type: "website" },
 };
 
