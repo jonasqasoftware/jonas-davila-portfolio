@@ -2,44 +2,45 @@
 
 Portfólio pessoal de Jonas Dávila (Senior Quality Engineer, autor do AIMA 2.0). Página única em português, sem CMS — todo o conteúdo é código.
 
-## Arquitetura (não é Next.js/Vercel padrão)
+## Arquitetura
 
-- **Next.js 16 (App Router) + React 19**, mas o runtime de deploy é **vinext** (`cloudflare/vinext`): o app compila para um **Cloudflare Worker**, não para Node nem para a plataforma Vercel.
-- `worker/index.ts` é o entrypoint real do Worker: trata `/_vinext/image` (otimização de imagem via binding `IMAGES`) e delega o resto ao handler do vinext.
-- Bundler: **Vite 8** + `@cloudflare/vite-plugin` (simula bindings do Worker localmente via Miniflare).
+- **Next.js 16 (App Router) + React 19**, exportado como site estático para o **GitHub Pages**.
+- `next.config.ts` usa `output: "export"`; o build oficial gera o diretório `out/`.
+- O runtime **vinext** e os arquivos de Sites permanecem temporariamente apenas como rollback da hospedagem anterior. Não são o destino oficial de publicação.
 - Estilo: Tailwind CSS v4 + CSS customizado extenso em `app/globals.css`. A maior parte do visual vem de classes CSS escritas à mão, não de utilitários Tailwind no JSX.
 - Todo o conteúdo do site (textos, links, seções) está inline em `app/page.tsx` como arrays de dados — não há CMS nem arquivos de conteúdo separados.
 
-## Deploy: plataforma "Sites" da OpenAI
+## Deploy oficial: GitHub Pages
 
-Este projeto roda na infraestrutura interna **Sites** da OpenAI, não em Vercel/Cloudflare Pages diretamente.
+O repositório `jonasqasoftware/jonas-davila-portfolio` é a fonte oficial.
 
-- `.openai/hosting.json` declara `project_id` e bindings opcionais de D1/R2. **Não editar sem entender o impacto no hosting** — é consumido pelo builder remoto.
-- O builder remoto roda `npm run build` no commit enviado. Isso executa, em sequência: `scripts/build-verified.sh` → `vinext build` (com timeout via GNU `timeout`) → `scripts/validate-artifact.sh` (valida que `dist/server/index.js` exporta `default.fetch` ESM e que `dist/.openai/hosting.json` existe).
-- `build/sites-vite-plugin.ts` copia `.openai/hosting.json` e `drizzle/` para `dist/.openai/` no `closeBundle`.
-- `scripts/sites-env.sh` isola HOME/npm-cache/tmp em `.sites-runtime/` (gitignored, disposable) para builds sandboxed.
-- **Não repetir install/build como parte normal do fluxo de checkpoint** — o pipeline remoto já faz isso; scripts locais são só para diagnóstico pontual (ver README, seção "Diagnostic Commands").
-- Headers de identidade (`oai-authenticated-user-email` etc.) e o fluxo "Sign in with ChatGPT" (SIWC) são geridos pelo dispatch da plataforma. **Nunca implementar rotas próprias em** `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback` — são reservadas.
+- `.github/workflows/deploy-pages.yml` executa o build e publica o artefato estático.
+- `npm run build:pages` gera `out/` com o Next.js.
+- `npm run test:pages` gera e valida o artefato que será publicado.
+- O domínio oficial é `jonasdavila.com.br`; o domínio personalizado é configurado no GitHub Pages e no DNS da KingHost.
+- Nunca trocar o DNS antes de a publicação do GitHub Pages estar concluída e acessível.
+- `.openai/hosting.json`, `worker/`, `build/` e os scripts de Sites são legado temporário para rollback. Não usá-los para novas publicações nem removê-los sem uma decisão explícita.
 
 ## Requisitos de ambiente
 
 - Node **>=22.13.0** (verificar `node -v` antes de rodar scripts — builds falham/comportam-se de forma imprevisível com versões menores).
-- Linux com `flock`, `curl`, `sha256sum` e GNU `timeout` (scripts não são portáveis para macOS).
-- `scripts/*.sh` precisam de bit de execução (`chmod +x`) para rodar via `npm run install:ci` / `build` / etc. Se um checkout vier sem esse bit, os scripts falham com "Permissão negada" — não é um bug do script em si.
+- Para validar a hospedagem oficial, usar `npm ci` e `npm run test:pages`.
+- Os scripts `*.sh` e requisitos Linux pertencem somente ao fluxo legado do Sites.
 
 ## Testes
 
-- `npm test` = `npm run build && node --test tests/rendered-html.test.mjs`.
-- O único teste existente (`tests/rendered-html.test.mjs`) verifica apenas que o worker responde 200/HTML com uma meta tag `codex-preview: development` — **não cobre conteúdo real do site** (textos, links, SEO). Ao adicionar testes novos, preferir verificar conteúdo real (heading principal, links de contato, meta tags) em vez de apenas replicar esse smoke test genérico do template.
+- `npm test` mantém a suíte do runtime legado.
+- `npm run test:pages` valida a exportação estática oficial, incluindo o HTML principal, conteúdo crítico, canonical e ativos.
 
 ## Regras permanentes
 
 - Manter todo o conteúdo visível do site em **português (pt-BR)** — é o idioma de todo o texto existente em `app/page.tsx`.
 - Não introduzir dependências ou padrões de deploy específicos de Vercel (ex.: `next start`, Vercel Analytics, `vercel.json`) — o app não roda em Vercel.
-- `db/schema.ts` está intencionalmente vazio e `.openai/hosting.json` tem `d1: null`. Não ativar/usar D1 real sem decisão explícita — usar `examples/d1/` apenas como referência, não como código ativo.
+- O site oficial deve continuar totalmente estático: não introduzir SSR, API Routes ou dependências de servidor incompatíveis com GitHub Pages.
+- `db/schema.ts` está intencionalmente vazio. Não ativar/usar banco real sem decisão explícita.
 - `app/chatgpt-auth.ts` (helpers de SIWC) está presente mas **não é usado hoje** — nenhuma rota chama `getChatGPTUser`/`requireChatGPTUser`. Não remover silenciosamente nem ativar sem confirmar a intenção com o usuário.
 - Preferir editar `app/page.tsx`/`app/globals.css` diretamente a criar novos componentes/abstrações — é uma página única e deve continuar simples.
-- Scripts de build/instalação (`scripts/*.sh`) são deliberadamente não-retry e com timeout curto — não adicionar lógica de retry/fallback neles; isso é uma decisão de design do pipeline Sites (ver comentários no README).
+- Preservar os scripts legados de Sites enquanto o rollback for necessário; não misturá-los com o fluxo do GitHub Pages.
 - Nunca commitar `.env*`, `.sites-runtime/`, `.wrangler/` (já gitignored) — não remover essas entradas do `.gitignore`.
 
 ## UX e identidade visual
