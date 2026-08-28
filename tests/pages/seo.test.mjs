@@ -129,19 +129,35 @@ test("index.html Open Graph/Twitter image uses an absolute URL on the official d
   assert.match(html, /property="og:image" content="https:\/\/jonasdavila\.com\.br\/jonas-davila\.jpeg"/);
 });
 
-test("index.html embeds a truthful Person JSON-LD without invented facts", () => {
-  const match = html.match(/<script type="application\/ld\+json">(\{.*?"@type":"Person".*?\})<\/script>/);
-  assert.ok(match, "expected a Person JSON-LD script tag");
+test("index.html embeds a truthful Person + CreativeWork JSON-LD graph without invented facts", () => {
+  const match = html.match(/<script type="application\/ld\+json">(\{.*?\})<\/script>/s);
+  assert.ok(match, "expected a JSON-LD script tag");
   const jsonLd = JSON.parse(match[1]);
-  assert.equal(jsonLd["@type"], "Person");
-  assert.equal(jsonLd.name, "Jonas Dávila");
-  assert.equal(jsonLd.url, "https://jonasdavila.com.br/");
-  assert.match(jsonLd.jobTitle, /Quality Engineer/);
-  assert.ok(jsonLd.sameAs.includes("https://www.linkedin.com/in/jonasdavila/"));
-  assert.ok(jsonLd.sameAs.includes("https://github.com/jonasqasoftware"));
-  assert.ok(jsonLd.sameAs.includes("https://aima20.dev"));
-  for (const forbidden of ["telefone", "endereço", "salário", "R$", "avaliaç"]) {
-    assert.doesNotMatch(jsonLd.description ?? "", new RegExp(forbidden, "i"));
+  assert.equal(jsonLd["@context"], "https://schema.org");
+  assert.ok(Array.isArray(jsonLd["@graph"]), "expected a @graph array");
+
+  const person = jsonLd["@graph"].find((node) => node["@type"] === "Person");
+  assert.ok(person, "expected a Person node in the graph");
+  assert.equal(person.name, "Jonas Dávila");
+  assert.equal(person.url, "https://jonasdavila.com.br/");
+  assert.match(person.jobTitle, /Quality Engineer/);
+  assert.ok(person.sameAs.includes("https://www.linkedin.com/in/jonasdavila/"));
+  assert.ok(person.sameAs.includes("https://github.com/jonasqasoftware"));
+  assert.ok(
+    !person.sameAs.includes("https://aima20.dev"),
+    "AIMA 2.0 is a project, not an identity-equivalent profile — it must not be in sameAs",
+  );
+
+  const creativeWork = jsonLd["@graph"].find((node) => node["@type"] === "CreativeWork");
+  assert.ok(creativeWork, "expected a CreativeWork node for AIMA 2.0");
+  assert.equal(creativeWork.name, "AIMA 2.0");
+  assert.equal(creativeWork.url, "https://aima20.dev");
+  assert.equal(creativeWork.creator["@id"], person["@id"]);
+
+  for (const node of [person, creativeWork]) {
+    for (const forbidden of ["telefone", "endereço", "salário", "R$", "avaliaç"]) {
+      assert.doesNotMatch(node.description ?? "", new RegExp(forbidden, "i"));
+    }
   }
 });
 
