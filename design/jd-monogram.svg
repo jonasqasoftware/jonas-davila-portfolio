@@ -1,0 +1,29 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Monograma JD">
+  <!--
+    Fonte-vetorial do monograma JD usado no favicon e nos ícones instaláveis
+    do portfólio de Jonas Dávila.
+
+    Uso: fonte de manutenção/edição futura. Os PNG/ICO publicados em app/ e
+    public/icons/ foram gerados a partir deste mesmo desenho via Pillow
+    (ver scripts/generate-icons.py), não exportados diretamente deste SVG,
+    pois o ambiente de build não possui um conversor SVG->raster instalado.
+    Qualquer alteração de design deve ser replicada nos dois lugares.
+
+    Tokens de cor (ver app/globals.css):
+      --ink:  #111111 (fundo)
+      --gold: #d4a017 (monograma)
+    Fonte: DejaVu Sans Mono, peso Bold (substituto geométrico de Geist Mono,
+    a fonte mono usada na marca "JD." do site, para um traço consistente).
+  -->
+  <rect width="1024" height="1024" fill="#111111"/>
+  <text
+    x="512"
+    y="512"
+    text-anchor="middle"
+    dominant-baseline="central"
+    font-family="'DejaVu Sans Mono', 'Geist Mono', ui-monospace, monospace"
+    font-weight="700"
+    font-size="628"
+    fill="#d4a017"
+  >JD</text>
+</svg>
