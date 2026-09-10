@@ -132,7 +132,7 @@ export default function Home() {
             </a>
             <a className="button button-light" href="#experiencia">Ver experiência</a>
             <a className="button button-light" href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer">
-              Acessar LinkedIn <span aria-hidden="true">↗</span>
+              Acessar LinkedIn <span aria-hidden="true">{"↗︎"}</span>
             </a>
           </div>
           <aside className="hero-index" aria-label="Resumo profissional">
@@ -214,7 +214,7 @@ export default function Home() {
                   {tags.map((tag) => <span key={tag}>{tag}</span>)}
                 </div>
                 <a className="project-link" href={url} target="_blank" rel="noreferrer">
-                  Ver código <span aria-hidden="true">↗</span>
+                  Ver código <span aria-hidden="true">{"↗︎"}</span>
                 </a>
               </article>
             ))}
@@ -239,10 +239,10 @@ export default function Home() {
               </p>
               <div className="aima-actions">
                 <a className="button button-gold" href="https://aima20.dev" target="_blank" rel="noreferrer">
-                  Conhecer o AIMA 2.0 <span aria-hidden="true">↗</span>
+                  Conhecer o AIMA 2.0 <span aria-hidden="true">{"↗︎"}</span>
                 </a>
                 <a className="button button-outline-on-dark" href="https://github.com/jonasqasoftware/aima-agentic-qe" target="_blank" rel="noreferrer">
-                  Ver código no GitHub <span aria-hidden="true">↗</span>
+                  Ver código no GitHub <span aria-hidden="true">{"↗︎"}</span>
                 </a>
               </div>
             </div>
@@ -278,9 +278,9 @@ export default function Home() {
               </p>
             </div>
             <div className="contact-links">
-              <a href="mailto:jonas.qa.software@gmail.com"><span>ENVIAR E-MAIL</span>jonas.qa.software@gmail.com ↗</a>
-              <a href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer"><span>FALAR PELO LINKEDIN</span>/in/jonasdavila ↗</a>
-              <a href="https://github.com/jonasqasoftware" target="_blank" rel="noreferrer"><span>VER GITHUB</span>/jonasqasoftware ↗</a>
+              <a href="mailto:jonas.qa.software@gmail.com"><span>ENVIAR E-MAIL</span>jonas.qa.software@gmail.com{" "}<span aria-hidden="true">{"↗︎"}</span></a>
+              <a href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer"><span>FALAR PELO LINKEDIN</span>/in/jonasdavila{" "}<span aria-hidden="true">{"↗︎"}</span></a>
+              <a href="https://github.com/jonasqasoftware" target="_blank" rel="noreferrer"><span>VER GITHUB</span>/jonasqasoftware{" "}<span aria-hidden="true">{"↗︎"}</span></a>
             </div>
           </div>
         </section>
