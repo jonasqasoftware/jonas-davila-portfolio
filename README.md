@@ -1,108 +1,63 @@
-# vinext-starter
+# Jonas Dávila — Quality Engineering Portfolio
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Portfólio profissional de **Jonas Dávila**, Senior QA Engineer / Quality Engineer, autor do projeto AIMA 2.0.
 
-## Prerequisites
+Produção: **https://jonasdavila.com.br**
 
-- Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
+## Objetivo
 
-## Sites Lifecycle
+Página única, em português, que apresenta de forma escaneável:
 
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
+- experiência profissional (empresa, cargo, período e impacto);
+- competências técnicas e estratégicas;
+- AIMA 2.0, projeto autoral de pesquisa aplicada;
+- formação e estudos contínuos;
+- currículo para download;
+- contato.
 
-This starter does not use `wrangler.jsonc`.
+## Stack
 
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout and then validates the Sites artifact. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 4 + CSS customizado (`app/globals.css`)
+- Export estático (`next build` com `output: "export"`)
+- GitHub Actions + GitHub Pages
 
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
+## Arquitetura
 
-## Included Shape
+- Todo o conteúdo visível do site está inline em `app/page.tsx`, como arrays de dados — não há CMS.
+- `app/layout.tsx` define metadata, Open Graph e o grafo JSON-LD (`Person` + `CreativeWork`).
+- `app/site-nav.tsx` implementa a navegação, incluindo o menu mobile.
+- `app/robots.ts`, `app/sitemap.ts` e `app/manifest.ts` geram os artefatos técnicos de SEO/PWA.
+- `public/` contém os assets estáticos servidos diretamente, incluindo o currículo em PDF.
+- `next.config.ts` usa `output: "export"` com `basePath` controlado por `NEXT_PUBLIC_BASE_PATH`, para funcionar tanto no domínio próprio quanto em um subcaminho do GitHub Pages.
 
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+## Qualidade
 
-## Workspace Auth Headers
+- CI/CD via GitHub Actions, com build e validação automática a cada push em `main`.
+- Validação do artefato de export estático (`scripts/validate-pages-build.mjs`) antes da publicação.
+- Suíte de testes de SEO técnico sobre o HTML exportado (`tests/pages/`): canonical, JSON-LD, robots, sitemap, ícones e manifest.
+- Suíte adicional (`tests/`) que valida estrutura, conteúdo e regressões de CSS/acessibilidade.
+- Skip link, foco visível, navegação por teclado, menu mobile com `aria-expanded`/`aria-controls` e suporte a `Escape`, e respeito a `prefers-reduced-motion`.
 
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
+## Executar e testar
 
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+npm ci
+npm run test:pages   # build de export estático + validação do artefato + suíte de SEO (fluxo oficial de publicação)
+npm test              # build e suíte legada adicional (runtime Vinext, mantida por compatibilidade)
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+O script `npm run dev` usa o runtime **Vinext/Vite** (fluxo legado, descrito abaixo), não o `next dev` — para desenvolvimento local orientado ao export estático, use `npm run build:pages` para gerar `out/` e inspecionar o resultado.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## Deploy
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+1. Push para `main`.
+2. `.github/workflows/deploy-pages.yml` executa `npm ci` e `npm run test:pages`.
+3. O artefato estático (`out/`) é publicado como GitHub Pages Artifact.
+4. O GitHub Pages publica o conteúdo no domínio configurado (`jonasdavila.com.br`, via domínio personalizado no GitHub Pages e DNS na KingHost).
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+## Legado / compatibilidade
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Diagnostic Commands
-
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build and validate the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build, validate, and verify the rendered development-preview metadata
-- `npm run validate:artifact`: recheck an existing artifact's manifest and ESM `default.fetch` export
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-Use build and validation commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
-
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+O repositório ainda mantém arquivos e scripts de uma hospedagem anterior baseada em **Vinext/Cloudflare** (`worker/`, `build/`, `.openai/hosting.json`, `db/`, `drizzle/`, scripts `*.sh`), preservados temporariamente apenas como caminho de rollback. Eles não fazem parte do fluxo oficial de publicação (GitHub Pages) e não devem ser usados para novas mudanças de conteúdo ou deploy.

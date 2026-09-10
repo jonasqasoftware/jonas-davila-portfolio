@@ -71,10 +71,10 @@ test("places the profile photo inside the hero section, before the Sobre section
   assert.ok(heroPhotoIndex < sobreIndex, "expected the photo to appear before the Sobre section in the HTML");
 });
 
-test("hero CTAs point to experience, LinkedIn and contact", () => {
+test("hero CTAs lead with the CV download, then experience and LinkedIn", () => {
+  assert.match(html, /href="\/cv-jonas-davila\.pdf"[^>]*download[^>]*>\s*Baixar currículo/);
   assert.match(html, /href="#experiencia">Ver experiência/);
   assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/jonasdavila\/"[^>]*>\s*Acessar LinkedIn/);
-  assert.match(html, /href="#contato">Entrar em contato/);
 });
 
 test("mentions the PUC Minas postgraduate program and ISTQB certification", () => {
@@ -103,6 +103,21 @@ test("shows verified company impact results", () => {
   assert.match(html, /Redução de 20% dos bugs em produção/);
 });
 
+test("shows role and period for each experience entry", () => {
+  const pairs = [
+    ["Analista de Testes e Qualidade de Software", "07/2025 — 07/2026"],
+    ["Engenheiro de Qualidade de Software — Processos e Estratégia", "10/2024 — 05/2025"],
+    ["Senior Software Quality Assurance Engineer", "04/2024 — 08/2024"],
+    ["Senior Quality Analyst", "05/2021 — 08/2023"],
+    ["Quality Analyst Consultant (Trainee)", "04/2020 — 05/2021"],
+    ["Analista de Qualidade Júnior", "09/2019 — 04/2020"],
+  ];
+  for (const [role, period] of pairs) {
+    assert.ok(html.includes(role), `expected role "${role}" to be present`);
+    assert.ok(html.includes(period), `expected period "${period}" to be present`);
+  }
+});
+
 test("presents professional experience before the AIMA project in the page flow", () => {
   const experienceIndex = html.indexOf("Experiência e impacto");
   const aimaIndex = html.indexOf("AIMA 2.0");
@@ -115,6 +130,14 @@ test("links to LinkedIn, GitHub and AIMA", () => {
   assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/jonasdavila\/"/);
   assert.match(html, /href="https:\/\/github\.com\/jonasqasoftware"/);
   assert.match(html, /href="https:\/\/aima20\.dev"/);
+});
+
+test("links to the AIMA 2.0 source code on GitHub as secondary evidence", () => {
+  assert.match(
+    html,
+    /href="https:\/\/github\.com\/jonasqasoftware\/aima-agentic-qe"[^>]*target="_blank"[^>]*rel="noreferrer"/,
+  );
+  assert.match(html, /Ver código no GitHub/);
 });
 
 test("CTAs point to experience, LinkedIn, email and GitHub", () => {
