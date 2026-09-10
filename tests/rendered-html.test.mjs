@@ -126,6 +126,17 @@ test("presents professional experience before the AIMA project in the page flow"
   assert.ok(experienceIndex < aimaIndex, "expected professional experience to appear before AIMA 2.0");
 });
 
+test("presents Projetos selecionados between Competências and AIMA in the page flow", () => {
+  const competenciasIndex = html.indexOf("Competências técnicas e estratégicas");
+  const projetosIndex = html.indexOf("Projetos selecionados");
+  const aimaIndex = html.indexOf("AIMA 2.0");
+  assert.ok(competenciasIndex > -1, "expected the Competências section to be present");
+  assert.ok(projetosIndex > -1, "expected the Projetos selecionados section to be present");
+  assert.ok(aimaIndex > -1, "expected an AIMA 2.0 mention to be present");
+  assert.ok(competenciasIndex < projetosIndex, "expected Projetos to appear after Competências");
+  assert.ok(projetosIndex < aimaIndex, "expected Projetos to appear before AIMA 2.0");
+});
+
 test("links to LinkedIn, GitHub and AIMA", () => {
   assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/jonasdavila\/"/);
   assert.match(html, /href="https:\/\/github\.com\/jonasqasoftware"/);

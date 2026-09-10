@@ -60,6 +60,31 @@ const competencies = [
   ["05", "Liderança e colaboração", "Mentoria, facilitação, stakeholders, chapters, comunidades de prática, Scrum e qualidade orientada ao negócio."],
 ];
 
+const projects = [
+  {
+    title: "API Quality Engineering — estudo de caso",
+    repo: "reino-do-recurso-real-api",
+    description:
+      "Estudo de caso de Quality Engineering aplicado a uma API REST, combinando testes funcionais, contrato OpenAPI, segurança, performance e acessibilidade em um fluxo automatizado de CI/CD.",
+    tags: ["API REST", "OpenAPI", "k6", "Acessibilidade", "CI/CD"],
+    url: "https://github.com/jonasqasoftware/reino-do-recurso-real-api",
+  },
+  {
+    title: "SQL Quality Checker",
+    description:
+      "Ferramenta em Python e SQLite para validar regras de negócio diretamente nos dados, detectar inconsistências de qualidade e gerar relatórios rastreáveis em CSV e HTML.",
+    tags: ["SQL", "Python", "SQLite", "Qualidade de Dados"],
+    url: "https://github.com/jonasqasoftware/sql-quality-checker",
+  },
+  {
+    title: "Quality Change Intelligence Lab",
+    description:
+      "Ferramenta determinística em Go para priorizar verificações sob restrição de tempo, maximizando a cobertura de risco disponível e tornando explícitos os testes selecionados, os não selecionados e o risco residual.",
+    tags: ["Go", "Risk-Based Testing", "Test Strategy", "GitHub Actions"],
+    url: "https://github.com/jonasqasoftware/quality-change-intelligence-lab",
+  },
+];
+
 const education = [
   ["PUC Minas", "Pós-graduação Lato Sensu em Engenharia de Qualidade e Teste de Software · Em andamento"],
   ["Unisinos", "Gestão da Tecnologia da Informação"],
@@ -173,7 +198,30 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="aima section" id="projetos">
+        <section className="section shell" id="projetos">
+          <div className="section-heading">
+            <div><p className="section-number">04 — PROJETOS</p><h2>Projetos selecionados</h2></div>
+            <p>Projetos públicos que demonstram decisões de engenharia, estratégia de qualidade e aplicação prática de técnicas de Quality Engineering.</p>
+          </div>
+          <div className="expertise-grid">
+            {projects.map(({ title, repo, description, tags, url }, index) => (
+              <article className="expertise-card" key={title}>
+                <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
+                <h3>{title}</h3>
+                {repo && <p className="project-repo">{repo}</p>}
+                <p>{description}</p>
+                <div className="project-tags">
+                  {tags.map((tag) => <span key={tag}>{tag}</span>)}
+                </div>
+                <a className="project-link" href={url} target="_blank" rel="noreferrer">
+                  Ver código <span aria-hidden="true">↗</span>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="aima section" id="aima">
           <div className="shell aima-grid">
             <div className="aima-copy">
               <p className="section-number light">PROJETO AUTORAL</p>
@@ -208,7 +256,7 @@ export default function Home() {
 
         <section className="section shell" id="formacao">
           <div className="section-heading">
-            <div><p className="section-number">04 — FORMAÇÃO</p><h2>Formação e evolução contínua</h2></div>
+            <div><p className="section-number">05 — FORMAÇÃO</p><h2>Formação e evolução contínua</h2></div>
             <p>Atualização constante alinhada à próxima evolução da Engenharia de Qualidade.</p>
           </div>
           <div className="ia-credentials" aria-label="Formação acadêmica e estudos contínuos">
@@ -221,7 +269,7 @@ export default function Home() {
         <section className="contact section" id="contato">
           <div className="shell contact-grid">
             <div>
-              <p className="section-number light">05 — CONTATO</p>
+              <p className="section-number light">06 — CONTATO</p>
               <h2>Procurando experiência sênior em Qualidade de Software?</h2>
               <p>
                 Estou aberto a oportunidades como Senior QA Engineer, Quality Engineer, QA Automation Engineer
