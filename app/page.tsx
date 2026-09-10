@@ -2,40 +2,52 @@ import SiteNav from "./site-nav";
 
 const experience = [
   {
-    company: "KingHost",
+    company: "SPASSU",
+    role: "Analista de Testes e Qualidade de Software",
+    period: "07/2025 — 07/2026",
     points: [
-      "Estruturação da primeira frente de QA da empresa, com redução de 90% dos bugs em produção.",
-      "Transformação do processo de onboarding de cerca de três dias para aproximadamente um minuto.",
+      "Estratégia de testes para produtos financeiros digitais, cobrindo funcionalidade, integração, regressão, segurança, desempenho e carga.",
+    ],
+  },
+  {
+    company: "QualityMap",
+    role: "Engenheiro de Qualidade de Software — Processos e Estratégia",
+    period: "10/2024 — 05/2025",
+    points: [
+      "Processos, estratégia, métricas, auditoria, melhoria contínua e experimentos de IA aplicada à qualidade.",
     ],
   },
   {
     company: "HostGator",
+    role: "Senior Software Quality Assurance Engineer",
+    period: "04/2024 — 08/2024",
     points: [
       "Redução de 20% dos bugs em produção por meio do fortalecimento da estratégia de automação e testes de APIs.",
     ],
   },
   {
     company: "Itaú Unibanco",
+    role: "Senior Quality Analyst",
+    period: "05/2021 — 08/2023",
     points: [
       "Estratégia e execução de qualidade para produtos financeiros, pagamentos e aplicações web e mobile.",
     ],
   },
   {
     company: "ThoughtWorks",
+    role: "Quality Analyst Consultant (Trainee)",
+    period: "04/2020 — 05/2021",
     points: [
       "Quality Engineering e automação em API, web e mobile, com facilitação e colaboração entre engenharia, produto e negócio.",
     ],
   },
   {
-    company: "QualityMap",
+    company: "KingHost",
+    role: "Analista de Qualidade Júnior",
+    period: "09/2019 — 04/2020",
     points: [
-      "Processos, estratégia, métricas, auditoria, melhoria contínua e experimentos de IA aplicada à qualidade.",
-    ],
-  },
-  {
-    company: "SPASSU",
-    points: [
-      "Estratégia de testes para produtos financeiros digitais, cobrindo funcionalidade, integração, regressão, segurança, desempenho e carga.",
+      "Estruturação da primeira frente de QA da empresa, com redução de 90% dos bugs em produção.",
+      "Transformação do processo de onboarding de cerca de três dias para aproximadamente um minuto.",
     ],
   },
 ];
@@ -90,11 +102,13 @@ export default function Home() {
             Qualidade.
           </p>
           <div className="actions">
-            <a className="button button-dark" href="#experiencia">Ver experiência</a>
-            <a className="button button-light" href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer">
-              Acessar LinkedIn <span>↗</span>
+            <a className="button button-dark" href={`${basePath}/cv-jonas-davila.pdf`} download>
+              Baixar currículo
             </a>
-            <a className="button button-light" href="#contato">Entrar em contato</a>
+            <a className="button button-light" href="#experiencia">Ver experiência</a>
+            <a className="button button-light" href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer">
+              Acessar LinkedIn <span aria-hidden="true">↗</span>
+            </a>
           </div>
           <aside className="hero-index" aria-label="Resumo profissional">
             <div><strong>18</strong><span>anos em tecnologia</span></div>
@@ -129,10 +143,14 @@ export default function Home() {
             <p>Evidências de atuação dentro de empresas, com foco em resultado e redução de risco.</p>
           </div>
           <div className="expertise-grid">
-            {experience.map(({ company, points }, index) => (
+            {experience.map(({ company, role, period, points }, index) => (
               <article className="expertise-card" key={company}>
                 <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
                 <h3>{company}</h3>
+                <p className="experience-meta">
+                  <strong>{role}</strong>
+                  <span>{period}</span>
+                </p>
                 <ul>
                   {points.map((point) => <li key={point}>{point}</li>)}
                 </ul>
@@ -162,16 +180,23 @@ export default function Home() {
               <p className="version">AIMA 2.0 / PREVIEW EDITION</p>
               <h2>Um projeto autoral que evidencia pensamento estratégico e pesquisa aplicada.</h2>
               <p>
-                AIMA 2.0 é um projeto autoral por meio do qual exploro indicadores, inteligência artificial e
-                pensamento estratégico aplicados à atuação de profissionais de Quality Engineering.
+                AIMA 2.0 é um projeto autoral no qual exploro, de forma estruturada, como Quality Engineering,
+                indicadores, inteligência artificial e pensamento estratégico se conectam para transformar
+                evidências e riscos em decisões melhores.
               </p>
               <p>
-                São 20 frameworks e 28 conceitos que aplico em pesquisa, escrita e experimentação de IA
-                aplicada à Qualidade de Software.
+                São 20 frameworks e 28 conceitos que desenvolvo em pesquisa, escrita e experimentação de IA
+                aplicada à Qualidade de Software — a capacidade técnica e analítica por trás do projeto pode
+                ser verificada no código-fonte.
               </p>
-              <a className="button button-gold" href="https://aima20.dev" target="_blank" rel="noreferrer">
-                Conhecer o projeto AIMA 2.0 <span>↗</span>
-              </a>
+              <div className="aima-actions">
+                <a className="button button-gold" href="https://aima20.dev" target="_blank" rel="noreferrer">
+                  Conhecer o AIMA 2.0 <span aria-hidden="true">↗</span>
+                </a>
+                <a className="button button-outline-on-dark" href="https://github.com/jonasqasoftware/aima-agentic-qe" target="_blank" rel="noreferrer">
+                  Ver código no GitHub <span aria-hidden="true">↗</span>
+                </a>
+              </div>
             </div>
             <div className="decision-diagram" aria-label="Fluxo do AIMA: contexto, evidências, riscos, decisão e ação">
               {['Contexto', 'Evidências', 'Riscos', 'Decisão', 'Ação'].map((item, index) => (
