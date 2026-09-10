@@ -52,3 +52,59 @@ test("AIMA 2.0 section links to the product site and to the source code as secon
     /href="https:\/\/github\.com\/jonasqasoftware\/aima-agentic-qe"[^>]*target="_blank"[^>]*rel="noreferrer"/,
   );
 });
+
+test("Projetos selecionados section exists with the expected heading", () => {
+  assert.match(html, /id="projetos"/);
+  assert.match(html, /04 — PROJETOS/);
+  assert.match(html, /Projetos selecionados/);
+});
+
+test("renders the three selected project cards with title, repo identity, description and tags", () => {
+  assert.match(html, /API Quality Engineering — estudo de caso/);
+  assert.match(html, /reino-do-recurso-real-api/);
+  assert.match(html, /SQL Quality Checker/);
+  assert.match(html, /Quality Change Intelligence Lab/);
+
+  const expectedTags = [
+    "API REST", "OpenAPI", "k6", "Acessibilidade", "CI/CD",
+    "SQL", "Python", "SQLite", "Qualidade de Dados",
+    "Go", "Risk-Based Testing", "Test Strategy", "GitHub Actions",
+  ];
+  for (const tag of expectedTags) {
+    assert.ok(html.includes(tag), `expected tag "${tag}" to be present in the exported HTML`);
+  }
+});
+
+test("each selected project links to the exact GitHub repository with target=_blank and rel=noreferrer", () => {
+  const repos = [
+    "reino-do-recurso-real-api",
+    "sql-quality-checker",
+    "quality-change-intelligence-lab",
+  ];
+  for (const repo of repos) {
+    const pattern = new RegExp(
+      `href="https:\\/\\/github\\.com\\/jonasqasoftware\\/${repo}"[^>]*target="_blank"[^>]*rel="noreferrer"`,
+    );
+    assert.match(html, pattern, `expected a target=_blank rel=noreferrer link to ${repo}`);
+  }
+});
+
+test("Projetos selecionados appears after Competências and before AIMA 2.0 in the page flow", () => {
+  const competenciasIndex = html.indexOf("Competências técnicas e estratégicas");
+  const projetosIndex = html.indexOf("Projetos selecionados");
+  const aimaIndex = html.indexOf(">Um projeto autoral que evidencia pensamento estratégico");
+  assert.ok(competenciasIndex > -1, "expected the Competências section to be present");
+  assert.ok(projetosIndex > -1, "expected the Projetos selecionados section to be present");
+  assert.ok(aimaIndex > -1, "expected the AIMA section heading to be present");
+  assert.ok(competenciasIndex < projetosIndex, "expected Projetos to appear after Competências");
+  assert.ok(projetosIndex < aimaIndex, "expected Projetos to appear before AIMA 2.0");
+});
+
+test("Formação and Contato section numbers were renumbered after inserting Projetos", () => {
+  assert.match(html, /05 — FORMAÇÃO/);
+  assert.match(html, /06 — CONTATO/);
+});
+
+test("AIMA section now uses the #aima anchor, freeing #projetos for the new section", () => {
+  assert.match(html, /id="aima"/);
+});
