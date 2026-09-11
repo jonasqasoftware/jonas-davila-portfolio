@@ -137,6 +137,21 @@ test("presents Projetos selecionados between Competências and AIMA in the page 
   assert.ok(projetosIndex < aimaIndex, "expected Projetos to appear before AIMA 2.0");
 });
 
+test("renders the six selected projects and drops the legacy reino-do-recurso-real-api identity", () => {
+  const titles = [
+    "API Quality Engineering Lab",
+    "SQL Quality Checker",
+    "Quality Change Intelligence Lab",
+    "Expense Approval Quality Lab",
+    "Subscription Change Quality Lab",
+    "Inventory Reservation Quality Lab",
+  ];
+  for (const title of titles) {
+    assert.ok(html.includes(title), `expected project title "${title}" in rendered HTML`);
+  }
+  assert.doesNotMatch(html, /reino-do-recurso-real-api/);
+});
+
 test("links to LinkedIn, GitHub and AIMA", () => {
   assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/jonasdavila\/"/);
   assert.match(html, /href="https:\/\/github\.com\/jonasqasoftware"/);

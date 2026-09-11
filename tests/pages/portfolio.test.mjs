@@ -59,27 +59,56 @@ test("Projetos selecionados section exists with the expected heading", () => {
   assert.match(html, /Projetos selecionados/);
 });
 
-test("renders the three selected project cards with title, repo identity, description and tags", () => {
-  assert.match(html, /API Quality Engineering — estudo de caso/);
-  assert.match(html, /reino-do-recurso-real-api/);
-  assert.match(html, /SQL Quality Checker/);
-  assert.match(html, /Quality Change Intelligence Lab/);
+test("renders the six selected project cards with title, repo identity, description and tags", () => {
+  const titles = [
+    "API Quality Engineering Lab",
+    "SQL Quality Checker",
+    "Quality Change Intelligence Lab",
+    "Expense Approval Quality Lab",
+    "Subscription Change Quality Lab",
+    "Inventory Reservation Quality Lab",
+  ];
+  for (const title of titles) {
+    assert.ok(html.includes(title), `expected project title "${title}" in exported HTML`);
+  }
+
+  const repoSlugs = [
+    "api-quality-engineering-lab",
+    "sql-quality-checker",
+    "quality-change-intelligence-lab",
+    "expense-approval-quality-lab",
+    "subscription-change-quality-lab",
+    "inventory-reservation-quality-lab",
+  ];
+  for (const repo of repoSlugs) {
+    assert.ok(html.includes(repo), `expected repo slug "${repo}" in exported HTML`);
+  }
 
   const expectedTags = [
-    "API REST", "OpenAPI", "k6", "Acessibilidade", "CI/CD",
+    "API Testing", "OpenAPI", "k6", "Segurança", "Acessibilidade", "CI/CD",
     "SQL", "Python", "SQLite", "Qualidade de Dados",
     "Go", "Risk-Based Testing", "Test Strategy", "GitHub Actions",
+    "Playwright", "TypeScript", "E2E",
+    "Cypress", "JavaScript", "Network Testing",
+    "Selenium 4", "Java", "JUnit 5", "Page Objects",
   ];
   for (const tag of expectedTags) {
     assert.ok(html.includes(tag), `expected tag "${tag}" to be present in the exported HTML`);
   }
 });
 
+test("does not reference the legacy reino-do-recurso-real-api identity anywhere", () => {
+  assert.doesNotMatch(html, /reino-do-recurso-real-api/);
+});
+
 test("each selected project links to the exact GitHub repository with target=_blank and rel=noreferrer", () => {
   const repos = [
-    "reino-do-recurso-real-api",
+    "api-quality-engineering-lab",
     "sql-quality-checker",
     "quality-change-intelligence-lab",
+    "expense-approval-quality-lab",
+    "subscription-change-quality-lab",
+    "inventory-reservation-quality-lab",
   ];
   for (const repo of repos) {
     const pattern = new RegExp(
@@ -87,6 +116,22 @@ test("each selected project links to the exact GitHub repository with target=_bl
     );
     assert.match(html, pattern, `expected a target=_blank rel=noreferrer link to ${repo}`);
   }
+});
+
+test("Projetos selecionados section renders exactly six project cards and six project links", () => {
+  const sectionStart = html.indexOf('id="projetos"');
+  const sectionEnd = html.indexOf('id="aima"');
+  assert.ok(sectionStart > -1, "expected id=\"projetos\" to be present");
+  assert.ok(sectionEnd > -1, "expected id=\"aima\" to be present");
+  assert.ok(sectionStart < sectionEnd, "expected #projetos to appear before #aima");
+
+  const sectionHtml = html.slice(sectionStart, sectionEnd);
+
+  const cardMatches = sectionHtml.match(/class="expertise-card"/g) ?? [];
+  assert.equal(cardMatches.length, 6, "expected exactly six expertise-card elements in #projetos");
+
+  const linkMatches = sectionHtml.match(/class="project-link"/g) ?? [];
+  assert.equal(linkMatches.length, 6, "expected exactly six project-link elements in #projetos");
 });
 
 test("Projetos selecionados appears after Competências and before AIMA 2.0 in the page flow", () => {

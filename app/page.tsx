@@ -62,15 +62,16 @@ const competencies = [
 
 const projects = [
   {
-    title: "API Quality Engineering — estudo de caso",
-    repo: "reino-do-recurso-real-api",
+    title: "API Quality Engineering Lab",
+    repo: "api-quality-engineering-lab",
     description:
-      "Estudo de caso de Quality Engineering aplicado a uma API REST, combinando testes funcionais, contrato OpenAPI, segurança, performance e acessibilidade em um fluxo automatizado de CI/CD.",
-    tags: ["API REST", "OpenAPI", "k6", "Acessibilidade", "CI/CD"],
-    url: "https://github.com/jonasqasoftware/reino-do-recurso-real-api",
+      "Laboratório de Quality Engineering para APIs com testes funcionais, contrato OpenAPI, segurança, acessibilidade, performance com k6 e CI/CD.",
+    tags: ["API Testing", "OpenAPI", "k6", "Segurança", "Acessibilidade", "CI/CD"],
+    url: "https://github.com/jonasqasoftware/api-quality-engineering-lab",
   },
   {
     title: "SQL Quality Checker",
+    repo: "sql-quality-checker",
     description:
       "Ferramenta em Python e SQLite para validar regras de negócio diretamente nos dados, detectar inconsistências de qualidade e gerar relatórios rastreáveis em CSV e HTML.",
     tags: ["SQL", "Python", "SQLite", "Qualidade de Dados"],
@@ -78,10 +79,35 @@ const projects = [
   },
   {
     title: "Quality Change Intelligence Lab",
+    repo: "quality-change-intelligence-lab",
     description:
       "Ferramenta determinística em Go para priorizar verificações sob restrição de tempo, maximizando a cobertura de risco disponível e tornando explícitos os testes selecionados, os não selecionados e o risco residual.",
     tags: ["Go", "Risk-Based Testing", "Test Strategy", "GitHub Actions"],
     url: "https://github.com/jonasqasoftware/quality-change-intelligence-lab",
+  },
+  {
+    title: "Expense Approval Quality Lab",
+    repo: "expense-approval-quality-lab",
+    description:
+      "Laboratório com Playwright + TypeScript que combina testes E2E e API orientados a risco em um fluxo de aprovação de despesas, cobrindo papéis, autorização e transições de estado.",
+    tags: ["Playwright", "TypeScript", "E2E", "API Testing", "Risk-Based Testing"],
+    url: "https://github.com/jonasqasoftware/expense-approval-quality-lab",
+  },
+  {
+    title: "Subscription Change Quality Lab",
+    repo: "subscription-change-quality-lab",
+    description:
+      "Laboratório com Cypress + JavaScript para fluxos de alteração de assinaturas, com estado determinístico, login programático e cenários de resiliência de rede.",
+    tags: ["Cypress", "JavaScript", "E2E", "Network Testing", "CI/CD"],
+    url: "https://github.com/jonasqasoftware/subscription-change-quality-lab",
+  },
+  {
+    title: "Inventory Reservation Quality Lab",
+    repo: "inventory-reservation-quality-lab",
+    description:
+      "Laboratório com Selenium 4 + Java + JUnit 5 para reserva e cancelamento de estoque, usando Page Objects, Page Components, waits explícitos e CI.",
+    tags: ["Selenium 4", "Java", "JUnit 5", "Page Objects", "CI/CD"],
+    url: "https://github.com/jonasqasoftware/inventory-reservation-quality-lab",
   },
 ];
 
