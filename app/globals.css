@@ -161,6 +161,13 @@ footer{background:var(--ink);color:var(--text-on-dark-faint);padding:28px 0}foot
   .shell{width:min(100% - 30px,1180px)}
   .nav{min-height:66px}
   .hero{padding:48px 0;row-gap:24px}
+  .hero>.eyebrow{order:1}
+  .hero>h1{order:2}
+  .hero>.hero-lead{order:3}
+  .hero>.hero-note{order:4}
+  .hero>.actions{order:5}
+  .hero>.hero-index{order:6}
+  .hero>.portrait-frame{order:7}
   .hero-lead{font-size:var(--text-lg)}
   .section{padding:var(--space-7) 0}
   .section-heading{display:block}
