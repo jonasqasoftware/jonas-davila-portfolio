@@ -172,29 +172,9 @@ export default function Home() {
           </aside>
         </section>
 
-        <section className="about section" id="sobre">
-          <div className="shell about-copy">
-            <p className="section-number light">01 — SOBRE</p>
-            <h2>Qualidade não é produzida por testes. É construída por decisões.</h2>
-            <p>
-              Minha trajetória combina engenharia, automação, estratégia e liderança técnica para ampliar
-              o papel da qualidade dentro das organizações — da estruturação de frentes de QA do zero à
-              atuação em produtos financeiros e plataformas de grande escala.
-            </p>
-            <p>
-              Atuo com estratégia de testes baseada em risco, automação web, mobile e de APIs, testes de
-              performance, segurança, integração e contrato, além de CI/CD, métricas e melhoria contínua —
-              sempre traduzindo sinais técnicos em decisões que fazem sentido para o negócio.
-            </p>
-            <div className="profile-tags" aria-label="Principais tecnologias">
-              <span>Cypress</span><span>Playwright</span><span>Selenium</span><span>Java/JUnit</span><span>REST</span><span>SQL</span>
-            </div>
-          </div>
-        </section>
-
         <section className="section shell" id="experiencia">
           <div className="section-heading">
-            <div><p className="section-number">02 — EXPERIÊNCIA</p><h2>Experiência e impacto</h2></div>
+            <div><p className="section-number">01 — EXPERIÊNCIA</p><h2>Experiência e impacto</h2></div>
             <p>Evidências de atuação dentro de empresas, com foco em resultado e redução de risco.</p>
           </div>
           <div className="expertise-grid">
@@ -211,6 +191,19 @@ export default function Home() {
                 </ul>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="about section" id="sobre">
+          <div className="shell about-copy">
+            <p className="section-number light">02 — SOBRE</p>
+            <h2>Qualidade não é produzida por testes. É construída por decisões.</h2>
+            <p>
+              Minha trajetória combina engenharia, automação e liderança técnica para ampliar o papel da
+              qualidade dentro das organizações — da estruturação de frentes de QA do zero à atuação em
+              produtos financeiros e plataformas de grande escala, sempre traduzindo sinais técnicos em
+              decisões que fazem sentido para o negócio.
+            </p>
           </div>
         </section>
 
