@@ -100,7 +100,7 @@ test("shows verified company impact results", () => {
   assert.match(html, /QualityMap/);
   assert.match(html, /SPASSU/);
   assert.match(html, /redução de 90% dos bugs em produção/);
-  assert.match(html, /Redução de 20% dos bugs em produção/);
+  assert.match(html, /redução de 20% dos bugs em produção/i);
 });
 
 test("shows role and period for each experience entry", () => {

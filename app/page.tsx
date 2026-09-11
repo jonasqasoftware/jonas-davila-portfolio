@@ -6,7 +6,8 @@ const experience = [
     role: "Analista de Testes e Qualidade de Software",
     period: "07/2025 — 07/2026",
     points: [
-      "Estratégia de testes para produtos financeiros digitais, cobrindo funcionalidade, integração, regressão, segurança, desempenho e carga.",
+      "Estruturou cobertura de testes em seis frentes — funcional, integração, regressão, segurança, desempenho e carga — para produtos financeiros digitais do projeto Caixa Econômica Federal, com aplicação de práticas OWASP.",
+      "Consolidou evidências técnicas e recomendações de qualidade para Produto e Tecnologia, com uso de automações, simuladores, mocks e stubs na estratégia de testes.",
     ],
   },
   {
@@ -14,7 +15,8 @@ const experience = [
     role: "Engenheiro de Qualidade de Software — Processos e Estratégia",
     period: "10/2024 — 05/2025",
     points: [
-      "Processos, estratégia, métricas, auditoria, melhoria contínua e experimentos de IA aplicada à qualidade.",
+      "Mapeou gargalos de qualidade e apoiou ações corretivas junto a clientes, equipes técnicas e áreas de negócio, em atuação consultiva de processos e estratégia.",
+      "Conduziu experimentos de IA aplicada à qualidade no QualityLAB, voltados à eficiência e ao apoio a decisões de qualidade.",
     ],
   },
   {
@@ -22,7 +24,7 @@ const experience = [
     role: "Senior Software Quality Assurance Engineer",
     period: "04/2024 — 08/2024",
     points: [
-      "Redução de 20% dos bugs em produção por meio do fortalecimento da estratégia de automação e testes de APIs.",
+      "Contribuiu para a redução de 20% dos bugs em produção por meio do fortalecimento da estratégia de automação e testes de APIs.",
     ],
   },
   {
@@ -30,7 +32,8 @@ const experience = [
     role: "Senior Quality Analyst",
     period: "05/2021 — 08/2023",
     points: [
-      "Estratégia e execução de qualidade para produtos financeiros, pagamentos e aplicações web e mobile.",
+      "Automatizou cenários e jornadas de produtos financeiros e de pagamentos com Selenium, JUnit, Cucumber/BDD, Percy e Appium, em aplicações web e mobile.",
+      "Executou testes de performance com JMeter, acompanhou indicadores e relatórios de qualidade no Tableau e colaborou com Engenharia e Produto do refinamento à validação e ao release.",
     ],
   },
   {
@@ -38,7 +41,8 @@ const experience = [
     role: "Quality Analyst Consultant (Trainee)",
     period: "04/2020 — 05/2021",
     points: [
-      "Quality Engineering e automação em API, web e mobile, com facilitação e colaboração entre engenharia, produto e negócio.",
+      "Atuou em consultoria de Quality Engineering no contexto financeiro, com estratégia baseada em risco, testes exploratórios e automação com Postman, Insomnia, Jest e JavaScript.",
+      "Facilitou discussões de qualidade e liderou melhorias em chapters e comunidades de prática de engenharia.",
     ],
   },
   {
@@ -46,7 +50,7 @@ const experience = [
     role: "Analista de Qualidade Júnior",
     period: "09/2019 — 04/2020",
     points: [
-      "Estruturação da primeira frente de QA da empresa, com redução de 90% dos bugs em produção.",
+      "Estruturou a primeira frente de QA da empresa e contribuiu para a redução de 90% dos bugs em produção.",
       "Transformação do processo de onboarding de cerca de três dias para aproximadamente um minuto.",
     ],
   },
