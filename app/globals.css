@@ -147,6 +147,37 @@ h2 { margin:0; font-size:var(--text-4xl); line-height:1.04; letter-spacing:-.05e
 
 .card-index { display:inline-flex; align-items:center; justify-content:center; align-self:flex-start; width:max-content; flex:0 0 auto; min-width:30px; height:22px; padding:0 8px; background:var(--gold); color:var(--ink); font:600 var(--text-sm)/1 var(--font-mono); }
 
+.risk-flow { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin:0 0 40px; font:600 var(--text-sm)/1.3 var(--font-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.risk-flow i { font-style:normal; color:var(--gold); }
+
+.case-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--hairline); border:var(--border-w) solid var(--ink); }
+.case-card { background:var(--surface); padding:40px; display:flex; flex-direction:column; }
+.case-card h3 { font-size:var(--text-3xl); letter-spacing:-.03em; margin:14px 0 6px; }
+.case-card p { color:var(--muted); line-height:1.6; margin:0; }
+.case-card .project-repo { margin:0 0 4px; }
+.case-actions { display:flex; flex-wrap:wrap; gap:12px 24px; margin-top:20px; }
+
+.testimonial-card blockquote { margin:0 0 auto; }
+.testimonial-card blockquote p { color:var(--ink); font-size:var(--text-lg); line-height:1.6; }
+.testimonial-card figcaption { margin-top:20px; padding-top:16px; border-top:var(--border-w) solid var(--hairline); display:grid; gap:2px; }
+.testimonial-card figcaption strong { font:600 var(--text-sm)/1.35 var(--font-sans); }
+.testimonial-card figcaption span { font:500 var(--text-xs)/1.3 var(--font-mono); color:var(--muted); }
+.testimonials-cta { display:inline-flex; margin-top:36px; }
+
+.case-page { padding:var(--space-8) 0 var(--space-9); }
+.case-page-header { border-bottom:var(--border-w) solid var(--ink); padding-bottom:var(--space-4); margin-bottom:var(--space-5); }
+.case-page-header p.eyebrow { margin-bottom:16px; }
+.case-page-header h1 { font-size:var(--text-4xl); letter-spacing:-.03em; line-height:1.05; }
+.case-page-lead { font-size:var(--text-lg); line-height:1.65; color:var(--muted); max-width:760px; margin-top:20px; }
+.case-page-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; }
+.case-page-tags span { border:var(--border-w) solid var(--hairline); padding:6px 10px; font:500 var(--text-xs)/1.3 var(--font-mono); color:var(--muted); }
+.case-page-block { max-width:760px; margin-bottom:var(--space-6); }
+.case-page-block h2 { font-size:var(--text-2xl); letter-spacing:-.02em; margin-bottom:16px; }
+.case-page-block p { color:var(--muted); line-height:1.7; margin:0 0 14px; }
+.case-page-block ul { margin:0; padding-left:20px; color:var(--muted); line-height:1.7; display:grid; gap:8px; }
+.case-page-block li::marker { color:var(--gold); }
+.case-page-actions { display:flex; flex-wrap:wrap; gap:16px; margin-top:var(--space-5); }
+
 .aima{background:var(--ink);color:var(--paper)}.aima-grid{display:grid;grid-template-columns:1fr 390px;gap:110px;align-items:center}.aima-copy h2{max-width:780px}.aima-copy>p:not(.section-number,.version){font-size:var(--text-lg);line-height:1.7;color:var(--text-on-dark-muted);max-width:720px;margin:28px 0 36px}.version{color:var(--text-on-dark-faint);margin-bottom:25px}
 .aima-actions{display:flex;flex-wrap:wrap;gap:12px}
 .decision-diagram{border:var(--border-w) solid var(--hairline-on-dark);padding:14px 28px}.decision-diagram div{min-height:70px;position:relative;display:flex;align-items:center;gap:28px;border-bottom:var(--border-w) solid var(--hairline-on-dark)}.decision-diagram div:last-child{border:0}.decision-diagram span{font:500 var(--text-xs)/1.3 var(--font-mono);color:var(--gold)}.decision-diagram strong{font-size:var(--text-lg)}.decision-diagram i{position:absolute;bottom:-9px;right:4px;color:var(--gold);font-style:normal;background:var(--ink)}
@@ -172,6 +203,7 @@ footer{background:var(--ink);color:var(--text-on-dark-faint);padding:28px 0}foot
   .aima-grid,.contact-grid{grid-template-columns:1fr;gap:65px}
   .portrait-frame{max-width:480px}
   .expertise-grid{grid-template-columns:repeat(2,1fr)}
+  .case-grid{grid-template-columns:1fr}
 }
 @media(max-width:600px){
   .shell{width:min(100% - 30px,1180px)}
@@ -196,5 +228,8 @@ footer{background:var(--ink);color:var(--text-on-dark-faint);padding:28px 0}foot
   .actions .button{width:100%}
   .aima-actions .button{width:100%}
   .ia-credentials{grid-template-columns:1fr}
+  .case-card{padding:28px}
+  .risk-flow{gap:8px 12px}
+  .case-page-header h1{font-size:var(--text-2xl)}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button{transition:none}}

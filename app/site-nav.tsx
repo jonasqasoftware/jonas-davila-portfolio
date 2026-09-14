@@ -6,7 +6,8 @@ const NAV_LINKS = [
   { href: "#experiencia", label: "Experiência" },
   { href: "#sobre", label: "Sobre" },
   { href: "#competencias", label: "Competências" },
-  { href: "#projetos", label: "Projetos" },
+  { href: "#cases", label: "Cases" },
+  { href: "#aima", label: "AIMA 2.0" },
   { href: "#formacao", label: "Formação" },
 ];
 
