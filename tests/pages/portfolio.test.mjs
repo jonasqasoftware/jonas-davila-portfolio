@@ -53,13 +53,18 @@ test("AIMA 2.0 section links to the product site and to the source code as secon
   );
 });
 
-test("Projetos selecionados section exists with the expected heading", () => {
-  assert.match(html, /id="projetos"/);
-  assert.match(html, /04 — PROJETOS/);
-  assert.match(html, /Projetos selecionados/);
+test("Cases em destaque section exists with the expected heading", () => {
+  assert.match(html, /id="cases"/);
+  assert.match(html, /05 — CASES EM DESTAQUE/);
 });
 
-test("renders the six selected project cards with title, repo identity, description and tags", () => {
+test("Outros laboratórios técnicos section exists with the expected heading", () => {
+  assert.match(html, /id="laboratorios"/);
+  assert.match(html, /06 — PROJETOS TÉCNICOS/);
+  assert.match(html, /Outros laboratórios técnicos/);
+});
+
+test("renders the two featured cases and the four other lab cards with title, repo identity and tags", () => {
   const titles = [
     "API Quality Engineering Lab",
     "SQL Quality Checker",
@@ -97,16 +102,31 @@ test("renders the six selected project cards with title, repo identity, descript
   }
 });
 
+test("each featured case links to its dedicated case page and to its exact GitHub repository", () => {
+  const cases = [
+    "expense-approval-quality-lab",
+    "quality-change-intelligence-lab",
+  ];
+  for (const slug of cases) {
+    assert.ok(
+      html.includes(`href="${basePath}/cases/${slug}/"`),
+      `expected a link to the dedicated case page for ${slug}`,
+    );
+    const repoPattern = new RegExp(
+      `href="https:\\/\\/github\\.com\\/jonasqasoftware\\/${slug}"[^>]*target="_blank"[^>]*rel="noreferrer"`,
+    );
+    assert.match(html, repoPattern, `expected a target=_blank rel=noreferrer link to ${slug}`);
+  }
+});
+
 test("does not reference the legacy reino-do-recurso-real-api identity anywhere", () => {
   assert.doesNotMatch(html, /reino-do-recurso-real-api/);
 });
 
-test("each selected project links to the exact GitHub repository with target=_blank and rel=noreferrer", () => {
+test("each other-lab project links to the exact GitHub repository with target=_blank and rel=noreferrer", () => {
   const repos = [
     "api-quality-engineering-lab",
     "sql-quality-checker",
-    "quality-change-intelligence-lab",
-    "expense-approval-quality-lab",
     "subscription-change-quality-lab",
     "inventory-reservation-quality-lab",
   ];
@@ -118,38 +138,99 @@ test("each selected project links to the exact GitHub repository with target=_bl
   }
 });
 
-test("Projetos selecionados section renders exactly six project cards and six project links", () => {
-  const sectionStart = html.indexOf('id="projetos"');
+test("Cases em destaque renders exactly two case cards", () => {
+  const sectionStart = html.indexOf('id="cases"');
+  const sectionEnd = html.indexOf('id="laboratorios"');
+  assert.ok(sectionStart > -1, "expected id=\"cases\" to be present");
+  assert.ok(sectionEnd > -1, "expected id=\"laboratorios\" to be present");
+  assert.ok(sectionStart < sectionEnd, "expected #cases to appear before #laboratorios");
+
+  const sectionHtml = html.slice(sectionStart, sectionEnd);
+  const cardMatches = sectionHtml.match(/class="case-card"/g) ?? [];
+  assert.equal(cardMatches.length, 2, "expected exactly two case-card elements in #cases");
+});
+
+test("Outros laboratórios técnicos renders exactly four project cards and four project links", () => {
+  const sectionStart = html.indexOf('id="laboratorios"');
   const sectionEnd = html.indexOf('id="aima"');
-  assert.ok(sectionStart > -1, "expected id=\"projetos\" to be present");
+  assert.ok(sectionStart > -1, "expected id=\"laboratorios\" to be present");
   assert.ok(sectionEnd > -1, "expected id=\"aima\" to be present");
-  assert.ok(sectionStart < sectionEnd, "expected #projetos to appear before #aima");
+  assert.ok(sectionStart < sectionEnd, "expected #laboratorios to appear before #aima");
 
   const sectionHtml = html.slice(sectionStart, sectionEnd);
 
   const cardMatches = sectionHtml.match(/class="expertise-card"/g) ?? [];
-  assert.equal(cardMatches.length, 6, "expected exactly six expertise-card elements in #projetos");
+  assert.equal(cardMatches.length, 4, "expected exactly four expertise-card elements in #laboratorios");
 
   const linkMatches = sectionHtml.match(/class="project-link"/g) ?? [];
-  assert.equal(linkMatches.length, 6, "expected exactly six project-link elements in #projetos");
+  assert.equal(linkMatches.length, 4, "expected exactly four project-link elements in #laboratorios");
 });
 
-test("Projetos selecionados appears after Competências and before AIMA 2.0 in the page flow", () => {
+test("Cases and Outros laboratórios appear after Competências and before AIMA 2.0 in the page flow", () => {
   const competenciasIndex = html.indexOf("Competências técnicas e estratégicas");
-  const projetosIndex = html.indexOf("Projetos selecionados");
+  const casesIndex = html.indexOf("id=\"cases\"");
+  const laboratoriosIndex = html.indexOf("id=\"laboratorios\"");
   const aimaIndex = html.indexOf(">Um projeto autoral que evidencia pensamento estratégico");
   assert.ok(competenciasIndex > -1, "expected the Competências section to be present");
-  assert.ok(projetosIndex > -1, "expected the Projetos selecionados section to be present");
+  assert.ok(casesIndex > -1, "expected the Cases em destaque section to be present");
+  assert.ok(laboratoriosIndex > -1, "expected the Outros laboratórios section to be present");
   assert.ok(aimaIndex > -1, "expected the AIMA section heading to be present");
-  assert.ok(competenciasIndex < projetosIndex, "expected Projetos to appear after Competências");
-  assert.ok(projetosIndex < aimaIndex, "expected Projetos to appear before AIMA 2.0");
+  assert.ok(competenciasIndex < casesIndex, "expected Cases to appear after Competências");
+  assert.ok(casesIndex < laboratoriosIndex, "expected Cases to appear before Outros laboratórios");
+  assert.ok(laboratoriosIndex < aimaIndex, "expected Outros laboratórios to appear before AIMA 2.0");
 });
 
-test("Formação and Contato section numbers were renumbered after inserting Projetos", () => {
-  assert.match(html, /05 — FORMAÇÃO/);
-  assert.match(html, /06 — CONTATO/);
+test("Autoria, Recomendações, Formação and Contato section numbers reflect the expanded editorial structure", () => {
+  assert.match(html, /07 — AUTORIA/);
+  assert.match(html, /08 — RECOMENDAÇÕES/);
+  assert.match(html, /09 — FORMAÇÃO/);
+  assert.match(html, /10 — CONTATO/);
 });
 
-test("AIMA section now uses the #aima anchor, freeing #projetos for the new section", () => {
+test("AIMA section still uses the #aima anchor", () => {
   assert.match(html, /id="aima"/);
+});
+
+test("Como penso Quality Engineering section renders all five principles between Sobre and Competências", () => {
+  assert.match(html, /id="como-penso"/);
+  assert.match(html, /03 — COMO PENSO QUALITY ENGINEERING/);
+  const principleTitles = [
+    "Risco antes de volume",
+    "Automação é uma decisão de engenharia",
+    "Quality Gates precisam de evidência",
+    "Qualidade vai além dos testes",
+    "IA precisa de controles técnicos",
+  ];
+  for (const title of principleTitles) {
+    assert.ok(html.includes(title), `expected principle "${title}" in exported HTML`);
+  }
+  const sobreIndex = html.indexOf('id="sobre"');
+  const comoPensoIndex = html.indexOf('id="como-penso"');
+  const competenciasIndex = html.indexOf('id="competencias"');
+  assert.ok(sobreIndex < comoPensoIndex, "expected Como penso to appear after Sobre");
+  assert.ok(comoPensoIndex < competenciasIndex, "expected Como penso to appear before Competências");
+});
+
+test("Autoria & Contribuições section links to the verified Thoughtworks article, AIMA and LinkedIn, and never mentions the unpublished book", () => {
+  assert.match(html, /id="autoria"/);
+  assert.match(
+    html,
+    /href="https:\/\/www\.thoughtworks\.com\/en-us\/insights\/blog\/aima-how-increase-performance-qa-analysts-through-indicators"[^>]*target="_blank"[^>]*rel="noreferrer"/,
+  );
+  assert.doesNotMatch(html, /Introdução à Inteligência Artificial nos Testes de Software/);
+});
+
+test("Recomendações section renders exactly three testimonials without ratings or stars, and links to LinkedIn recommendations", () => {
+  assert.match(html, /id="recomendacoes"/);
+  const names = ["Ellen Aquino", "Eros Luiz Garzuzi da Costa", "Thaís Ambrósio"];
+  for (const name of names) {
+    assert.ok(html.includes(name), `expected testimonial author "${name}" in exported HTML`);
+  }
+  const cardMatches = html.match(/class="expertise-card testimonial-card"/g) ?? [];
+  assert.equal(cardMatches.length, 3, "expected exactly three testimonial cards");
+  assert.doesNotMatch(html, /★/);
+  assert.match(
+    html,
+    /href="https:\/\/www\.linkedin\.com\/in\/jonasdavila\/details\/recommendations\/\?detailScreenTabIndex=0"/,
+  );
 });

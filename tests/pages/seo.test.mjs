@@ -99,9 +99,13 @@ test("robots.txt allows public crawling and points to the correct sitemap", () =
   assert.match(robotsTxt, /Sitemap:\s*https:\/\/jonasdavila\.com\.br\/sitemap\.xml/);
 });
 
-test("sitemap.xml contains only the canonical homepage URL (no anchors, no extra pages)", () => {
+test("sitemap.xml contains only the homepage and the two dedicated case pages (no anchors, no unknown extra pages)", () => {
   const locs = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.deepEqual(locs, ["https://jonasdavila.com.br/"]);
+  assert.deepEqual(locs, [
+    "https://jonasdavila.com.br/",
+    "https://jonasdavila.com.br/cases/expense-approval-quality-lab/",
+    "https://jonasdavila.com.br/cases/quality-change-intelligence-lab/",
+  ]);
   assert.doesNotMatch(sitemapXml, /#/, "sitemap must not contain in-page anchors");
 });
 

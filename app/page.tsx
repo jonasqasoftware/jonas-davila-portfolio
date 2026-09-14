@@ -56,12 +56,41 @@ const experience = [
   },
 ];
 
+const principles = [
+  ["01", "Risco antes de volume", "Cobertura não deve ser medida apenas pela quantidade de testes. O objetivo é aumentar a informação sobre os riscos que realmente importam."],
+  ["02", "Automação é uma decisão de engenharia", "Automatizo quando feedback, repetibilidade, criticidade e custo de manutenção justificam o investimento — não defendo automatizar tudo."],
+  ["03", "Quality Gates precisam de evidência", "Pipeline verde não significa, por si só, produto confiável. Gates devem refletir risco, evidência, contexto e critérios de qualidade."],
+  ["04", "Qualidade vai além dos testes", "Inclui arquitetura, observabilidade, segurança, performance, acessibilidade, processos e experiência do usuário."],
+  ["05", "IA precisa de controles técnicos", "Prompts não substituem permissões, isolamento, validação, quality gates, observabilidade e aprovação humana quando necessária."],
+];
+
 const competencies = [
   ["01", "Estratégia de qualidade", "Quality Engineering, Test Strategy, Risk-Based Testing, planejamento, cobertura, métricas e melhoria contínua."],
   ["02", "Automação", "Cypress, Playwright, Selenium, Jest, JUnit, Cucumber, BDD, Appium e Percy."],
   ["03", "APIs e testes não funcionais", "REST, Postman, Insomnia, SoapUI, contrato, integração, JMeter, K6, performance, carga, segurança e OWASP."],
   ["04", "Engenharia e entrega", "JavaScript, TypeScript, Java, Python, CI/CD, GitHub Actions, Jenkins, Git, React, Node.js, PostgreSQL e PowerShell."],
   ["05", "Liderança e colaboração", "Mentoria, facilitação, stakeholders, chapters, comunidades de prática, Scrum e qualidade orientada ao negócio."],
+];
+
+const cases = [
+  {
+    slug: "expense-approval-quality-lab",
+    title: "Expense Approval Quality Lab",
+    summary:
+      "Estratégia de testes orientada a risco para um fluxo de aprovação de despesas: quem pode decidir uma despesa e o que acontece quando alguém tenta violar as regras de autorização ou de estado.",
+    tags: ["Playwright", "TypeScript", "E2E", "API Testing", "Risk-Based Testing"],
+    repo: "expense-approval-quality-lab",
+    url: "https://github.com/jonasqasoftware/expense-approval-quality-lab",
+  },
+  {
+    slug: "quality-change-intelligence-lab",
+    title: "Quality Change Intelligence Lab",
+    summary:
+      "Quando não é possível executar tudo, Quality Engineering precisa decidir o que verificar primeiro — e tornar explícito o risco que permanece fora da execução.",
+    tags: ["Go", "Risk-Based Testing", "Test Strategy", "GitHub Actions"],
+    repo: "quality-change-intelligence-lab",
+    url: "https://github.com/jonasqasoftware/quality-change-intelligence-lab",
+  },
 ];
 
 const projects = [
@@ -82,22 +111,6 @@ const projects = [
     url: "https://github.com/jonasqasoftware/sql-quality-checker",
   },
   {
-    title: "Quality Change Intelligence Lab",
-    repo: "quality-change-intelligence-lab",
-    description:
-      "Ferramenta determinística em Go para priorizar verificações sob restrição de tempo, maximizando a cobertura de risco disponível e tornando explícitos os testes selecionados, os não selecionados e o risco residual.",
-    tags: ["Go", "Risk-Based Testing", "Test Strategy", "GitHub Actions"],
-    url: "https://github.com/jonasqasoftware/quality-change-intelligence-lab",
-  },
-  {
-    title: "Expense Approval Quality Lab",
-    repo: "expense-approval-quality-lab",
-    description:
-      "Laboratório com Playwright + TypeScript que combina testes E2E e API orientados a risco em um fluxo de aprovação de despesas, cobrindo papéis, autorização e transições de estado.",
-    tags: ["Playwright", "TypeScript", "E2E", "API Testing", "Risk-Based Testing"],
-    url: "https://github.com/jonasqasoftware/expense-approval-quality-lab",
-  },
-  {
     title: "Subscription Change Quality Lab",
     repo: "subscription-change-quality-lab",
     description:
@@ -112,6 +125,54 @@ const projects = [
       "Laboratório com Selenium 4 + Java + JUnit 5 para reserva e cancelamento de estoque, usando Page Objects, Page Components, waits explícitos e CI.",
     tags: ["Selenium 4", "Java", "JUnit 5", "Page Objects", "CI/CD"],
     url: "https://github.com/jonasqasoftware/inventory-reservation-quality-lab",
+  },
+];
+
+const authorship = [
+  {
+    label: "ARTIGO ORIGINAL",
+    title: "AIMA: How to increase the performance of QA Analysts through indicators",
+    text: "Artigo original publicado no blog da Thoughtworks (dezembro de 2020), com a versão inicial do pensamento por trás do AIMA.",
+    href: "https://www.thoughtworks.com/en-us/insights/blog/aima-how-increase-performance-qa-analysts-through-indicators",
+    cta: "Ler no Thoughtworks",
+    external: true,
+  },
+  {
+    label: "PROJETO AUTORAL",
+    title: "AIMA 2.0",
+    text: "Evolução do AIMA original: 20 frameworks e 28 conceitos sobre Quality Engineering, indicadores e IA aplicada à qualidade.",
+    href: "#aima",
+    cta: "Ver seção do AIMA 2.0",
+    external: false,
+  },
+  {
+    label: "LINKEDIN",
+    title: "Publicações sobre Quality Engineering",
+    text: "Reflexões e conteúdo técnico sobre risco, automação, IA aplicada à qualidade e confiabilidade de produtos.",
+    href: "https://www.linkedin.com/in/jonasdavila/",
+    cta: "Ver publicações no LinkedIn",
+    external: true,
+  },
+];
+
+const testimonials = [
+  {
+    name: "Ellen Aquino",
+    relation: "Liderança direta · colaboração profissional",
+    quote:
+      "O Jonas tem uma maneira muito própria de olhar para a qualidade de software. Seu trabalho traz uma entrega consistente, mas também abre espaço para outras camadas — criatividade e experimentação.",
+  },
+  {
+    name: "Eros Luiz Garzuzi da Costa",
+    relation: "QA Engineer · colega de equipe na HostGator",
+    quote:
+      "Junto com o Jonas conseguimos arquitetar e estruturar o projeto de automação utilizando o Cypress. Aprendi muito com o Jonas na parte de padronização e boas práticas.",
+  },
+  {
+    name: "Thaís Ambrósio",
+    relation: "QA Engineer · mentorada por Jonas",
+    quote:
+      "Jonas é um mentor excepcional na área de testes de software. Sua capacidade de transmitir esse conhecimento de forma clara e eficaz é verdadeiramente admirável.",
   },
 ];
 
@@ -207,9 +268,29 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="section shell" id="como-penso">
+          <div className="section-heading">
+            <div><p className="section-number">03 — COMO PENSO QUALITY ENGINEERING</p><h2>Princípios que orientam minhas decisões de qualidade.</h2></div>
+            <p>Antes da execução, uma forma de pensar que atravessa todos os projetos abaixo.</p>
+          </div>
+          <p className="risk-flow">
+            <span>Risco</span><i aria-hidden="true">→</i>
+            <span>Evidência</span><i aria-hidden="true">→</i>
+            <span>Decisão</span><i aria-hidden="true">→</i>
+            <span>Confiança</span>
+          </p>
+          <div className="expertise-grid">
+            {principles.map(([number, title, text]) => (
+              <article className="expertise-card" key={number}>
+                <span className="card-index">{number}</span><h3>{title}</h3><p>{text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="section shell" id="competencias">
           <div className="section-heading">
-            <div><p className="section-number">03 — COMPETÊNCIAS</p><h2>Competências técnicas e estratégicas</h2></div>
+            <div><p className="section-number">04 — COMPETÊNCIAS</p><h2>Competências técnicas e estratégicas</h2></div>
             <p>Da estratégia de qualidade à execução técnica, organizadas como empresas costumam avaliar.</p>
           </div>
           <div className="expertise-grid">
@@ -221,10 +302,42 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section shell" id="projetos">
+        <section className="section shell" id="cases">
           <div className="section-heading">
-            <div><p className="section-number">04 — PROJETOS</p><h2>Projetos selecionados</h2></div>
-            <p>Projetos públicos que demonstram decisões de engenharia, estratégia de qualidade e aplicação prática de técnicas de Quality Engineering.</p>
+            <div><p className="section-number">05 — CASES EM DESTAQUE</p><h2>Estratégia de qualidade aplicada, não apenas automação</h2></div>
+            <p>Dois laboratórios públicos aprofundados como estudo de caso: problema, risco, estratégia e decisões de engenharia.</p>
+          </div>
+          <div className="case-grid">
+            {cases.map(({ slug, title, summary, tags, repo, url }, index) => (
+              <article className="case-card" key={slug}>
+                <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
+                <h3>{title}</h3>
+                <p className="project-repo">{repo}</p>
+                <p>{summary}</p>
+                <div className="project-tags">
+                  {tags.map((tag) => <span key={tag}>{tag}</span>)}
+                </div>
+                <div className="case-actions">
+                  <a className="project-link" href={`${basePath}/cases/${slug}/`}>
+                    Explorar case <span aria-hidden="true">{"→"}</span>
+                  </a>
+                  <a className="project-link" href={url} target="_blank" rel="noreferrer">
+                    Ver código <span aria-hidden="true">{"↗︎"}</span>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section shell" id="laboratorios">
+          <div className="section-heading">
+            <div><p className="section-number">06 — PROJETOS TÉCNICOS</p><h2>Outros laboratórios técnicos</h2></div>
+            <p>
+              Demais laboratórios públicos de Quality Engineering. Os cases Expense Approval Quality Lab e
+              Quality Change Intelligence Lab estão aprofundados na seção{" "}
+              <a href="#cases">Cases em destaque</a>.
+            </p>
           </div>
           <div className="expertise-grid">
             {projects.map(({ title, repo, description, tags, url }, index) => (
@@ -277,9 +390,58 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="section shell" id="autoria">
+          <div className="section-heading">
+            <div><p className="section-number">07 — AUTORIA &amp; CONTRIBUIÇÕES</p><h2>Produção intelectual sobre Quality Engineering</h2></div>
+            <p>Pesquisa e escrita publicadas que sustentam a prática — não apenas execução de testes.</p>
+          </div>
+          <div className="expertise-grid">
+            {authorship.map(({ label, title, text, href, cta, external }) => (
+              <article className="expertise-card" key={title}>
+                <p className="project-repo">{label}</p>
+                <h3>{title}</h3>
+                <p>{text}</p>
+                {external ? (
+                  <a className="project-link" href={href} target="_blank" rel="noreferrer">
+                    {cta} <span aria-hidden="true">{"↗︎"}</span>
+                  </a>
+                ) : (
+                  <a className="project-link" href={href}>{cta}</a>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section shell" id="recomendacoes">
+          <div className="section-heading">
+            <div><p className="section-number">08 — RECOMENDAÇÕES</p><h2>O que dizem sobre trabalhar comigo</h2></div>
+            <p>
+              Qualidade também é construída nas relações de trabalho. Alguns relatos de pessoas com quem
+              colaborei, construí soluções e compartilhei conhecimento ao longo da minha trajetória.
+            </p>
+          </div>
+          <div className="expertise-grid">
+            {testimonials.map(({ name, relation, quote }) => (
+              <figure className="expertise-card testimonial-card" key={name}>
+                <blockquote><p>&ldquo;{quote}&rdquo;</p></blockquote>
+                <figcaption><strong>{name}</strong><span>{relation}</span></figcaption>
+              </figure>
+            ))}
+          </div>
+          <a
+            className="project-link testimonials-cta"
+            href="https://www.linkedin.com/in/jonasdavila/details/recommendations/?detailScreenTabIndex=0"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Ver recomendações no LinkedIn <span aria-hidden="true">{"↗︎"}</span>
+          </a>
+        </section>
+
         <section className="section shell" id="formacao">
           <div className="section-heading">
-            <div><p className="section-number">05 — FORMAÇÃO</p><h2>Formação e evolução contínua</h2></div>
+            <div><p className="section-number">09 — FORMAÇÃO</p><h2>Formação e evolução contínua</h2></div>
             <p>Atualização constante alinhada à próxima evolução da Engenharia de Qualidade.</p>
           </div>
           <div className="ia-credentials" aria-label="Formação acadêmica e estudos contínuos">
@@ -292,7 +454,7 @@ export default function Home() {
         <section className="contact section" id="contato">
           <div className="shell contact-grid">
             <div>
-              <p className="section-number light">06 — CONTATO</p>
+              <p className="section-number light">10 — CONTATO</p>
               <h2>Procurando experiência sênior em Qualidade de Software?</h2>
               <p>
                 Estou aberto a oportunidades como Senior QA Engineer, Quality Engineer, QA Automation Engineer

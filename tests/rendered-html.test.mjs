@@ -126,18 +126,21 @@ test("presents professional experience before the AIMA project in the page flow"
   assert.ok(experienceIndex < aimaIndex, "expected professional experience to appear before AIMA 2.0");
 });
 
-test("presents Projetos selecionados between Competências and AIMA in the page flow", () => {
+test("presents Cases em destaque and Outros laboratórios between Competências and AIMA in the page flow", () => {
   const competenciasIndex = html.indexOf("Competências técnicas e estratégicas");
-  const projetosIndex = html.indexOf("Projetos selecionados");
+  const casesIndex = html.indexOf("id=\"cases\"");
+  const laboratoriosIndex = html.indexOf("id=\"laboratorios\"");
   const aimaIndex = html.indexOf("AIMA 2.0");
   assert.ok(competenciasIndex > -1, "expected the Competências section to be present");
-  assert.ok(projetosIndex > -1, "expected the Projetos selecionados section to be present");
+  assert.ok(casesIndex > -1, "expected the Cases em destaque section to be present");
+  assert.ok(laboratoriosIndex > -1, "expected the Outros laboratórios section to be present");
   assert.ok(aimaIndex > -1, "expected an AIMA 2.0 mention to be present");
-  assert.ok(competenciasIndex < projetosIndex, "expected Projetos to appear after Competências");
-  assert.ok(projetosIndex < aimaIndex, "expected Projetos to appear before AIMA 2.0");
+  assert.ok(competenciasIndex < casesIndex, "expected Cases to appear after Competências");
+  assert.ok(casesIndex < laboratoriosIndex, "expected Cases to appear before Outros laboratórios");
+  assert.ok(laboratoriosIndex < aimaIndex, "expected Outros laboratórios to appear before AIMA 2.0");
 });
 
-test("renders the six selected projects and drops the legacy reino-do-recurso-real-api identity", () => {
+test("renders the two featured cases plus the four other labs and drops the legacy reino-do-recurso-real-api identity", () => {
   const titles = [
     "API Quality Engineering Lab",
     "SQL Quality Checker",
@@ -150,6 +153,13 @@ test("renders the six selected projects and drops the legacy reino-do-recurso-re
     assert.ok(html.includes(title), `expected project title "${title}" in rendered HTML`);
   }
   assert.doesNotMatch(html, /reino-do-recurso-real-api/);
+});
+
+test("mentions Como penso Quality Engineering, Autoria & Contribuições and Recomendações", () => {
+  assert.match(html, /COMO PENSO QUALITY ENGINEERING/);
+  assert.match(html, /AUTORIA/);
+  assert.match(html, /RECOMENDAÇÕES/);
+  assert.doesNotMatch(html, /Introdução à Inteligência Artificial nos Testes de Software/);
 });
 
 test("links to LinkedIn, GitHub and AIMA", () => {
