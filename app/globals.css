@@ -136,6 +136,7 @@ h2 { margin:0; font-size:var(--text-4xl); line-height:1.04; letter-spacing:-.05e
 #laboratorios .expertise-card .project-link{margin-top:auto}
 #autoria .expertise-card h3{margin-top:0}
 #autoria .expertise-card .project-link{margin-top:auto}
+#como-penso .expertise-card h3{margin-top:0}
 
 @media (min-width: 901px) {
   #experiencia .experience-meta {
@@ -146,6 +147,13 @@ h2 { margin:0; font-size:var(--text-4xl); line-height:1.04; letter-spacing:-.05e
   #competencias .expertise-card h3 {
     min-height: 3em;
   }
+
+  #como-penso .expertise-grid { grid-template-columns: repeat(6, 1fr); border-left: none; }
+  #como-penso .expertise-card:nth-child(1) { grid-column: 1 / span 2; border-left: var(--border-w) solid var(--hairline); }
+  #como-penso .expertise-card:nth-child(2) { grid-column: 3 / span 2; }
+  #como-penso .expertise-card:nth-child(3) { grid-column: 5 / span 2; }
+  #como-penso .expertise-card:nth-child(4) { grid-column: 2 / span 2; border-left: var(--border-w) solid var(--hairline); }
+  #como-penso .expertise-card:nth-child(5) { grid-column: 4 / span 2; }
 }
 
 .card-index { display:inline-flex; align-items:center; justify-content:center; align-self:flex-start; width:max-content; flex:0 0 auto; min-width:30px; height:22px; padding:0 8px; background:var(--gold); color:var(--ink); font:600 var(--text-sm)/1 var(--font-mono); }
