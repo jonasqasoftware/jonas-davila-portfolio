@@ -153,14 +153,17 @@ test(
       await acceptConsent(page, gaRequests);
       assert.equal(gaRequests.length, 1, "expected exactly one request to load gtag.js");
 
-      const consentCall = await page.evaluate(() =>
-        window.dataLayer.find((entry) => entry[0] === "consent"),
+      // The tag receives a "default" call (denied, set at bootstrap) followed by an explicit
+      // "update" call once consent is granted — check the resulting effective state, not the first call.
+      const consentCalls = await page.evaluate(() =>
+        window.dataLayer.filter((entry) => entry[0] === "consent"),
       );
-      assert.ok(consentCall, "expected a gtag('consent', ...) call");
-      assert.equal(consentCall[2].analytics_storage, "granted");
-      assert.equal(consentCall[2].ad_storage, "denied");
-      assert.equal(consentCall[2].ad_user_data, "denied");
-      assert.equal(consentCall[2].ad_personalization, "denied");
+      assert.ok(consentCalls.length >= 1, "expected at least one gtag('consent', ...) call");
+      const effectiveConsent = consentCalls.at(-1);
+      assert.equal(effectiveConsent[2].analytics_storage, "granted");
+      assert.equal(effectiveConsent[2].ad_storage, "denied");
+      assert.equal(effectiveConsent[2].ad_user_data, "denied");
+      assert.equal(effectiveConsent[2].ad_personalization, "denied");
     });
   },
 );
@@ -283,6 +286,121 @@ test("consent preference can be changed later via the reopen control", { skip: !
     assert.equal(gaRequests.length, 1, "expected GA4 to load once the preference was changed to accept");
   });
 });
+
+async function withdrawConsent(page) {
+  await page.click("button:has-text('Preferências de privacidade')");
+  await page.click("button:has-text('Rejeitar')");
+}
+
+test(
+  "withdrawing consent after accepting sends an explicit consent update to the already-loaded tag and stops forwarding new events",
+  { skip: !measurementId },
+  async () => {
+    await withPage(async (page, gaRequests) => {
+      await acceptConsent(page, gaRequests);
+
+      const initialConsentCalls = await page.evaluate(() =>
+        window.dataLayer.filter((entry) => entry[0] === "consent"),
+      );
+      assert.ok(initialConsentCalls.length >= 1, "expected the tag to have received at least one consent call on load");
+
+      await withdrawConsent(page);
+
+      const storedConsent = await page.evaluate(() => window.localStorage.getItem("ga-consent"));
+      assert.equal(storedConsent, "denied", "expected the withdrawal to persist as denied");
+
+      const updateCalls = await page.evaluate(() =>
+        window.dataLayer.filter((entry) => entry[0] === "consent" && entry[1] === "update"),
+      );
+      assert.ok(
+        updateCalls.length >= 1,
+        "expected an explicit gtag('consent', 'update', ...) call to the already-loaded tag after withdrawal",
+      );
+      assert.equal(updateCalls.at(-1)[2].analytics_storage, "denied");
+
+      await page.evaluate(() => {
+        window.dataLayer.length = 0;
+      });
+      await fireGaEvent(page, '[data-ga-event="cv_download"]');
+      const eventsAfterWithdrawal = await page.evaluate(() =>
+        window.dataLayer.filter((entry) => entry[0] === "event"),
+      );
+      assert.equal(
+        eventsAfterWithdrawal.length,
+        0,
+        "expected no custom events to be forwarded after consent withdrawal, even though window.gtag still exists",
+      );
+    });
+  },
+);
+
+test(
+  "a reload after withdrawing consent does not reactivate analytics",
+  { skip: !measurementId },
+  async () => {
+    await withPage(async (page, gaRequests) => {
+      await acceptConsent(page, gaRequests);
+      await withdrawConsent(page);
+      assert.equal(gaRequests.length, 1, "sanity: exactly one gtag.js request before the reload");
+
+      await page.reload({ waitUntil: "load" });
+      await page.waitForTimeout(300);
+
+      assert.equal(gaRequests.length, 1, "expected no additional gtag.js request after reloading with denied consent");
+      const gtagType = await page.evaluate(() => typeof window.gtag);
+      assert.equal(gtagType, "undefined", "expected GA4 to remain unloaded on a fresh page instance with denied consent");
+
+      const bannerVisible = await page.evaluate(() => Boolean(document.querySelector(".consent-banner")));
+      assert.equal(bannerVisible, false, "expected no banner to reappear — a decision was already made");
+
+      await fireGaEvent(page, '[data-ga-event="cv_download"]');
+      const gtagTypeAfterClick = await page.evaluate(() => typeof window.gtag);
+      assert.equal(gtagTypeAfterClick, "undefined", "expected the click to have no tracking side effect at all");
+    });
+  },
+);
+
+test(
+  "the visitor can grant consent again after withdrawing it, and tracking resumes",
+  { skip: !measurementId },
+  async () => {
+    await withPage(async (page, gaRequests) => {
+      await acceptConsent(page, gaRequests);
+      await withdrawConsent(page);
+
+      await page.click("button:has-text('Preferências de privacidade')");
+      await page.click("button:has-text('Aceitar')");
+      await page.waitForFunction(() => typeof window.gtag === "function");
+
+      const updateCalls = await page.evaluate(() =>
+        window.dataLayer.filter((entry) => entry[0] === "consent" && entry[1] === "update"),
+      );
+      assert.ok(updateCalls.length >= 1, "expected an explicit re-grant consent update");
+      assert.equal(updateCalls.at(-1)[2].analytics_storage, "granted");
+
+      await page.evaluate(() => {
+        window.dataLayer.length = 0;
+      });
+      await fireGaEvent(page, '[data-ga-event="cv_download"]');
+      const events = await page.evaluate(() => window.dataLayer.filter((entry) => entry[0] === "event"));
+      assert.equal(events.length, 1, "expected tracking to resume after re-granting consent");
+    });
+  },
+);
+
+test(
+  "rejecting on first visit (no prior accept) blocks all custom events, covered separately from withdrawal",
+  { skip: !measurementId },
+  async () => {
+    await withPage(async (page, gaRequests) => {
+      await page.click("button:has-text('Rejeitar')");
+      await fireGaEvent(page, '[data-ga-event="cv_download"]');
+      const gtagType = await page.evaluate(() => typeof window.gtag);
+      assert.equal(gtagType, "undefined");
+      assert.equal(gaRequests.length, 0);
+    });
+  },
+);
 
 test(
   "CV download click emits exactly one cv_download event with only the controlled placement parameter",

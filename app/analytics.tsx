@@ -47,7 +47,9 @@ function commitConsent(value: Consent) {
   consentListeners.forEach((listener) => listener());
 }
 
-function loadGtag(measurementId: string) {
+/** One-time bootstrap: creates dataLayer/gtag and loads the script, defaulting to denied.
+ * Idempotent — safe to call again after a withdraw/re-grant cycle. */
+function ensureGtagLoaded(measurementId: string) {
   if (document.getElementById("ga4-script")) return;
 
   window.dataLayer = window.dataLayer || [];
@@ -61,7 +63,7 @@ function loadGtag(measurementId: string) {
     ad_storage: "denied",
     ad_user_data: "denied",
     ad_personalization: "denied",
-    analytics_storage: "granted",
+    analytics_storage: "denied",
   });
   gtag("config", measurementId, { anonymize_ip: true });
 
@@ -72,8 +74,40 @@ function loadGtag(measurementId: string) {
   document.head.appendChild(script);
 }
 
-/** Only sends when GA4 was loaded (i.e. consent granted) — silently no-ops otherwise. */
+/** The documented mechanism for telling an already-loaded tag that consent changed —
+ * https://developers.google.com/tag-platform/security/guides/consent#update_consent_state.
+ * In Basic Consent Mode (used here, no wait_for_update/redaction), a "denied" update stops the
+ * tag from sending any further pings — no page reload needed to reach the uninstrumented state. */
+function updateGtagConsent(state: "granted" | "denied") {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("consent", "update", {
+    analytics_storage: state,
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  });
+}
+
+/** Best-effort removal of the first-party cookies gtag.js set while consent was granted.
+ * This only clears what this browser can still reach client-side — it makes no claim about
+ * data already transmitted to Google before withdrawal. */
+function clearAnalyticsCookies() {
+  try {
+    for (const cookie of document.cookie.split(";")) {
+      const name = cookie.split("=")[0]?.trim();
+      if (name && /^_ga/.test(name)) {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      }
+    }
+  } catch {
+    // Cookie access blocked (e.g. browser privacy settings) — nothing to clear client-side.
+  }
+}
+
+/** Gated on the current consent state, not merely window.gtag's existence — an already-loaded
+ * tag must stop forwarding events the moment consent is withdrawn, even mid-session. */
 function trackEvent(name: string, params: Record<string, string>) {
+  if (cachedConsent !== "granted") return;
   if (typeof window.gtag !== "function") return;
   window.gtag("event", name, params);
 }
@@ -97,8 +131,14 @@ export default function Analytics({ measurementId }: { measurementId: string }) 
   }, [measurementId]);
 
   useEffect(() => {
-    if (!measurementId || consent !== "granted") return;
-    loadGtag(measurementId);
+    if (!measurementId) return;
+    if (consent === "granted") {
+      ensureGtagLoaded(measurementId);
+      updateGtagConsent("granted");
+    } else if (consent === "denied") {
+      updateGtagConsent("denied");
+      clearAnalyticsCookies();
+    }
   }, [measurementId, consent]);
 
   useEffect(() => {
