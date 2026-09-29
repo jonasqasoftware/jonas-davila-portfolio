@@ -293,6 +293,68 @@ async function withdrawConsent(page) {
 }
 
 test(
+  "withdrawing consent activates Google's documented ga-disable opt-out flag for the configured measurement id " +
+    "(never a hardcoded one), and re-accepting deactivates it",
+  { skip: !measurementId },
+  async () => {
+    await withPage(async (page, gaRequests) => {
+      await acceptConsent(page, gaRequests);
+      const flagAfterAccept = await page.evaluate((id) => window[`ga-disable-${id}`], measurementId);
+      assert.equal(flagAfterAccept, false, "expected the opt-out flag explicitly off while consent is granted");
+
+      await withdrawConsent(page);
+      const flagAfterWithdraw = await page.evaluate((id) => window[`ga-disable-${id}`], measurementId);
+      assert.equal(flagAfterWithdraw, true, "expected the documented ga-disable flag to activate on withdrawal");
+
+      await page.click("button:has-text('Preferências de privacidade')");
+      await page.click("button:has-text('Aceitar')");
+      await page.waitForFunction((id) => window[`ga-disable-${id}`] === false, measurementId);
+      const flagAfterReaccept = await page.evaluate((id) => window[`ga-disable-${id}`], measurementId);
+      assert.equal(flagAfterReaccept, false, "expected the opt-out flag deactivated after granting consent again");
+    });
+  },
+);
+
+test(
+  "gtag('config', ...) is only ever queued once consent is already granted, and is never duplicated across a withdraw/re-accept cycle",
+  { skip: !measurementId },
+  async () => {
+    await withPage(async (page, gaRequests) => {
+      await acceptConsent(page, gaRequests);
+
+      const order = await page.evaluate(() => {
+        const configIndex = window.dataLayer.findIndex((entry) => entry[0] === "config");
+        const grantedUpdateIndex = window.dataLayer.findIndex(
+          (entry) => entry[0] === "consent" && entry[1] === "update" && entry[2]?.analytics_storage === "granted",
+        );
+        return { configIndex, grantedUpdateIndex };
+      });
+      assert.notEqual(order.configIndex, -1, "expected a gtag('config', ...) call once consent was granted");
+      assert.notEqual(order.grantedUpdateIndex, -1, "expected an explicit consent 'update' call granting analytics_storage");
+      assert.ok(
+        order.grantedUpdateIndex < order.configIndex,
+        "expected the consent 'update' (granted) to be queued before 'config', so gtag.js never evaluates " +
+          "config's automatic hit while still in the default-denied state — per the Basic Consent Mode contract",
+      );
+
+      await withdrawConsent(page);
+      await page.click("button:has-text('Preferências de privacidade')");
+      await page.click("button:has-text('Aceitar')");
+      await page.waitForFunction(() => typeof window.gtag === "function");
+
+      const configCallsTotal = await page.evaluate(
+        () => window.dataLayer.filter((entry) => entry[0] === "config").length,
+      );
+      assert.equal(
+        configCallsTotal,
+        1,
+        "expected exactly one gtag('config', ...) call across the whole session, even after a withdraw/re-accept cycle",
+      );
+    });
+  },
+);
+
+test(
   "withdrawing consent after accepting sends an explicit consent update to the already-loaded tag and stops forwarding new events",
   { skip: !measurementId },
   async () => {

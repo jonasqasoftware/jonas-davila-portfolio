@@ -47,10 +47,14 @@ function commitConsent(value: Consent) {
   consentListeners.forEach((listener) => listener());
 }
 
-/** One-time bootstrap: creates dataLayer/gtag and loads the script, defaulting to denied.
- * Idempotent — safe to call again after a withdraw/re-grant cycle. */
-function ensureGtagLoaded(measurementId: string) {
-  if (document.getElementById("ga4-script")) return;
+/** One-time bootstrap: creates dataLayer/gtag, sets the default (denied) consent state, and
+ * loads the script. Deliberately does NOT call gtag('config', ...) — that only happens once
+ * consent has actually been granted (see the effect below), otherwise gtag.js would evaluate
+ * config's automatic hit while still in the default-denied state and silently drop it.
+ * Idempotent — safe to call again after a withdraw/re-grant cycle; returns whether this call
+ * performed the bootstrap, so the caller knows whether config still needs to be queued. */
+function ensureGtagLoaded(measurementId: string): boolean {
+  if (document.getElementById("ga4-script")) return false;
 
   window.dataLayer = window.dataLayer || [];
   function gtag(...args: unknown[]) {
@@ -65,19 +69,32 @@ function ensureGtagLoaded(measurementId: string) {
     ad_personalization: "denied",
     analytics_storage: "denied",
   });
-  gtag("config", measurementId, { anonymize_ip: true });
 
   const script = document.createElement("script");
   script.id = "ga4-script";
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
   document.head.appendChild(script);
+
+  return true;
 }
 
-/** The documented mechanism for telling an already-loaded tag that consent changed —
+/** Queues gtag('config', ...) — only ever called once, right after the first grant, never on a
+ * later re-grant (that would duplicate tag initialization / resend the session's page_view). */
+function configureGtag(measurementId: string) {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("config", measurementId, { anonymize_ip: true });
+}
+
+/**
+ * Sends Consent Mode's documented "update" command to the tag —
  * https://developers.google.com/tag-platform/security/guides/consent#update_consent_state.
- * In Basic Consent Mode (used here, no wait_for_update/redaction), a "denied" update stops the
- * tag from sending any further pings — no page reload needed to reach the uninstrumented state. */
+ * This instructs the tag to stop/resume sending Google-service pings; it is not independently
+ * verified here (our tests stub gtag.js entirely, so they verify that OUR code issues the right
+ * calls with the right arguments — not Google's real server-side or script-internal behavior).
+ * As defense-in-depth, withdrawal also sets gtag.js's own documented opt-out flag below, since
+ * Google notes a denied consent state does not by itself guarantee zero transmission in every
+ * configuration (e.g. cookieless pings in advanced/modeled setups). */
 function updateGtagConsent(state: "granted" | "denied") {
   if (typeof window.gtag !== "function") return;
   window.gtag("consent", "update", {
@@ -86,6 +103,15 @@ function updateGtagConsent(state: "granted" | "denied") {
     ad_user_data: "denied",
     ad_personalization: "denied",
   });
+}
+
+/** Google's documented per-property opt-out flag —
+ * https://developers.google.com/analytics/devguides/collection/gtagjs/user-opt-out —
+ * keyed by the actual configured measurement ID (never hardcoded), so gtag.js refuses to send
+ * data for this property regardless of consent-state nuances. Belt-and-suspenders alongside the
+ * consent update above, not a replacement for it. */
+function setGaDisableFlag(measurementId: string, disabled: boolean) {
+  (window as unknown as Record<string, boolean>)[`ga-disable-${measurementId}`] = disabled;
 }
 
 /** Best-effort removal of the first-party cookies gtag.js set while consent was granted.
@@ -133,9 +159,14 @@ export default function Analytics({ measurementId }: { measurementId: string }) 
   useEffect(() => {
     if (!measurementId) return;
     if (consent === "granted") {
-      ensureGtagLoaded(measurementId);
+      setGaDisableFlag(measurementId, false);
+      const justBootstrapped = ensureGtagLoaded(measurementId);
       updateGtagConsent("granted");
+      // Queued strictly after the "granted" update above, and only once ever, so gtag.js never
+      // evaluates config's automatic hit while still in the default-denied state.
+      if (justBootstrapped) configureGtag(measurementId);
     } else if (consent === "denied") {
+      setGaDisableFlag(measurementId, true);
       updateGtagConsent("denied");
       clearAnalyticsCookies();
     }
