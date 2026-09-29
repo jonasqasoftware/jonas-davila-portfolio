@@ -30,9 +30,9 @@ for (const { slug, repo, title } of cases) {
       assert.match(html, new RegExp(`<h1[^>]*>${title}</h1>`));
     });
 
-    test("declares pt-BR and a canonical URL for the case page", () => {
+    test("declares pt-BR and a canonical URL for the case page that exactly matches the sitemap (trailing slash included)", () => {
       assert.match(html, /<html[^>]+lang="pt-BR"/);
-      assert.match(html, new RegExp(`<link rel="canonical" href="https:\\/\\/jonasdavila\\.com\\.br\\/cases\\/${slug}\\/?"`));
+      assert.match(html, new RegExp(`<link rel="canonical" href="https:\\/\\/jonasdavila\\.com\\.br\\/cases\\/${slug}\\/"`));
     });
 
     test("links back to the portfolio and to the exact GitHub repository", () => {

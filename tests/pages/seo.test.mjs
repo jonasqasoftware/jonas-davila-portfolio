@@ -8,12 +8,16 @@ let html;
 let manifestJson;
 let robotsTxt;
 let sitemapXml;
+let expenseApprovalHtml;
+let qualityChangeHtml;
 
 before(async () => {
   html = await readFile(new URL("index.html", outDir), "utf8");
   manifestJson = JSON.parse(await readFile(new URL("manifest.webmanifest", outDir), "utf8"));
   robotsTxt = await readFile(new URL("robots.txt", outDir), "utf8");
   sitemapXml = await readFile(new URL("sitemap.xml", outDir), "utf8");
+  expenseApprovalHtml = await readFile(new URL("cases/expense-approval-quality-lab/index.html", outDir), "utf8");
+  qualityChangeHtml = await readFile(new URL("cases/quality-change-intelligence-lab/index.html", outDir), "utf8");
 });
 
 /** Reads width/height from a PNG's IHDR chunk (bytes 16-23), no dependency needed. */
@@ -111,6 +115,38 @@ test("sitemap.xml contains only the homepage and the two dedicated case pages (n
 
 test("index.html declares the canonical homepage URL on the official domain", () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/jonasdavila\.com\.br\/?"\/>/);
+});
+
+test("sitemap.xml never fabricates <lastmod> as the current build timestamp (truthful per-page date, or omitted)", () => {
+  const buildTime = Date.now();
+  const lastmods = [...sitemapXml.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => new Date(m[1]).getTime());
+  for (const lastmod of lastmods) {
+    assert.ok(
+      Math.abs(buildTime - lastmod) > 60_000,
+      "expected <lastmod> to reflect a real page commit date, not the moment the sitemap was built",
+    );
+  }
+});
+
+test("all three public canonical URLs exactly match the sitemap's <loc> entries, trailing slash included", () => {
+  const sitemapLocs = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  const canonicalOf = (pageHtml) => pageHtml.match(/<link rel="canonical" href="([^"]+)"\/>/)?.[1];
+
+  const pages = [
+    ["homepage", html],
+    ["expense-approval-quality-lab case page", expenseApprovalHtml],
+    ["quality-change-intelligence-lab case page", qualityChangeHtml],
+  ];
+
+  for (const [label, pageHtml] of pages) {
+    const canonical = canonicalOf(pageHtml);
+    assert.ok(canonical, `expected a canonical link on the ${label}`);
+    const normalizedCanonical = canonical.endsWith("/") ? canonical : `${canonical}/`;
+    assert.ok(
+      sitemapLocs.includes(normalizedCanonical),
+      `expected the ${label} canonical "${canonical}" to exactly match a sitemap <loc> (with trailing slash)`,
+    );
+  }
 });
 
 test("index.html declares pt-BR as the document language", () => {

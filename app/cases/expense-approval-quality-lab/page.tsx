@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Expense Approval Quality Lab | Case — Jonas Dávila",
   description:
     "Estratégia de testes orientada a risco para um fluxo de aprovação de despesas: papéis, autorização, transições de estado, testes de API e E2E com Playwright e TypeScript.",
-  alternates: { canonical: "/cases/expense-approval-quality-lab" },
+  alternates: { canonical: "/cases/expense-approval-quality-lab/" },
   openGraph: {
     title: "Expense Approval Quality Lab | Case — Jonas Dávila",
     description:
@@ -106,7 +106,14 @@ export default function ExpenseApprovalCase() {
         </section>
 
         <div className="case-page-actions">
-          <a className="button button-dark" href={repoUrl} target="_blank" rel="noreferrer">
+          <a
+            className="button button-dark"
+            href={repoUrl}
+            target="_blank"
+            rel="noreferrer"
+            data-ga-event="project_click"
+            data-project-slug="expense-approval-quality-lab"
+          >
             Ver código no GitHub <span aria-hidden="true">{"↗︎"}</span>
           </a>
           <a className="button button-light" href={`${basePath}/#cases`}>
