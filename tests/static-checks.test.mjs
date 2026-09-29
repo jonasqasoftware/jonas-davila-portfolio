@@ -125,6 +125,14 @@ test("globals.css no longer collapses small labels to line-height:1", async () =
   }
 });
 
+test("globals.css neutralizes scroll-reveal motion under prefers-reduced-motion", async () => {
+  const css = await readFile(cssUrl, "utf8");
+  const block = css.match(/@media\s*\(prefers-reduced-motion:\s*reduce\)\s*{\s*\[data-reveal\]\s*{([^}]*)}/);
+  assert.ok(block, "expected a prefers-reduced-motion override for [data-reveal]");
+  assert.match(block[1], /opacity:\s*1\s*!important/);
+  assert.match(block[1], /transform:\s*none\s*!important/);
+});
+
 test("globals.css keeps nav CTA and body copy off the old 12px/14px mobile floor", async () => {
   const css = await readFile(cssUrl, "utf8");
   assert.doesNotMatch(css, /\.nav-cta\s*{\s*font-size:\s*12px/, "expected no mobile .nav-cta font-size regression back to 12px");

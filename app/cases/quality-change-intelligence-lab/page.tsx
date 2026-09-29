@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Quality Change Intelligence Lab | Case — Jonas Dávila",
   description:
     "Ferramenta determinística em Go que prioriza verificações sob restrição de tempo, maximiza a cobertura de risco e torna explícito o risco residual.",
-  alternates: { canonical: "/cases/quality-change-intelligence-lab" },
+  alternates: { canonical: "/cases/quality-change-intelligence-lab/" },
   openGraph: {
     title: "Quality Change Intelligence Lab | Case — Jonas Dávila",
     description:
@@ -103,7 +103,14 @@ export default function QualityChangeIntelligenceCase() {
         </section>
 
         <div className="case-page-actions">
-          <a className="button button-dark" href={repoUrl} target="_blank" rel="noreferrer">
+          <a
+            className="button button-dark"
+            href={repoUrl}
+            target="_blank"
+            rel="noreferrer"
+            data-ga-event="project_click"
+            data-project-slug="quality-change-intelligence-lab"
+          >
             Ver código no GitHub <span aria-hidden="true">{"↗︎"}</span>
           </a>
           <a className="button button-light" href={`${basePath}/#cases`}>

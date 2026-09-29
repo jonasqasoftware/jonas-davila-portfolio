@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Analytics from "./analytics";
+import ScrollReveal from "./scroll-reveal";
 
 const sans = Geist({ variable: "--font-sans", subsets: ["latin"] });
 const mono = Geist_Mono({ variable: "--font-mono", subsets: ["latin"] });
@@ -43,6 +45,8 @@ const personJsonLd = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
+
   return (
     <html lang="pt-BR">
       <body className={`${sans.variable} ${mono.variable}`}>
@@ -51,6 +55,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
+        <ScrollReveal />
+        <Analytics measurementId={gaMeasurementId} />
       </body>
     </html>
   );

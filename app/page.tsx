@@ -185,6 +185,8 @@ const education = [
   ["Ética na IA Generativa", "Formação complementar sobre uso responsável de inteligência artificial"],
 ];
 
+const trajectory = [...experience].reverse();
+
 export default function Home() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -218,11 +220,31 @@ export default function Home() {
             Qualidade.
           </p>
           <div className="actions">
-            <a className="button button-dark" href={`${basePath}/cv-jonas-davila.pdf`} download>
+            <a
+              className="button button-dark"
+              href={`${basePath}/cv-jonas-davila.pdf`}
+              download
+              data-ga-event="cv_download"
+              data-placement="hero"
+            >
               Baixar currículo
             </a>
-            <a className="button button-light" href="#experiencia">Ver experiência</a>
-            <a className="button button-light" href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer">
+            <a
+              className="button button-light"
+              href="#experiencia"
+              data-ga-event="primary_cta_click"
+              data-placement="hero_experience"
+            >
+              Ver experiência
+            </a>
+            <a
+              className="button button-light"
+              href="https://www.linkedin.com/in/jonasdavila/"
+              target="_blank"
+              rel="noreferrer"
+              data-ga-event="primary_cta_click"
+              data-placement="hero_linkedin"
+            >
               Acessar LinkedIn <span aria-hidden="true">{"↗︎"}</span>
             </a>
           </div>
@@ -233,12 +255,23 @@ export default function Home() {
           </aside>
         </section>
 
+        <nav className="trajectory shell" aria-label="Trajetória profissional resumida" data-reveal>
+          <div className="trajectory-rail">
+            {trajectory.map(({ company, period }) => (
+              <div className="trajectory-item" key={company}>
+                <strong>{company}</strong>
+                <span>{period}</span>
+              </div>
+            ))}
+          </div>
+        </nav>
+
         <section className="section shell" id="experiencia">
-          <div className="section-heading">
+          <div className="section-heading" data-reveal>
             <div><p className="section-number">01 — EXPERIÊNCIA</p><h2>Experiência e impacto</h2></div>
             <p>Evidências de atuação dentro de empresas, com foco em resultado e redução de risco.</p>
           </div>
-          <div className="expertise-grid">
+          <div className="expertise-grid" data-reveal>
             {experience.map(({ company, role, period, points }, index) => (
               <article className="expertise-card" key={company}>
                 <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
@@ -256,7 +289,7 @@ export default function Home() {
         </section>
 
         <section className="about section" id="sobre">
-          <div className="shell about-copy">
+          <div className="shell about-copy" data-reveal>
             <p className="section-number light">02 — SOBRE</p>
             <h2>Qualidade não é produzida por testes. É construída por decisões.</h2>
             <p>
@@ -269,7 +302,7 @@ export default function Home() {
         </section>
 
         <section className="section shell" id="como-penso">
-          <div className="section-heading">
+          <div className="section-heading" data-reveal>
             <div><p className="section-number">03 — COMO PENSO QUALITY ENGINEERING</p><h2>Princípios que orientam minhas decisões de qualidade.</h2></div>
             <p>Antes da execução, uma forma de pensar que atravessa todos os projetos abaixo.</p>
           </div>
@@ -279,7 +312,7 @@ export default function Home() {
             <span>Decisão</span><i aria-hidden="true">→</i>
             <span>Confiança</span>
           </p>
-          <div className="expertise-grid">
+          <div className="expertise-grid" data-reveal>
             {principles.map(([number, title, text]) => (
               <article className="expertise-card" key={number}>
                 <span className="card-index">{number}</span><h3>{title}</h3><p>{text}</p>
@@ -289,11 +322,11 @@ export default function Home() {
         </section>
 
         <section className="section shell" id="competencias">
-          <div className="section-heading">
+          <div className="section-heading" data-reveal>
             <div><p className="section-number">04 — COMPETÊNCIAS</p><h2>Competências técnicas e estratégicas</h2></div>
             <p>Da estratégia de qualidade à execução técnica, organizadas como empresas costumam avaliar.</p>
           </div>
-          <div className="expertise-grid">
+          <div className="expertise-grid" data-reveal>
             {competencies.map(([number, title, text]) => (
               <article className="expertise-card" key={number}>
                 <span className="card-index">{number}</span><h3>{title}</h3><p>{text}</p>
@@ -303,11 +336,11 @@ export default function Home() {
         </section>
 
         <section className="section shell" id="cases">
-          <div className="section-heading">
+          <div className="section-heading" data-reveal>
             <div><p className="section-number">05 — CASES EM DESTAQUE</p><h2>Estratégia de qualidade aplicada, não apenas automação</h2></div>
             <p>Dois laboratórios públicos aprofundados como estudo de caso: problema, risco, estratégia e decisões de engenharia.</p>
           </div>
-          <div className="case-grid">
+          <div className="case-grid" data-reveal>
             {cases.map(({ slug, title, summary, tags, repo, url }, index) => (
               <article className="case-card" key={slug}>
                 <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
@@ -318,10 +351,23 @@ export default function Home() {
                   {tags.map((tag) => <span key={tag}>{tag}</span>)}
                 </div>
                 <div className="case-actions">
-                  <a className="project-link" href={`${basePath}/cases/${slug}/`}>
+                  <a
+                    className="project-link"
+                    href={`${basePath}/cases/${slug}/`}
+                    data-ga-event="case_open"
+                    data-case-slug={slug}
+                    data-placement="cases_grid"
+                  >
                     Explorar case <span aria-hidden="true">{"→"}</span>
                   </a>
-                  <a className="project-link" href={url} target="_blank" rel="noreferrer">
+                  <a
+                    className="project-link"
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-ga-event="project_click"
+                    data-project-slug={repo}
+                  >
                     Ver código <span aria-hidden="true">{"↗︎"}</span>
                   </a>
                 </div>
@@ -331,7 +377,7 @@ export default function Home() {
         </section>
 
         <section className="section shell" id="laboratorios">
-          <div className="section-heading">
+          <div className="section-heading" data-reveal>
             <div><p className="section-number">06 — PROJETOS TÉCNICOS</p><h2>Outros laboratórios técnicos</h2></div>
             <p>
               Demais laboratórios públicos de Quality Engineering. Os cases Expense Approval Quality Lab e
@@ -339,7 +385,7 @@ export default function Home() {
               <a href="#cases">Cases em destaque</a>.
             </p>
           </div>
-          <div className="expertise-grid">
+          <div className="expertise-grid" data-reveal>
             {projects.map(({ title, repo, description, tags, url }, index) => (
               <article className="expertise-card" key={title}>
                 <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
@@ -349,7 +395,14 @@ export default function Home() {
                 <div className="project-tags">
                   {tags.map((tag) => <span key={tag}>{tag}</span>)}
                 </div>
-                <a className="project-link" href={url} target="_blank" rel="noreferrer">
+                <a
+                  className="project-link"
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-ga-event="project_click"
+                  data-project-slug={repo}
+                >
                   Ver código <span aria-hidden="true">{"↗︎"}</span>
                 </a>
               </article>
@@ -358,7 +411,7 @@ export default function Home() {
         </section>
 
         <section className="aima section" id="aima">
-          <div className="shell aima-grid">
+          <div className="shell aima-grid" data-reveal>
             <div className="aima-copy">
               <p className="section-number light">PROJETO AUTORAL</p>
               <p className="version">AIMA 2.0 / PREVIEW EDITION</p>
@@ -374,10 +427,24 @@ export default function Home() {
                 ser verificada no código-fonte.
               </p>
               <div className="aima-actions">
-                <a className="button button-gold" href="https://aima20.dev" target="_blank" rel="noreferrer">
+                <a
+                  className="button button-gold"
+                  href="https://aima20.dev"
+                  target="_blank"
+                  rel="noreferrer"
+                  data-ga-event="primary_cta_click"
+                  data-placement="aima_product"
+                >
                   Conhecer o AIMA 2.0 <span aria-hidden="true">{"↗︎"}</span>
                 </a>
-                <a className="button button-outline-on-dark" href="https://github.com/jonasqasoftware/aima-agentic-qe" target="_blank" rel="noreferrer">
+                <a
+                  className="button button-outline-on-dark"
+                  href="https://github.com/jonasqasoftware/aima-agentic-qe"
+                  target="_blank"
+                  rel="noreferrer"
+                  data-ga-event="project_click"
+                  data-project-slug="aima-agentic-qe"
+                >
                   Ver código no GitHub <span aria-hidden="true">{"↗︎"}</span>
                 </a>
               </div>
@@ -391,11 +458,11 @@ export default function Home() {
         </section>
 
         <section className="section shell" id="autoria">
-          <div className="section-heading">
+          <div className="section-heading" data-reveal>
             <div><p className="section-number">07 — AUTORIA &amp; CONTRIBUIÇÕES</p><h2>Produção intelectual sobre Quality Engineering</h2></div>
             <p>Pesquisa e escrita publicadas que sustentam a prática — não apenas execução de testes.</p>
           </div>
-          <div className="expertise-grid">
+          <div className="expertise-grid" data-reveal>
             {authorship.map(({ label, title, text, href, cta, external }) => (
               <article className="expertise-card" key={title}>
                 <p className="project-repo">{label}</p>
@@ -414,14 +481,14 @@ export default function Home() {
         </section>
 
         <section className="section shell" id="recomendacoes">
-          <div className="section-heading">
+          <div className="section-heading" data-reveal>
             <div><p className="section-number">08 — RECOMENDAÇÕES</p><h2>O que dizem sobre trabalhar comigo</h2></div>
             <p>
               Qualidade também é construída nas relações de trabalho. Alguns relatos de pessoas com quem
               colaborei, construí soluções e compartilhei conhecimento ao longo da minha trajetória.
             </p>
           </div>
-          <div className="expertise-grid">
+          <div className="expertise-grid" data-reveal>
             {testimonials.map(({ name, relation, quote }) => (
               <figure className="expertise-card testimonial-card" key={name}>
                 <blockquote><p>&ldquo;{quote}&rdquo;</p></blockquote>
@@ -440,11 +507,11 @@ export default function Home() {
         </section>
 
         <section className="section shell" id="formacao">
-          <div className="section-heading">
+          <div className="section-heading" data-reveal>
             <div><p className="section-number">09 — FORMAÇÃO</p><h2>Formação e evolução contínua</h2></div>
             <p>Atualização constante alinhada à próxima evolução da Engenharia de Qualidade.</p>
           </div>
-          <div className="ia-credentials" aria-label="Formação acadêmica e estudos contínuos">
+          <div className="ia-credentials" aria-label="Formação acadêmica e estudos contínuos" data-reveal>
             {education.map(([title, text]) => (
               <div key={title}><strong>{title}</strong><span>{text}</span></div>
             ))}
@@ -452,7 +519,7 @@ export default function Home() {
         </section>
 
         <section className="contact section" id="contato">
-          <div className="shell contact-grid">
+          <div className="shell contact-grid" data-reveal>
             <div>
               <p className="section-number light">10 — CONTATO</p>
               <h2>Procurando experiência sênior em Qualidade de Software?</h2>
@@ -463,9 +530,27 @@ export default function Home() {
               </p>
             </div>
             <div className="contact-links">
-              <a href="mailto:jonas.qa.software@gmail.com"><span>ENVIAR E-MAIL</span>jonas.qa.software@gmail.com{" "}<span aria-hidden="true">{"↗︎"}</span></a>
-              <a href="https://www.linkedin.com/in/jonasdavila/" target="_blank" rel="noreferrer"><span>FALAR PELO LINKEDIN</span>/in/jonasdavila{" "}<span aria-hidden="true">{"↗︎"}</span></a>
-              <a href="https://github.com/jonasqasoftware" target="_blank" rel="noreferrer"><span>VER GITHUB</span>/jonasqasoftware{" "}<span aria-hidden="true">{"↗︎"}</span></a>
+              <a href="mailto:jonas.qa.software@gmail.com" data-ga-event="contact_click" data-contact-method="email">
+                <span>ENVIAR E-MAIL</span>jonas.qa.software@gmail.com{" "}<span aria-hidden="true">{"↗︎"}</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/jonasdavila/"
+                target="_blank"
+                rel="noreferrer"
+                data-ga-event="contact_click"
+                data-contact-method="linkedin"
+              >
+                <span>FALAR PELO LINKEDIN</span>/in/jonasdavila{" "}<span aria-hidden="true">{"↗︎"}</span>
+              </a>
+              <a
+                href="https://github.com/jonasqasoftware"
+                target="_blank"
+                rel="noreferrer"
+                data-ga-event="contact_click"
+                data-contact-method="github"
+              >
+                <span>VER GITHUB</span>/jonasqasoftware{" "}<span aria-hidden="true">{"↗︎"}</span>
+              </a>
             </div>
           </div>
         </section>

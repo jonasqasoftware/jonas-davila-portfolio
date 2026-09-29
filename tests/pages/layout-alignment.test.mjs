@@ -265,6 +265,53 @@ test("Como penso card bottoms align within each row at 375/768/1024/1366", async
   }
 });
 
+test("Trajectory rail never causes page horizontal overflow at 375/768/1024/1366 (it scrolls internally instead)", async () => {
+  for (const width of [375, 768, 1024, 1366]) {
+    const page = await browser.newPage({ viewport: { width, height: 900 } });
+    await page.goto(`${baseUrl}/`, { waitUntil: "load" });
+    await page.evaluate(() => document.fonts.ready);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    );
+    await page.close();
+    assert.equal(overflow, false, `expected no page horizontal overflow at ${width}px with the trajectory rail present`);
+  }
+});
+
+test("scroll-reveal elements render fully visible immediately under prefers-reduced-motion, without needing to scroll first", async () => {
+  const page = await browser.newPage();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto(`${baseUrl}/`, { waitUntil: "load" });
+  const state = await page.evaluate(() => {
+    const el = document.querySelector("#como-penso .expertise-grid");
+    const style = getComputedStyle(el);
+    return { opacity: style.opacity, transform: style.transform };
+  });
+  await page.close();
+  assert.equal(state.opacity, "1");
+  assert.ok(
+    state.transform === "none" || state.transform === "matrix(1, 0, 0, 1, 0, 0)",
+    `expected no reveal transform under reduced motion, found "${state.transform}"`,
+  );
+});
+
+test("core content remains present and readable with JavaScript disabled", async () => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto(`${baseUrl}/`, { waitUntil: "load" });
+  const content = await page.content();
+  await context.close();
+
+  assert.match(content, /Engenharia de qualidade para produtos/);
+  assert.match(content, /SPASSU/);
+  assert.match(content, /Baixar currículo/);
+  assert.doesNotMatch(
+    content,
+    /<html[^>]*class="[^"]*js-reveal/,
+    "expected no js-reveal class to be applied without JavaScript execution",
+  );
+});
+
 test("Como penso: on desktop (1024/1366), cards 4 and 5 are geometrically centered as a group within the grid, with equal card widths", async () => {
   for (const width of [1024, 1366]) {
     const { rows, container } = await measureComoPenso(width, 900);
