@@ -51,6 +51,8 @@ export type Content = {
     sub: string;
     whatsapp: string;
     cv: string;
+    /** PDF in public/ that the CV button downloads. */
+    cvFile: string;
     portraitAlt: string;
     vertical: string;
     captionTitle: string;
@@ -150,6 +152,7 @@ export const pt: Content = {
     sub: "Pós-graduando em Engenharia de Qualidade e Teste de Software pela PUC Minas, com estudos em IA aplicada à qualidade.",
     whatsapp: "Conversar no WhatsApp",
     cv: "Baixar currículo (PDF)",
+    cvFile: "cv-jonas-davila.pdf",
     portraitAlt: "Jonas Davila, de óculos redondos e paletó xadrez, com a mão no queixo",
     vertical: "Porto Alegre · Brasil",
     captionTitle: "Quality Engineering",
@@ -444,7 +447,8 @@ export const en: Content = {
       "17+ years in tech, 10 of them in software quality. I bring together risk-based strategy, automation, APIs, performance, security, CI/CD and AI quality so teams can ship with confidence.",
     sub: "Currently completing a graduate specialization in Software Quality Engineering and Testing at PUC Minas, with ongoing study of AI in quality.",
     whatsapp: "Chat on WhatsApp",
-    cv: "Download CV (PDF, PT)",
+    cv: "Download CV (PDF)",
+    cvFile: "cv-jonas-davila-en.pdf",
     portraitAlt: "Jonas Davila, wearing round glasses and a houndstooth blazer, hand on chin",
     vertical: "Porto Alegre · Brazil",
     captionTitle: "Quality Engineering",

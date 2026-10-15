@@ -37,8 +37,15 @@ test("the English page carries no leftover Portuguese interface copy", () => {
   }
 });
 
+test("the English page offers the English CV for download", async () => {
+  assert.match(html, new RegExp(`href="${basePath}/cv-jonas-davila-en\\.pdf"[^>]*download`));
+  assert.match(html, /Download CV \(PDF\)/);
+  assert.doesNotMatch(html, /href="[^"]*\/cv-jonas-davila\.pdf"/, "the English page must not link the Portuguese CV");
+  const pdf = await readFile(new URL("cv-jonas-davila-en.pdf", outDir));
+  assert.equal(pdf.subarray(0, 4).toString("latin1"), "%PDF", "expected a valid English CV PDF in out/");
+});
+
 test("the English page is honest about Portuguese-only resources and translated testimonials", () => {
-  assert.match(html, /CV \(PDF, PT\)/);
   assert.match(html, /Read the case study \(PT\)/);
   assert.match(html, /Translated from Portuguese\./);
 });
