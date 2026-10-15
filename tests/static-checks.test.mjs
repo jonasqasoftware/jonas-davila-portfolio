@@ -151,8 +151,8 @@ test("globals.css gives the primary action one AA-safe brand color on every surf
 
 test("fonts are self-hosted so the build never depends on Google Fonts being reachable", async () => {
   const fonts = await readFile(new URL("../app/fonts.ts", import.meta.url), "utf8");
-  assert.doesNotMatch(fonts, /next\/font\/google/, "next/font/google downloads at build time and made CI flaky");
-  assert.match(fonts, /next\/font\/local/);
+  assert.doesNotMatch(fonts, /from\s+["']next\/font\/google["']/, "next/font/google downloads at build time and made CI flaky");
+  assert.match(fonts, /from\s+["']next\/font\/local["']/);
   for (const file of ["archivo-latin-var.woff2", "ibm-plex-sans-latin-var.woff2", "jetbrains-mono-latin-var.woff2"]) {
     const data = await readFile(new URL(`../app/_fonts/${file}`, import.meta.url));
     assert.equal(data.subarray(0, 4).toString("latin1"), "wOF2", `expected ${file} to be a WOFF2 file`);
