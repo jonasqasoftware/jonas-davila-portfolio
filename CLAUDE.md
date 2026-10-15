@@ -54,6 +54,7 @@ O repositório `jonasqasoftware/jonas-davila-portfolio` é a fonte oficial.
   - azul apenas para links: `#2E5B88`;
   - tema escuro via `light-dark()` dentro do bloco `:root`;
   - nome e títulos em Archivo condensado (largura 62), corpo em IBM Plex Sans, dados em JetBrains Mono.
+  - as fontes são hospedadas no próprio repositório (`app/_fonts`, WOFF2 variável com subconjunto latino e licença OFL) e carregadas com `next/font/local`. Não voltar para `next/font/google`: ele baixa as fontes do Google durante o build e deixava o CI instável.
 - Garantir contraste mínimo **WCAG AA**.
 - Usar o coral com intenção: bloco atrás do retrato, destaques de título, selo GO e CTAs da faixa do AIMA.
 - Botão de ação principal (`.button-primary`): ferrugem `#A8432F` com texto branco em superfícies claras e coral claro `#EF8A73` com texto escuro em superfícies escuras (tokens `--cta`/`--on-cta`). Por decisão do Jonas, ficam coloridos: o "Falar comigo" fixo do menu (`.nav-cta`), os dois botões do topo (WhatsApp e currículo) e todos os botões da seção Contato. O topo não tem link de LinkedIn nem repete o "Falar comigo". Links de código no GitHub são sempre link de texto (`.project-link`) e anunciam o nome do repositório em `.sr-only`.
