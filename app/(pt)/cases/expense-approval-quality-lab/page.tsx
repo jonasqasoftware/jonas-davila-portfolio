@@ -107,7 +107,7 @@ export default function ExpenseApprovalCase() {
 
         <div className="case-page-actions">
           <a
-            className="button button-dark"
+            className="button button-primary"
             href={repoUrl}
             target="_blank"
             rel="noreferrer"

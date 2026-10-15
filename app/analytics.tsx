@@ -242,7 +242,7 @@ export default function Analytics({ measurementId, lang = "pt" }: { measurementI
               <button type="button" className="button button-light" onClick={reject}>
                 {copy.reject}
               </button>
-              <button type="button" className="button button-dark" onClick={accept}>
+              <button type="button" className="button button-primary" onClick={accept}>
                 {copy.accept}
               </button>
             </div>

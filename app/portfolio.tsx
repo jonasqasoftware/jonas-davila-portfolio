@@ -52,7 +52,7 @@ export default function Portfolio({ t }: { t: Content }) {
             <p className="tagline">{hero.tagline}</p>
             <p className="hero-lead">{hero.intro}</p>
             <div className="actions">
-              <a className="button button-dark" href="#contato" data-ga-event="primary_cta_click" data-placement="hero_contact">
+              <a className="button button-primary" href="#contato" data-ga-event="primary_cta_click" data-placement="hero_contact">
                 {hero.contact} <Arrow />
               </a>
               <a
@@ -75,7 +75,7 @@ export default function Portfolio({ t }: { t: Content }) {
                 {hero.cv} <span aria-hidden="true">↓</span>
               </a>
               <a
-                className="button button-light"
+                className="project-link"
                 href={LINKEDIN}
                 target="_blank"
                 rel="noreferrer"
@@ -216,7 +216,7 @@ export default function Portfolio({ t }: { t: Content }) {
                 </div>
                 <div className="case-actions">
                   <a
-                    className="button button-dark"
+                    className="button button-primary"
                     href={`${basePath}/cases/${slug}/`}
                     data-ga-event="case_open"
                     data-case-slug={slug}
@@ -279,7 +279,7 @@ export default function Portfolio({ t }: { t: Content }) {
               </p>
               <div className="aima-actions">
                 <a
-                  className="button button-coral"
+                  className="button button-primary"
                   href="https://aima20.dev"
                   target="_blank"
                   rel="noreferrer"
@@ -393,7 +393,7 @@ export default function Portfolio({ t }: { t: Content }) {
                   <p className="channel-value">+55 51 99263-2426</p>
                   <div className="channel-actions">
                     <a
-                      className="button button-dark button-small"
+                      className="button button-primary button-small"
                       href={contact.whatsappUrl}
                       target="_blank"
                       rel="noreferrer"

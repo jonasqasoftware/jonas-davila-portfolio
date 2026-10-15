@@ -18,7 +18,7 @@ export default function CopyEmail({ email, label, copied, failed }: Props) {
 
   return (
     <>
-      <button type="button" className="button button-dark button-small" onClick={copy}>
+      <button type="button" className="button button-light button-small" onClick={copy}>
         {label}
       </button>
       <p className="copy-status" aria-live="polite">{status}</p>
