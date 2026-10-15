@@ -224,7 +224,7 @@ test("every contact channel is a colored action with a verb-first label and no c
   const block = html.slice(start, html.indexOf("</section>", start));
   const primaries = block.match(/class="button button-primary button-small"/g) ?? [];
   assert.equal(primaries.length, 4, "expected email, WhatsApp, LinkedIn and GitHub as colored buttons");
-  for (const label of ["Enviar e-mail", "Conversar no WhatsApp", "Enviar mensagem no LinkedIn", "Ver repositórios no GitHub"]) {
+  for (const label of ["Enviar e-mail", "Conversar no WhatsApp", "Ver LinkedIn", "Ver repositórios no GitHub"]) {
     assert.ok(block.includes(label), `expected the contact action "${label}"`);
   }
   assert.doesNotMatch(block, /Copiar e-mail|<button/, "the copy-email button was removed");
