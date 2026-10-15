@@ -24,9 +24,10 @@ function lastCommitDate(relativeFilePath: string): Date | undefined {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const homepageModified = lastCommitDate("app/page.tsx");
-  const expenseApprovalModified = lastCommitDate("app/cases/expense-approval-quality-lab/page.tsx");
-  const qualityChangeModified = lastCommitDate("app/cases/quality-change-intelligence-lab/page.tsx");
+  // Both language versions render from the same content file, so it is the truthful date for both.
+  const homepageModified = lastCommitDate("app/content.ts");
+  const expenseApprovalModified = lastCommitDate("app/(pt)/cases/expense-approval-quality-lab/page.tsx");
+  const qualityChangeModified = lastCommitDate("app/(pt)/cases/quality-change-intelligence-lab/page.tsx");
 
   return [
     {
@@ -34,6 +35,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       ...(homepageModified && { lastModified: homepageModified }),
       changeFrequency: "monthly",
       priority: 1,
+    },
+    {
+      url: "https://jonasdavila.com.br/en/",
+      ...(homepageModified && { lastModified: homepageModified }),
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
     {
       url: "https://jonasdavila.com.br/cases/expense-approval-quality-lab/",

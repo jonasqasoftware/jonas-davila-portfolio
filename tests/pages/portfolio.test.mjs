@@ -27,17 +27,20 @@ test("hero exposes a CV download CTA with the correct base path and download att
     `expected CV link to use base path "${basePath}"`,
   );
   assert.match(html, new RegExp(`href="${expectedHref.replace(/\//g, "\\/")}"[^>]*download`));
-  assert.match(html, /Baixar currículo/);
+  assert.match(html, /Currículo \(PDF\)/);
 });
 
 test("experience section renders role and period for every company", () => {
   const pairs = [
-    ["Analista de Testes e Qualidade de Software", "07/2025 — 07/2026"],
-    ["Engenheiro de Qualidade de Software — Processos e Estratégia", "10/2024 — 05/2025"],
-    ["Senior Software Quality Assurance Engineer", "04/2024 — 08/2024"],
-    ["Senior Quality Analyst", "05/2021 — 08/2023"],
-    ["Quality Analyst Consultant (Trainee)", "04/2020 — 05/2021"],
-    ["Analista de Qualidade Júnior", "09/2019 — 04/2020"],
+    ["Senior QA Engineer · Senior Quality Automation Engineer", "07/2025 — 07/2026"],
+    ["Engenheiro de Qualidade de Software Sênior · Team Leader", "10/2024 — 05/2025"],
+    ["Engenheiro de Qualidade de Software Sênior · Automação", "04/2024 — 08/2024"],
+    ["Senior Quality Analyst · QA Automation", "05/2021 — 08/2023"],
+    ["Quality Analyst Consultant · QA Automation", "04/2020 — 05/2021"],
+    ["Quality Analyst · QA Automation", "09/2019 — 04/2020"],
+    ["Desenvolvedor Full Stack · QA Automation", "04/2019 — 09/2019"],
+    ["Quality Analyst · QA Automation · projetos Banrisul e PROCERGS", "11/2016 — 01/2019"],
+    ["Suporte de TI · Performática (Compulab) e TOTVS (Personal Med)", "06/2009 — 11/2016"],
   ];
   for (const [role, period] of pairs) {
     assert.ok(html.includes(role), `expected role "${role}" in exported HTML`);
@@ -55,12 +58,11 @@ test("AIMA 2.0 section links to the product site and to the source code as secon
 
 test("Cases em destaque section exists with the expected heading", () => {
   assert.match(html, /id="cases"/);
-  assert.match(html, /05 — CASES EM DESTAQUE/);
+  assert.match(html, /Estratégia de qualidade aplicada, não só automação/);
 });
 
 test("Outros laboratórios técnicos section exists with the expected heading", () => {
   assert.match(html, /id="laboratorios"/);
-  assert.match(html, /06 — PROJETOS TÉCNICOS/);
   assert.match(html, /Outros laboratórios técnicos/);
 });
 
@@ -167,10 +169,10 @@ test("Outros laboratórios técnicos renders exactly four project cards and four
 });
 
 test("Cases and Outros laboratórios appear after Competências and before AIMA 2.0 in the page flow", () => {
-  const competenciasIndex = html.indexOf("Competências técnicas e estratégicas");
+  const competenciasIndex = html.indexOf('id="competencias"');
   const casesIndex = html.indexOf("id=\"cases\"");
   const laboratoriosIndex = html.indexOf("id=\"laboratorios\"");
-  const aimaIndex = html.indexOf(">Um projeto autoral que evidencia pensamento estratégico");
+  const aimaIndex = html.indexOf('id="aima"');
   assert.ok(competenciasIndex > -1, "expected the Competências section to be present");
   assert.ok(casesIndex > -1, "expected the Cases em destaque section to be present");
   assert.ok(laboratoriosIndex > -1, "expected the Outros laboratórios section to be present");
@@ -180,11 +182,34 @@ test("Cases and Outros laboratórios appear after Competências and before AIMA 
   assert.ok(laboratoriosIndex < aimaIndex, "expected Outros laboratórios to appear before AIMA 2.0");
 });
 
-test("Autoria, Recomendações, Formação and Contato section numbers reflect the expanded editorial structure", () => {
-  assert.match(html, /07 — AUTORIA/);
-  assert.match(html, /08 — RECOMENDAÇÕES/);
-  assert.match(html, /09 — FORMAÇÃO/);
-  assert.match(html, /10 — CONTATO/);
+test("Autoria, Recomendações, Formação and Contato keep their editorial order after AIMA 2.0", () => {
+  const order = ["aima", "autoria", "recomendacoes", "formacao", "contato"].map((id) => html.indexOf(`id="${id}"`));
+  for (const index of order) assert.ok(index > -1, "expected every closing section to be present");
+  for (let i = 1; i < order.length; i++) {
+    assert.ok(order[i - 1] < order[i], "expected AIMA → Autoria → Recomendações → Formação → Contato order");
+  }
+});
+
+test("hero exposes the evidence gate with six criteria that link to in-page evidence", () => {
+  const gateStart = html.indexOf('class="gate"');
+  assert.ok(gateStart > -1, "expected the quality gate to be present");
+  const gateHtml = html.slice(gateStart, html.indexOf('id="experiencia"'));
+  const links = [...gateHtml.matchAll(/<a href="(#[^"]+)"/g)].map((m) => m[1]);
+  assert.equal(links.length, 6, "expected six gate criteria");
+  for (const href of links) {
+    assert.ok(html.includes(`id="${href.slice(1)}"`), `expected gate link ${href} to point to an existing anchor`);
+  }
+});
+
+test("WhatsApp contact opens wa.me with a prefilled message, in a new tab, tracked only by method", () => {
+  const pattern =
+    /href="https:\/\/wa\.me\/5551992632426\?text=[^"]+"[^>]*target="_blank"[^>]*rel="noreferrer"[^>]*data-ga-event="contact_click"[^>]*data-contact-method="whatsapp"/;
+  assert.match(html, pattern);
+});
+
+test("the portfolio shows the name without the accent, as the owner requested", () => {
+  assert.doesNotMatch(html, /Dávila|DÁVILA/);
+  assert.match(html, /Jonas<br\/>Davila/);
 });
 
 test("AIMA section still uses the #aima anchor", () => {
@@ -193,7 +218,7 @@ test("AIMA section still uses the #aima anchor", () => {
 
 test("Como penso Quality Engineering section renders all five principles between Sobre and Competências", () => {
   assert.match(html, /id="como-penso"/);
-  assert.match(html, /03 — COMO PENSO QUALITY ENGINEERING/);
+  assert.match(html, /Como penso Quality Engineering/);
   const principleTitles = [
     "Risco antes de volume",
     "Automação é uma decisão de engenharia",

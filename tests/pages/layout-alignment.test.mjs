@@ -86,9 +86,9 @@ test("Autoria cards never cause horizontal overflow at 375/768/1024/1366", async
   }
 });
 
-test("Autoria card titles align at the same top when the 3 cards share a row (1366x900)", async () => {
+test("Autoria card titles align at the same top when the 2 cards share a row (1366x900)", async () => {
   const { geometry } = await measureAuthorship(1366, 900);
-  assert.equal(geometry.length, 3, "expected exactly 3 authorship cards");
+  assert.equal(geometry.length, 2, "expected exactly 2 authorship cards");
 
   const tops = geometry.map((g) => g.top);
   const topDelta = Math.max(...tops) - Math.min(...tops);
@@ -99,7 +99,7 @@ test("Autoria card titles align at the same top when the 3 cards share a row (13
   );
 });
 
-test("Autoria card CTAs align at the same bottom when the 3 cards share a row (1366x900)", async () => {
+test("Autoria card CTAs align at the same bottom when the 2 cards share a row (1366x900)", async () => {
   const { geometry } = await measureAuthorship(1366, 900);
   const bottoms = geometry.map((g) => g.bottom);
   const bottomDelta = Math.max(...bottoms) - Math.min(...bottoms);
@@ -110,7 +110,7 @@ test("Autoria card CTAs align at the same bottom when the 3 cards share a row (1
   );
 });
 
-test("Autoria card titles and CTAs still align at 1024px (3 cards still share a row)", async () => {
+test("Autoria card titles and CTAs still align at 1024px (2 cards still share a row)", async () => {
   const { geometry } = await measureAuthorship(1024, 900);
   const tops = geometry.map((g) => g.top);
   const bottoms = geometry.map((g) => g.bottom);
@@ -304,7 +304,7 @@ test("core content remains present and readable with JavaScript disabled", async
 
   assert.match(content, /Engenharia de qualidade para produtos/);
   assert.match(content, /SPASSU/);
-  assert.match(content, /Baixar currículo/);
+  assert.match(content, /Currículo \(PDF\)/);
   assert.doesNotMatch(
     content,
     /<html[^>]*class="[^"]*js-reveal/,
@@ -339,5 +339,53 @@ test("Como penso: on desktop (1024/1366), cards 4 and 5 are geometrically center
         `expected ${label} width (${card.cardWidth.toFixed(1)}px) to match row-1 card width (${referenceWidth.toFixed(1)}px) at ${width}px; delta=${widthDelta.toFixed(1)}px`,
       );
     }
+  }
+});
+
+test("the giant hero name always fits its column and never causes page overflow at 320/375/768/1024/1366", async () => {
+  for (const width of [320, 375, 768, 1024, 1366]) {
+    const page = await browser.newPage({ viewport: { width, height: 900 } });
+    await page.goto(`${baseUrl}/`, { waitUntil: "load" });
+    await page.evaluate(() => document.fonts.ready);
+    const result = await page.evaluate(() => {
+      const name = document.querySelector(".name .big");
+      const column = document.querySelector(".hero-id");
+      const nameRect = name.getBoundingClientRect();
+      const columnRect = column.getBoundingClientRect();
+      return {
+        nameRight: nameRect.right,
+        columnRight: columnRect.right,
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+      };
+    });
+    await page.close();
+    assert.equal(result.overflow, false, `expected no page overflow at ${width}px`);
+    assert.ok(
+      result.nameRight <= result.columnRight + 1,
+      `expected the hero name to fit its column at ${width}px: name right=${result.nameRight.toFixed(1)} column right=${result.columnRight.toFixed(1)}`,
+    );
+  }
+});
+
+test("the hero call-to-action buttons stay in the first viewport on common laptop screens", async () => {
+  for (const [width, height] of [[1280, 800], [1366, 768], [1440, 900]]) {
+    const page = await browser.newPage({ viewport: { width, height } });
+    await page.goto(`${baseUrl}/`, { waitUntil: "load" });
+    await page.evaluate(() => document.fonts.ready);
+    const bottom = await page.evaluate(() => document.querySelector(".hero .actions").getBoundingClientRect().bottom);
+    await page.close();
+    assert.ok(bottom <= height, `expected hero actions above the fold at ${width}x${height}, bottom=${bottom.toFixed(1)}`);
+  }
+});
+
+test("the English version also renders without horizontal overflow at 375/1366", async () => {
+  for (const width of [375, 1366]) {
+    const page = await browser.newPage({ viewport: { width, height: 900 } });
+    await page.goto(`${baseUrl}/en/`, { waitUntil: "load" });
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    );
+    await page.close();
+    assert.equal(overflow, false, `expected no horizontal overflow on /en/ at ${width}px`);
   }
 });

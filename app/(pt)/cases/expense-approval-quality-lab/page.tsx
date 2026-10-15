@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Expense Approval Quality Lab | Case — Jonas Dávila",
+  title: "Expense Approval Quality Lab | Case — Jonas Davila",
   description:
     "Estratégia de testes orientada a risco para um fluxo de aprovação de despesas: papéis, autorização, transições de estado, testes de API e E2E com Playwright e TypeScript.",
   alternates: { canonical: "/cases/expense-approval-quality-lab/" },
   openGraph: {
-    title: "Expense Approval Quality Lab | Case — Jonas Dávila",
+    title: "Expense Approval Quality Lab | Case — Jonas Davila",
     description:
       "Quem pode aprovar uma despesa e o que acontece quando alguém tenta violar as regras de autorização ou de estado.",
     type: "article",
@@ -21,7 +21,7 @@ export default function ExpenseApprovalCase() {
     <>
       <header className="nav-wrap">
         <nav className="nav shell" aria-label="Navegação do case">
-          <a className="brand" href={`${basePath}/`} aria-label="Jonas Dávila — início">
+          <a className="brand" href={`${basePath}/`} aria-label="Jonas Davila — início">
             JD<span>.</span>
           </a>
           <a className="nav-cta" href={`${basePath}/#cases`}>← Voltar ao portfólio</a>
@@ -122,7 +122,7 @@ export default function ExpenseApprovalCase() {
         </div>
       </main>
 
-      <footer><div className="shell"><span>JONAS DÁVILA · QUALITY ENGINEERING</span><span>PORTO ALEGRE · BRASIL</span><span>© {new Date().getFullYear()}</span></div></footer>
+      <footer><div className="shell"><span>JONAS DAVILA · QUALITY ENGINEERING</span><span>PORTO ALEGRE · BRASIL</span><span>© {new Date().getFullYear()}</span></div></footer>
     </>
   );
 }
