@@ -10,6 +10,7 @@ let robotsTxt;
 let sitemapXml;
 let expenseApprovalHtml;
 let qualityChangeHtml;
+let englishHtml;
 
 before(async () => {
   html = await readFile(new URL("index.html", outDir), "utf8");
@@ -18,6 +19,7 @@ before(async () => {
   sitemapXml = await readFile(new URL("sitemap.xml", outDir), "utf8");
   expenseApprovalHtml = await readFile(new URL("cases/expense-approval-quality-lab/index.html", outDir), "utf8");
   qualityChangeHtml = await readFile(new URL("cases/quality-change-intelligence-lab/index.html", outDir), "utf8");
+  englishHtml = await readFile(new URL("en/index.html", outDir), "utf8");
 });
 
 /** Reads width/height from a PNG's IHDR chunk (bytes 16-23), no dependency needed. */
@@ -78,13 +80,13 @@ test("PWA install icons (192x192, 512x512) exist with correct dimensions", async
 });
 
 test("manifest.webmanifest declares the expected installable app identity", () => {
-  assert.equal(manifestJson.name, "Jonas Dávila — Senior Quality Engineer");
-  assert.equal(manifestJson.short_name, "Jonas Dávila");
+  assert.equal(manifestJson.name, "Jonas Davila — Senior Quality Engineer");
+  assert.equal(manifestJson.short_name, "Jonas Davila");
   assert.doesNotMatch(manifestJson.description, /consultor|consultoria|contrate|serviços/i);
   assert.equal(manifestJson.start_url, "/");
   assert.equal(manifestJson.display, "standalone");
-  assert.equal(manifestJson.background_color, "#f5f3ec");
-  assert.equal(manifestJson.theme_color, "#111111");
+  assert.equal(manifestJson.background_color, "#f3f2ee");
+  assert.equal(manifestJson.theme_color, "#1e2024");
 });
 
 test("manifest.webmanifest references the 192x192 and 512x512 icons with any+maskable purposes", () => {
@@ -103,10 +105,11 @@ test("robots.txt allows public crawling and points to the correct sitemap", () =
   assert.match(robotsTxt, /Sitemap:\s*https:\/\/jonasdavila\.com\.br\/sitemap\.xml/);
 });
 
-test("sitemap.xml contains only the homepage and the two dedicated case pages (no anchors, no unknown extra pages)", () => {
+test("sitemap.xml contains only the homepage, its English version and the two dedicated case pages (no anchors, no unknown extra pages)", () => {
   const locs = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   assert.deepEqual(locs, [
     "https://jonasdavila.com.br/",
+    "https://jonasdavila.com.br/en/",
     "https://jonasdavila.com.br/cases/expense-approval-quality-lab/",
     "https://jonasdavila.com.br/cases/quality-change-intelligence-lab/",
   ]);
@@ -128,12 +131,13 @@ test("sitemap.xml never fabricates <lastmod> as the current build timestamp (tru
   }
 });
 
-test("all three public canonical URLs exactly match the sitemap's <loc> entries, trailing slash included", () => {
+test("all four public canonical URLs exactly match the sitemap's <loc> entries, trailing slash included", () => {
   const sitemapLocs = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   const canonicalOf = (pageHtml) => pageHtml.match(/<link rel="canonical" href="([^"]+)"\/>/)?.[1];
 
   const pages = [
     ["homepage", html],
+    ["English homepage", englishHtml],
     ["expense-approval-quality-lab case page", expenseApprovalHtml],
     ["quality-change-intelligence-lab case page", qualityChangeHtml],
   ];
@@ -166,7 +170,8 @@ test("index.html links favicon, icon and apple-touch-icon without repo-name or h
 });
 
 test("index.html Open Graph/Twitter image uses an absolute URL on the official domain", () => {
-  assert.match(html, /property="og:image" content="https:\/\/jonasdavila\.com\.br\/jonas-davila\.jpeg"/);
+  assert.match(html, /property="og:image" content="https:\/\/jonasdavila\.com\.br\/og-jonas-davila\.jpg"/);
+  assert.match(englishHtml, /property="og:image" content="https:\/\/jonasdavila\.com\.br\/og-jonas-davila\.jpg"/);
 });
 
 test("index.html embeds a truthful Person + CreativeWork JSON-LD graph without invented facts", () => {
@@ -178,7 +183,7 @@ test("index.html embeds a truthful Person + CreativeWork JSON-LD graph without i
 
   const person = jsonLd["@graph"].find((node) => node["@type"] === "Person");
   assert.ok(person, "expected a Person node in the graph");
-  assert.equal(person.name, "Jonas Dávila");
+  assert.equal(person.name, "Jonas Davila");
   assert.equal(person.url, "https://jonasdavila.com.br/");
   assert.match(person.jobTitle, /Quality Engineer/);
   assert.ok(person.sameAs.includes("https://www.linkedin.com/in/jonasdavila/"));
@@ -215,5 +220,20 @@ test("all generated asset files referenced by index.html actually exist in the e
   for (const file of ["favicon.ico", "icon.png", "apple-icon.png", "icons/icon-192.png", "icons/icon-512.png", "manifest.webmanifest", "robots.txt", "sitemap.xml"]) {
     const st = await stat(new URL(file, outDir));
     assert.ok(st.isFile() && st.size > 0, `${file} should exist and be non-empty`);
+  }
+});
+
+test("both language versions declare each other with hreflang alternates", () => {
+  for (const [label, pageHtml] of [["homepage", html], ["English homepage", englishHtml]]) {
+    assert.match(
+      pageHtml,
+      /<link(?=[^>]*rel="alternate")(?=[^>]*hreflang="pt-BR")(?=[^>]*href="https:\/\/jonasdavila\.com\.br\/?")[^>]*>/i,
+      `expected pt-BR alternate on the ${label}`,
+    );
+    assert.match(
+      pageHtml,
+      /<link(?=[^>]*rel="alternate")(?=[^>]*hreflang="en")(?=[^>]*href="https:\/\/jonasdavila\.com\.br\/en\/?")[^>]*>/i,
+      `expected en alternate on the ${label}`,
+    );
   }
 });

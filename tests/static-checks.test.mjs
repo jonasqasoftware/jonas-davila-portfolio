@@ -138,3 +138,13 @@ test("globals.css keeps nav CTA and body copy off the old 12px/14px mobile floor
   assert.doesNotMatch(css, /\.nav-cta\s*{\s*font-size:\s*12px/, "expected no mobile .nav-cta font-size regression back to 12px");
   assert.doesNotMatch(css, /\.hero-lead\s*{\s*font-size:\s*18px/, "expected mobile .hero-lead to use the text-lg token, not a loose 18px value");
 });
+
+test("globals.css gives the primary action one AA-safe brand color on every surface", async () => {
+  const css = await readFile(cssUrl, "utf8");
+  assert.match(css, /--cta:\s*light-dark\(#a8432f,\s*#ef8a73\)/, "expected rust on light surfaces and light coral on dark ones");
+  assert.match(css, /--on-cta:\s*light-dark\(#ffffff,\s*#151719\)/);
+  assert.match(css, /\.button-primary\s*{[^}]*background:var\(--cta\)[^}]*color:var\(--on-cta\)/);
+  assert.match(css, /\.nav-cta\s*{[^}]*background:var\(--cta\)/, "expected the sticky nav CTA to use the brand primary color");
+  assert.match(css, /\.aima \.button-primary, \.consent-actions \.button-primary\s*{[^}]*background:var\(--band-accent\)/);
+  assert.doesNotMatch(css, /\.button-(dark|coral)\b/, "expected the legacy primary variants to be gone");
+});

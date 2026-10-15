@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Quality Change Intelligence Lab | Case — Jonas Dávila",
+  title: "Quality Change Intelligence Lab | Case — Jonas Davila",
   description:
     "Ferramenta determinística em Go que prioriza verificações sob restrição de tempo, maximiza a cobertura de risco e torna explícito o risco residual.",
   alternates: { canonical: "/cases/quality-change-intelligence-lab/" },
   openGraph: {
-    title: "Quality Change Intelligence Lab | Case — Jonas Dávila",
+    title: "Quality Change Intelligence Lab | Case — Jonas Davila",
     description:
       "Quando não é possível executar tudo, Quality Engineering precisa decidir o que verificar primeiro.",
     type: "article",
@@ -21,7 +21,7 @@ export default function QualityChangeIntelligenceCase() {
     <>
       <header className="nav-wrap">
         <nav className="nav shell" aria-label="Navegação do case">
-          <a className="brand" href={`${basePath}/`} aria-label="Jonas Dávila — início">
+          <a className="brand" href={`${basePath}/`} aria-label="Jonas Davila — início">
             JD<span>.</span>
           </a>
           <a className="nav-cta" href={`${basePath}/#cases`}>← Voltar ao portfólio</a>
@@ -104,7 +104,7 @@ export default function QualityChangeIntelligenceCase() {
 
         <div className="case-page-actions">
           <a
-            className="button button-dark"
+            className="button button-primary"
             href={repoUrl}
             target="_blank"
             rel="noreferrer"
@@ -119,7 +119,7 @@ export default function QualityChangeIntelligenceCase() {
         </div>
       </main>
 
-      <footer><div className="shell"><span>JONAS DÁVILA · QUALITY ENGINEERING</span><span>PORTO ALEGRE · BRASIL</span><span>© {new Date().getFullYear()}</span></div></footer>
+      <footer><div className="shell"><span>JONAS DAVILA · QUALITY ENGINEERING</span><span>PORTO ALEGRE · BRASIL</span><span>© {new Date().getFullYear()}</span></div></footer>
     </>
   );
 }

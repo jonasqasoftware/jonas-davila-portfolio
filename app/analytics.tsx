@@ -146,7 +146,27 @@ const GA_PARAM_NAMES: Record<(typeof GA_EVENT_KEYS)[number], string> = {
   contactMethod: "contact_method",
 };
 
-export default function Analytics({ measurementId }: { measurementId: string }) {
+const COPY = {
+  pt: {
+    title: "Privacidade e métricas.",
+    body: "Uso o Google Analytics 4 apenas para entender a audiência deste portfólio. Nenhum dado é coletado antes da sua aceitação, e você pode mudar de ideia quando quiser.",
+    note: "Bloqueadores de anúncios, o modo de navegação privada e a rejeição do consentimento reduzem a precisão das métricas — os números refletem apenas uma parte real da audiência.",
+    reject: "Rejeitar",
+    accept: "Aceitar",
+    reopen: "Preferências de privacidade",
+  },
+  en: {
+    title: "Privacy and analytics.",
+    body: "I use Google Analytics 4 only to understand who visits this portfolio. Nothing is collected before you accept, and you can change your mind at any time.",
+    note: "Ad blockers, private browsing and declining consent all reduce the accuracy of these numbers, so they only reflect part of the real audience.",
+    reject: "Reject",
+    accept: "Accept",
+    reopen: "Privacy preferences",
+  },
+} as const;
+
+export default function Analytics({ measurementId, lang = "pt" }: { measurementId: string; lang?: "pt" | "en" }) {
+  const copy = COPY[lang];
   const consent = useSyncExternalStore(subscribeConsent, getConsentSnapshot, getServerConsentSnapshot);
   const [panelOpen, setPanelOpen] = useState(false);
 
@@ -214,21 +234,16 @@ export default function Analytics({ measurementId }: { measurementId: string }) 
           <div className="consent-banner-inner">
             <div className="consent-copy">
               <p id="consent-title">
-                <strong>Privacidade e métricas.</strong> Uso o Google Analytics 4 apenas para entender a
-                audiência deste portfólio. Nenhum dado é coletado antes da sua aceitação, e você pode mudar
-                de ideia quando quiser.
+                <strong>{copy.title}</strong> {copy.body}
               </p>
-              <p>
-                Bloqueadores de anúncios, o modo de navegação privada e a rejeição do consentimento reduzem a
-                precisão das métricas — os números refletem apenas uma parte real da audiência.
-              </p>
+              <p>{copy.note}</p>
             </div>
             <div className="consent-actions">
               <button type="button" className="button button-light" onClick={reject}>
-                Rejeitar
+                {copy.reject}
               </button>
-              <button type="button" className="button button-dark" onClick={accept}>
-                Aceitar
+              <button type="button" className="button button-primary" onClick={accept}>
+                {copy.accept}
               </button>
             </div>
           </div>
@@ -236,7 +251,7 @@ export default function Analytics({ measurementId }: { measurementId: string }) 
       )}
       {!showBanner && (
         <button type="button" className="consent-reopen" onClick={() => setPanelOpen(true)}>
-          Preferências de privacidade
+          {copy.reopen}
         </button>
       )}
     </>

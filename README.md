@@ -1,12 +1,12 @@
-# Jonas Dávila — Quality Engineering Portfolio
+# Jonas Davila — Quality Engineering Portfolio
 
-Portfólio profissional de **Jonas Dávila**, Senior QA Engineer / Quality Engineer, autor do projeto AIMA 2.0.
+Portfólio profissional de **Jonas Davila**, Senior QA Engineer / Quality Engineer, autor do projeto AIMA 2.0.
 
 Produção: **https://jonasdavila.com.br**
 
 ## Objetivo
 
-Página única, em português, que apresenta de forma escaneável:
+Página única e bilíngue (português em `/`, inglês em `/en/`) que apresenta de forma escaneável:
 
 - experiência profissional (empresa, cargo, período e impacto);
 - competências técnicas e estratégicas;
@@ -26,8 +26,8 @@ Página única, em português, que apresenta de forma escaneável:
 
 ## Arquitetura
 
-- Todo o conteúdo visível do site está inline em `app/page.tsx`, como arrays de dados — não há CMS.
-- `app/layout.tsx` define metadata, Open Graph e o grafo JSON-LD (`Person` + `CreativeWork`).
+- Todo o conteúdo visível vive em `app/content.ts` (objetos `pt` e `en`); `app/portfolio.tsx` monta a página — não há CMS.
+- `app/(pt)/layout.tsx` e `app/(en)/en/layout.tsx` são os layouts raiz de cada idioma: `lang`, metadata, `hreflang`, Open Graph e o grafo JSON-LD (`Person` + `CreativeWork`, em `app/structured-data.ts`).
 - `app/site-nav.tsx` implementa a navegação, incluindo o menu mobile.
 - `app/robots.ts`, `app/sitemap.ts` e `app/manifest.ts` geram os artefatos técnicos de SEO/PWA.
 - `public/` contém os assets estáticos servidos diretamente, incluindo o currículo em PDF.

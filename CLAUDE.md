@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Portfólio pessoal de Jonas Dávila (Senior Quality Engineer, autor do AIMA 2.0). Página única em português, sem CMS — todo o conteúdo é código.
+Portfólio pessoal de Jonas Davila (Senior Quality Engineer, autor do AIMA 2.0). Página única bilíngue — português em `/` e inglês em `/en/` —, sem CMS: todo o conteúdo é código.
 
 ## Arquitetura
 
@@ -8,7 +8,8 @@ Portfólio pessoal de Jonas Dávila (Senior Quality Engineer, autor do AIMA 2.0)
 - `next.config.ts` usa `output: "export"`; o build oficial gera o diretório `out/`.
 - O runtime **vinext** e os arquivos de Sites permanecem temporariamente apenas como rollback da hospedagem anterior. Não são o destino oficial de publicação.
 - Estilo: Tailwind CSS v4 + CSS customizado extenso em `app/globals.css`. A maior parte do visual vem de classes CSS escritas à mão, não de utilitários Tailwind no JSX.
-- Todo o conteúdo do site (textos, links, seções) está inline em `app/page.tsx` como arrays de dados — não há CMS nem arquivos de conteúdo separados.
+- Todo o conteúdo do site (textos, links, seções) vive em `app/content.ts`, com um objeto `pt` e um `en` de mesma estrutura. `app/portfolio.tsx` monta a página a partir dele; `app/(pt)/page.tsx` e `app/(en)/en/page.tsx` só escolhem o idioma.
+- Há dois layouts raiz (`app/(pt)/layout.tsx` com `lang="pt-BR"` e `app/(en)/en/layout.tsx` com `lang="en"`), para que cada idioma declare o próprio `lang`, canonical e `hreflang`.
 
 ## Deploy oficial: GitHub Pages
 
@@ -34,26 +35,29 @@ O repositório `jonasqasoftware/jonas-davila-portfolio` é a fonte oficial.
 
 ## Regras permanentes
 
-- Manter todo o conteúdo visível do site em **português (pt-BR)** — é o idioma de todo o texto existente em `app/page.tsx`.
+- Manter as duas versões em paridade: toda mudança de texto em `pt` precisa da equivalente em `en` (a tradução cobre a experiência inteira, não só a navegação). O nome é escrito **Jonas Davila**, sem acento.
 - Não introduzir dependências ou padrões de deploy específicos de Vercel (ex.: `next start`, Vercel Analytics, `vercel.json`) — o app não roda em Vercel.
 - O site oficial deve continuar totalmente estático: não introduzir SSR, API Routes ou dependências de servidor incompatíveis com GitHub Pages.
 - `db/schema.ts` está intencionalmente vazio. Não ativar/usar banco real sem decisão explícita.
 - `app/chatgpt-auth.ts` (helpers de SIWC) está presente mas **não é usado hoje** — nenhuma rota chama `getChatGPTUser`/`requireChatGPTUser`. Não remover silenciosamente nem ativar sem confirmar a intenção com o usuário.
-- Preferir editar `app/page.tsx`/`app/globals.css` diretamente a criar novos componentes/abstrações — é uma página única e deve continuar simples.
+- Preferir editar `app/content.ts`/`app/portfolio.tsx`/`app/globals.css` diretamente a criar novos componentes/abstrações — é uma página única e deve continuar simples.
 - Preservar os scripts legados de Sites enquanto o rollback for necessário; não misturá-los com o fluxo do GitHub Pages.
 - Nunca commitar `.env*`, `.sites-runtime/`, `.wrangler/` (já gitignored) — não remover essas entradas do `.gitignore`.
 
 ## UX e identidade visual
 
 - Usar um sistema de cores centralizado em variáveis CSS dentro de `app/globals.css`. Não espalhar cores hexadecimais diretamente pelos componentes.
-- Manter a identidade profissional baseada em:
-  - grafite principal: `#111111`;
-  - branco: `#FFFFFF`;
-  - dourado de destaque: `#D4A017`;
-  - fundos claros e neutros derivados dessa identidade;
-  - cores de estado com contraste acessível.
+- Manter a identidade editorial "pôster" baseada em:
+  - off-white de fundo: `#F3F2EE`;
+  - grafite principal: `#1E2024`;
+  - coral de destaque: `#CF5A43` (texto pequeno usa o coral escuro `#A8432F` para manter contraste);
+  - azul apenas para links: `#2E5B88`;
+  - tema escuro via `light-dark()` dentro do bloco `:root`;
+  - nome e títulos em Archivo condensado (largura 62), corpo em IBM Plex Sans, dados em JetBrains Mono.
 - Garantir contraste mínimo **WCAG AA**.
-- Usar o dourado com moderação: CTAs, indicadores, links ativos e detalhes de hierarquia.
+- Usar o coral com intenção: bloco atrás do retrato, destaques de título, selo GO e CTAs da faixa do AIMA.
+- Botão de ação principal (`.button-primary`): ferrugem `#A8432F` com texto branco em superfícies claras e coral claro `#EF8A73` com texto escuro em superfícies escuras (tokens `--cta`/`--on-cta`). Por decisão do Jonas, ficam coloridos: o "Falar comigo" fixo do menu (`.nav-cta`), os dois botões do topo (WhatsApp e currículo) e todos os botões da seção Contato. O topo não tem link de LinkedIn nem repete o "Falar comigo". Links de código no GitHub são sempre link de texto (`.project-link`) e anunciam o nome do repositório em `.sr-only`.
+- Rótulos de botão começam com verbo e dizem o destino quando saem do site (ex.: "Enviar e-mail", "Conversar no WhatsApp", "Ver código no GitHub"); a mesma ação usa o mesmo rótulo em todo o site.
 - Evitar excesso de gradientes, brilhos, sombras, cards arredondados e elementos que deixem o site com aparência genérica de template ou "feito por IA".
 - Priorizar uma estética editorial, técnica e autoral, inspirada em publicações de tecnologia e design.
 - Manter consistência de espaçamento, tipografia, bordas, estados interativos e componentes.

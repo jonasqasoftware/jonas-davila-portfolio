@@ -6,14 +6,14 @@ export const dynamic = "force-static";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Jonas Dávila — Senior Quality Engineer",
-    short_name: "Jonas Dávila",
+    name: "Jonas Davila — Senior Quality Engineer",
+    short_name: "Jonas Davila",
     description:
-      "Portfólio de Jonas Dávila, Senior QA Engineer com 10 anos em Qualidade de Software. Estratégia de testes, automação, APIs, performance, segurança, CI/CD e IA aplicada à qualidade.",
+      "Portfólio de Jonas Davila, Senior QA Engineer com 10 anos em Qualidade de Software. Estratégia de testes, automação, APIs, performance, segurança, CI/CD e IA aplicada à qualidade.",
     start_url: `${basePath}/`,
     display: "standalone",
-    background_color: "#f5f3ec",
-    theme_color: "#111111",
+    background_color: "#f3f2ee",
+    theme_color: "#1e2024",
     icons: [
       { src: `${basePath}/icons/icon-192.png`, sizes: "192x192", type: "image/png", purpose: "any" },
       { src: `${basePath}/icons/icon-192.png`, sizes: "192x192", type: "image/png", purpose: "maskable" },
