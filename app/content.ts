@@ -49,7 +49,6 @@ export type Content = {
     tagline: string;
     intro: string;
     sub: string;
-    contact: string;
     whatsapp: string;
     cv: string;
     linkedin: string;
@@ -153,8 +152,7 @@ export const pt: Content = {
     intro:
       "São mais de 17 anos em tecnologia, 10 deles dedicados à Qualidade de Software. Conecto estratégia baseada em risco, automação, APIs, performance, segurança, CI/CD e AI Quality para aumentar a confiança nas entregas.",
     sub: "Pós-graduando em Engenharia de Qualidade e Teste de Software pela PUC Minas, com estudos em IA aplicada à qualidade.",
-    contact: "Falar comigo",
-    whatsapp: "WhatsApp",
+    whatsapp: "Conversar no WhatsApp",
     cv: "Currículo (PDF)",
     linkedin: "LinkedIn",
     portraitAlt: "Jonas Davila, de óculos redondos e paletó xadrez, com a mão no queixo",
@@ -453,8 +451,7 @@ export const en: Content = {
     intro:
       "17+ years in tech, 10 of them in software quality. I bring together risk-based strategy, automation, APIs, performance, security, CI/CD and AI quality so teams can ship with confidence.",
     sub: "Currently completing a graduate specialization in Software Quality Engineering and Testing at PUC Minas, with ongoing study of AI in quality.",
-    contact: "Get in touch",
-    whatsapp: "WhatsApp",
+    whatsapp: "Chat on WhatsApp",
     cv: "CV (PDF, PT)",
     linkedin: "LinkedIn",
     portraitAlt: "Jonas Davila, wearing round glasses and a houndstooth blazer, hand on chin",

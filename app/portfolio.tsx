@@ -52,16 +52,14 @@ export default function Portfolio({ t }: { t: Content }) {
             <p className="tagline">{hero.tagline}</p>
             <p className="hero-lead">{hero.intro}</p>
             <div className="actions">
-              <a className="button button-primary" href="#contato" data-ga-event="primary_cta_click" data-placement="hero_contact">
-                {hero.contact} <Arrow />
-              </a>
               <a
-                className="button button-light"
+                className="button button-primary"
                 href={contact.whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
                 data-ga-event="contact_click"
                 data-contact-method="whatsapp"
+                data-placement="hero"
               >
                 {hero.whatsapp} <Arrow external /><NewTab label={t.newTab} />
               </a>
@@ -225,14 +223,14 @@ export default function Portfolio({ t }: { t: Content }) {
                     {cases.read} <Arrow />
                   </a>
                   <a
-                    className="button button-light"
+                    className="project-link"
                     href={`${GITHUB}/${slug}`}
                     target="_blank"
                     rel="noreferrer"
                     data-ga-event="project_click"
                     data-project-slug={slug}
                   >
-                    {cases.code} <Arrow external /><NewTab label={t.newTab} />
+                    {cases.code}<span className="sr-only">{`: ${slug}`}</span> <Arrow external /><NewTab label={t.newTab} />
                   </a>
                 </div>
               </article>
@@ -262,7 +260,7 @@ export default function Portfolio({ t }: { t: Content }) {
                   data-ga-event="project_click"
                   data-project-slug={repo}
                 >
-                  {labs.code} <Arrow external /><NewTab label={t.newTab} />
+                  {labs.code}<span className="sr-only">{`: ${repo}`}</span> <Arrow external /><NewTab label={t.newTab} />
                 </a>
               </article>
             ))}
@@ -289,14 +287,14 @@ export default function Portfolio({ t }: { t: Content }) {
                   {aima.product} <Arrow external /><NewTab label={t.newTab} />
                 </a>
                 <a
-                  className="button button-outline-on-dark"
+                  className="project-link"
                   href="https://github.com/jonasqasoftware/aima-agentic-qe"
                   target="_blank"
                   rel="noreferrer"
                   data-ga-event="project_click"
                   data-project-slug="aima-agentic-qe"
                 >
-                  {aima.code} <Arrow external /><NewTab label={t.newTab} />
+                  {aima.code}<span className="sr-only">: aima-agentic-qe</span> <Arrow external /><NewTab label={t.newTab} />
                 </a>
               </div>
             </div>

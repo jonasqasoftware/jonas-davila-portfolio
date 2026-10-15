@@ -207,6 +207,23 @@ test("WhatsApp contact opens wa.me with a prefilled message, in a new tab, track
   assert.match(html, pattern);
 });
 
+test("the hero has a single primary action (WhatsApp) and does not repeat the nav's contact button", () => {
+  const actions = html.match(/<div class="actions">([\s\S]*?)<\/div>/);
+  assert.ok(actions, "expected the hero actions block");
+  const primaries = actions[1].match(/class="button button-primary"/g) ?? [];
+  assert.equal(primaries.length, 1, "expected exactly one primary button in the hero");
+  assert.match(actions[1], /class="button button-primary" href="https:\/\/wa\.me\//);
+  assert.doesNotMatch(actions[1], /href="#contato"/, "the sticky nav already offers the contact jump");
+});
+
+test("every code link names its repository for screen readers", () => {
+  const codeLinks = html.match(/data-ga-event="project_click"[^>]*>[\s\S]*?<\/a>/g) ?? [];
+  assert.ok(codeLinks.length >= 7, `expected at least 7 code links, got ${codeLinks.length}`);
+  for (const link of codeLinks) {
+    assert.match(link, /<span class="sr-only">: [a-z0-9-]+<\/span>/, `expected a hidden repo name in ${link.slice(0, 120)}`);
+  }
+});
+
 test("the portfolio shows the name without the accent, as the owner requested", () => {
   assert.doesNotMatch(html, /Dávila|DÁVILA/);
   assert.match(html, /Jonas<br\/>Davila/);
