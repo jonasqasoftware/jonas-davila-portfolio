@@ -304,7 +304,7 @@ test("core content remains present and readable with JavaScript disabled", async
 
   assert.match(content, /Engenharia de qualidade para produtos/);
   assert.match(content, /SPASSU/);
-  assert.match(content, /Currículo \(PDF\)/);
+  assert.match(content, /Baixar currículo \(PDF\)/);
   assert.doesNotMatch(
     content,
     /<html[^>]*class="[^"]*js-reveal/,

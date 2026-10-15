@@ -56,7 +56,8 @@ O repositório `jonasqasoftware/jonas-davila-portfolio` é a fonte oficial.
   - nome e títulos em Archivo condensado (largura 62), corpo em IBM Plex Sans, dados em JetBrains Mono.
 - Garantir contraste mínimo **WCAG AA**.
 - Usar o coral com intenção: bloco atrás do retrato, destaques de título, selo GO e CTAs da faixa do AIMA.
-- Botão de ação principal (`.button-primary`): ferrugem `#A8432F` com texto branco em superfícies claras e coral claro `#EF8A73` com texto escuro em superfícies escuras (tokens `--cta`/`--on-cta`). Um botão principal por tela: o `.nav-cta` fixo fica em contorno para não competir; o topo não repete o "Falar comigo" do menu (o principal do topo é o WhatsApp). Ações de apoio usam contorno (`.button-light`); links de código no GitHub são sempre link de texto (`.project-link`) e anunciam o nome do repositório em `.sr-only`.
+- Botão de ação principal (`.button-primary`): ferrugem `#A8432F` com texto branco em superfícies claras e coral claro `#EF8A73` com texto escuro em superfícies escuras (tokens `--cta`/`--on-cta`). Por decisão do Jonas, ficam coloridos: o "Falar comigo" fixo do menu (`.nav-cta`), os dois botões do topo (WhatsApp e currículo) e todos os botões da seção Contato. O topo não tem link de LinkedIn nem repete o "Falar comigo". Links de código no GitHub são sempre link de texto (`.project-link`) e anunciam o nome do repositório em `.sr-only`.
+- Rótulos de botão começam com verbo e dizem o destino quando saem do site (ex.: "Enviar e-mail", "Conversar no WhatsApp", "Ver código no GitHub"); a mesma ação usa o mesmo rótulo em todo o site.
 - Evitar excesso de gradientes, brilhos, sombras, cards arredondados e elementos que deixem o site com aparência genérica de template ou "feito por IA".
 - Priorizar uma estética editorial, técnica e autoral, inspirada em publicações de tecnologia e design.
 - Manter consistência de espaçamento, tipografia, bordas, estados interativos e componentes.

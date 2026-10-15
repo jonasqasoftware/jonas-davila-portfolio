@@ -1,6 +1,5 @@
 import type { Content } from "./content";
 import SiteNav from "./site-nav";
-import CopyEmail from "./copy-email";
 
 const EMAIL = "jonas.qa.software@gmail.com";
 const LINKEDIN = "https://www.linkedin.com/in/jonasdavila/";
@@ -64,23 +63,13 @@ export default function Portfolio({ t }: { t: Content }) {
                 {hero.whatsapp} <Arrow external /><NewTab label={t.newTab} />
               </a>
               <a
-                className="button button-light"
+                className="button button-primary"
                 href={`${basePath}/cv-jonas-davila.pdf`}
                 download
                 data-ga-event="cv_download"
                 data-placement="hero"
               >
                 {hero.cv} <span aria-hidden="true">↓</span>
-              </a>
-              <a
-                className="project-link"
-                href={LINKEDIN}
-                target="_blank"
-                rel="noreferrer"
-                data-ga-event="primary_cta_click"
-                data-placement="hero_linkedin"
-              >
-                {hero.linkedin} <Arrow external /><NewTab label={t.newTab} />
               </a>
             </div>
             <p className="hero-note">{hero.sub}</p>
@@ -375,14 +364,13 @@ export default function Portfolio({ t }: { t: Content }) {
                   <span>{contact.email}</span>
                   <p className="channel-value" id="email-address">{EMAIL}</p>
                   <div className="channel-actions">
-                    <CopyEmail email={EMAIL} label={contact.copy} copied={contact.copied} failed={contact.copyFail} />
                     <a
-                      className="button button-light button-small"
+                      className="button button-primary button-small"
                       href={`mailto:${EMAIL}`}
                       data-ga-event="contact_click"
                       data-contact-method="email"
                     >
-                      {contact.openMail}
+                      {contact.emailCta}
                     </a>
                   </div>
                 </div>
@@ -407,7 +395,7 @@ export default function Portfolio({ t }: { t: Content }) {
                   <p className="channel-value">/in/jonasdavila</p>
                   <div className="channel-actions">
                     <a
-                      className="button button-light button-small"
+                      className="button button-primary button-small"
                       href={LINKEDIN}
                       target="_blank"
                       rel="noreferrer"
@@ -423,7 +411,7 @@ export default function Portfolio({ t }: { t: Content }) {
                   <p className="channel-value">/jonasqasoftware</p>
                   <div className="channel-actions">
                     <a
-                      className="button button-light button-small"
+                      className="button button-primary button-small"
                       href={GITHUB}
                       target="_blank"
                       rel="noreferrer"

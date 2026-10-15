@@ -51,7 +51,6 @@ export type Content = {
     sub: string;
     whatsapp: string;
     cv: string;
-    linkedin: string;
     portraitAlt: string;
     vertical: string;
     captionTitle: string;
@@ -93,10 +92,7 @@ export type Content = {
     lede: string;
     roles: string[];
     email: string;
-    copy: string;
-    copied: string;
-    copyFail: string;
-    openMail: string;
+    emailCta: string;
     whatsapp: string;
     whatsappCta: string;
     whatsappUrl: string;
@@ -153,8 +149,7 @@ export const pt: Content = {
       "São mais de 17 anos em tecnologia, 10 deles dedicados à Qualidade de Software. Conecto estratégia baseada em risco, automação, APIs, performance, segurança, CI/CD e AI Quality para aumentar a confiança nas entregas.",
     sub: "Pós-graduando em Engenharia de Qualidade e Teste de Software pela PUC Minas, com estudos em IA aplicada à qualidade.",
     whatsapp: "Conversar no WhatsApp",
-    cv: "Currículo (PDF)",
-    linkedin: "LinkedIn",
+    cv: "Baixar currículo (PDF)",
     portraitAlt: "Jonas Davila, de óculos redondos e paletó xadrez, com a mão no queixo",
     vertical: "Porto Alegre · Brasil",
     captionTitle: "Quality Engineering",
@@ -348,7 +343,7 @@ export const pt: Content = {
       { title: "Subscription Change Quality Lab", repo: labRepos[2], description: "Cypress e JavaScript para alteração de assinaturas, com estado determinístico, login programático e resiliência de rede.", tags: ["Cypress", "JavaScript", "E2E", "Network Testing", "CI/CD"] },
       { title: "Inventory Reservation Quality Lab", repo: labRepos[3], description: "Selenium 4, Java e JUnit 5 para reserva de estoque, com Page Objects, Page Components, waits explícitos e CI.", tags: ["Selenium 4", "Java", "JUnit 5", "Page Objects", "CI/CD"] },
     ],
-    code: "Ver código",
+    code: "Ver código no GitHub",
   },
   aima: {
     title: "AIMA",
@@ -377,7 +372,7 @@ export const pt: Content = {
         title: "Publicações sobre Quality Engineering",
         text: "Reflexões técnicas sobre risco, automação, IA aplicada à qualidade e confiabilidade de produtos.",
         href: "https://www.linkedin.com/in/jonasdavila/recent-activity/all/",
-        cta: "Ver publicações",
+        cta: "Ver publicações no LinkedIn",
       },
     ],
   },
@@ -407,15 +402,12 @@ export const pt: Content = {
     lede: "Estou aberto a oportunidades em contextos que valorizem estratégia, automação, colaboração e qualidade orientada ao negócio.",
     roles: ["Senior QA Engineer", "Quality Engineer", "QA Automation Engineer", "Senior QA Analyst"],
     email: "E-mail",
-    copy: "Copiar e-mail",
-    copied: "E-mail copiado.",
-    copyFail: "Não deu para copiar automaticamente. Selecione o endereço acima.",
-    openMail: "Abrir no app de e-mail",
+    emailCta: "Enviar e-mail",
     whatsapp: "WhatsApp",
-    whatsappCta: "Abrir conversa",
+    whatsappCta: "Conversar no WhatsApp",
     whatsappUrl: waUrl("Olá, Jonas! Vi seu portfólio e gostaria de conversar sobre uma oportunidade."),
-    linkedinCta: "Mandar mensagem",
-    githubCta: "Ver repositórios",
+    linkedinCta: "Enviar mensagem no LinkedIn",
+    githubCta: "Ver repositórios no GitHub",
     photoAlt: "Jonas Davila encostado em uma parede de pedra, segurando a lapela do paletó",
   },
   footer: { left: "Jonas Davila · Quality Engineering", right: "Porto Alegre · Brasil" },
@@ -452,8 +444,7 @@ export const en: Content = {
       "17+ years in tech, 10 of them in software quality. I bring together risk-based strategy, automation, APIs, performance, security, CI/CD and AI quality so teams can ship with confidence.",
     sub: "Currently completing a graduate specialization in Software Quality Engineering and Testing at PUC Minas, with ongoing study of AI in quality.",
     whatsapp: "Chat on WhatsApp",
-    cv: "CV (PDF, PT)",
-    linkedin: "LinkedIn",
+    cv: "Download CV (PDF, PT)",
     portraitAlt: "Jonas Davila, wearing round glasses and a houndstooth blazer, hand on chin",
     vertical: "Porto Alegre · Brazil",
     captionTitle: "Quality Engineering",
@@ -647,7 +638,7 @@ export const en: Content = {
       { title: "Subscription Change Quality Lab", repo: labRepos[2], description: "Cypress and JavaScript for subscription changes, with deterministic state, programmatic login and network resilience.", tags: ["Cypress", "JavaScript", "E2E", "Network Testing", "CI/CD"] },
       { title: "Inventory Reservation Quality Lab", repo: labRepos[3], description: "Selenium 4, Java and JUnit 5 for stock reservation, with Page Objects, Page Components, explicit waits and CI.", tags: ["Selenium 4", "Java", "JUnit 5", "Page Objects", "CI/CD"] },
     ],
-    code: "View code",
+    code: "View code on GitHub",
   },
   aima: {
     title: "AIMA",
@@ -676,7 +667,7 @@ export const en: Content = {
         title: "Posts on Quality Engineering",
         text: "Technical reflections on risk, automation, AI applied to quality and product reliability.",
         href: "https://www.linkedin.com/in/jonasdavila/recent-activity/all/",
-        cta: "View posts",
+        cta: "View posts on LinkedIn",
       },
     ],
   },
@@ -707,15 +698,12 @@ export const en: Content = {
     lede: "I'm open to roles in teams that value strategy, automation, collaboration and business-driven quality.",
     roles: ["Senior QA Engineer", "Quality Engineer", "QA Automation Engineer", "Senior QA Analyst"],
     email: "Email",
-    copy: "Copy email",
-    copied: "Email copied.",
-    copyFail: "Couldn't copy automatically. Select the address above.",
-    openMail: "Open in email app",
+    emailCta: "Send email",
     whatsapp: "WhatsApp",
-    whatsappCta: "Start a chat",
+    whatsappCta: "Chat on WhatsApp",
     whatsappUrl: waUrl("Hi Jonas! I saw your portfolio and would like to talk about an opportunity."),
-    linkedinCta: "Send a message",
-    githubCta: "View repositories",
+    linkedinCta: "Message me on LinkedIn",
+    githubCta: "View repositories on GitHub",
     photoAlt: "Jonas Davila leaning against a stone wall, holding his blazer lapel",
   },
   footer: { left: "Jonas Davila · Quality Engineering", right: "Porto Alegre · Brazil" },

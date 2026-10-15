@@ -27,7 +27,7 @@ test("hero exposes a CV download CTA with the correct base path and download att
     `expected CV link to use base path "${basePath}"`,
   );
   assert.match(html, new RegExp(`href="${expectedHref.replace(/\//g, "\\/")}"[^>]*download`));
-  assert.match(html, /Currículo \(PDF\)/);
+  assert.match(html, /Baixar currículo \(PDF\)/);
 });
 
 test("experience section renders role and period for every company", () => {
@@ -207,13 +207,27 @@ test("WhatsApp contact opens wa.me with a prefilled message, in a new tab, track
   assert.match(html, pattern);
 });
 
-test("the hero has a single primary action (WhatsApp) and does not repeat the nav's contact button", () => {
+test("the hero highlights WhatsApp and the CV in color, without LinkedIn or a repeated contact jump", () => {
   const actions = html.match(/<div class="actions">([\s\S]*?)<\/div>/);
   assert.ok(actions, "expected the hero actions block");
   const primaries = actions[1].match(/class="button button-primary"/g) ?? [];
-  assert.equal(primaries.length, 1, "expected exactly one primary button in the hero");
+  assert.equal(primaries.length, 2, "expected WhatsApp and CV as the two colored hero buttons");
   assert.match(actions[1], /class="button button-primary" href="https:\/\/wa\.me\//);
+  assert.match(actions[1], /class="button button-primary" href="[^"]*\/cv-jonas-davila\.pdf"/);
+  assert.doesNotMatch(actions[1], /linkedin\.com/, "LinkedIn lives in the contact section, not the hero");
   assert.doesNotMatch(actions[1], /href="#contato"/, "the sticky nav already offers the contact jump");
+});
+
+test("every contact channel is a colored action with a verb-first label and no copy button", () => {
+  const start = html.indexOf('class="contact-links"');
+  assert.ok(start > -1, "expected the contact links block");
+  const block = html.slice(start, html.indexOf("</section>", start));
+  const primaries = block.match(/class="button button-primary button-small"/g) ?? [];
+  assert.equal(primaries.length, 4, "expected email, WhatsApp, LinkedIn and GitHub as colored buttons");
+  for (const label of ["Enviar e-mail", "Conversar no WhatsApp", "Enviar mensagem no LinkedIn", "Ver repositórios no GitHub"]) {
+    assert.ok(block.includes(label), `expected the contact action "${label}"`);
+  }
+  assert.doesNotMatch(block, /Copiar e-mail|<button/, "the copy-email button was removed");
 });
 
 test("every code link names its repository for screen readers", () => {

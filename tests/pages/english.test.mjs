@@ -32,7 +32,7 @@ test("the English page renders the full experience, not only translated navigati
 });
 
 test("the English page carries no leftover Portuguese interface copy", () => {
-  for (const text of ["Experiência e impacto", "Falar comigo", "Currículo (PDF)", "Ver código", "Formação e evolução contínua"]) {
+  for (const text of ["Experiência e impacto", "Falar comigo", "Baixar currículo", "Ver código", "Enviar e-mail", "Formação e evolução contínua"]) {
     assert.ok(!html.includes(text), `expected no Portuguese "${text}" on the English page`);
   }
 });

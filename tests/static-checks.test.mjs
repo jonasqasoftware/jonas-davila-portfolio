@@ -144,7 +144,7 @@ test("globals.css gives the primary action one AA-safe brand color on every surf
   assert.match(css, /--cta:\s*light-dark\(#a8432f,\s*#ef8a73\)/, "expected rust on light surfaces and light coral on dark ones");
   assert.match(css, /--on-cta:\s*light-dark\(#ffffff,\s*#151719\)/);
   assert.match(css, /\.button-primary\s*{[^}]*background:var\(--cta\)[^}]*color:var\(--on-cta\)/);
-  assert.match(css, /\.nav-cta\s*{[^}]*background:transparent/, "expected the sticky nav CTA to stay quiet so each screen has one rust primary");
+  assert.match(css, /\.nav-cta\s*{[^}]*background:var\(--cta\)/, "expected the sticky nav CTA to use the brand primary color");
   assert.match(css, /\.aima \.button-primary, \.consent-actions \.button-primary\s*{[^}]*background:var\(--band-accent\)/);
   assert.doesNotMatch(css, /\.button-(dark|coral)\b/, "expected the legacy primary variants to be gone");
 });
