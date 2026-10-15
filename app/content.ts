@@ -391,7 +391,7 @@ export const pt: Content = {
   education: {
     title: "Formação e evolução contínua",
     items: [
-      { title: "PUC Minas", text: "Pós-graduação em Engenharia de Qualidade e Teste de Software", status: "em andamento · 2026–2028" },
+      { title: "PUC Minas", text: "Pós-graduação em Engenharia de Qualidade e Teste de Software", status: "em andamento · previsão 2027" },
       { title: "ISTQB CTFL", text: "Certified Tester Foundation Level", cert: true },
       { title: "Unisinos", text: "Gestão da Tecnologia da Informação · 2015–2020" },
       { title: "QI Escola Técnica", text: "Técnico em Tecnologia da Informação · 2009–2013" },
@@ -688,7 +688,7 @@ export const en: Content = {
   education: {
     title: "Education and continuous learning",
     items: [
-      { title: "PUC Minas", text: "Postgraduate degree in Software Quality Engineering and Testing", status: "in progress · 2026–2028" },
+      { title: "PUC Minas", text: "Postgraduate degree in Software Quality Engineering and Testing", status: "in progress · expected 2027" },
       { title: "ISTQB CTFL", text: "Certified Tester Foundation Level", cert: true },
       { title: "Unisinos", text: "Information Technology Management · 2015–2020" },
       { title: "QI Technical School", text: "IT Technician program · 2009–2013" },
