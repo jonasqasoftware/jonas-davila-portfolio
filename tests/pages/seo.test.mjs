@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { readFile, stat } from "node:fs/promises";
 import { before, test } from "node:test";
 
@@ -120,14 +121,32 @@ test("index.html declares the canonical homepage URL on the official domain", ()
   assert.match(html, /<link rel="canonical" href="https:\/\/jonasdavila\.com\.br\/?"\/>/);
 });
 
-test("sitemap.xml never fabricates <lastmod> as the current build timestamp (truthful per-page date, or omitted)", () => {
-  const buildTime = Date.now();
+test("sitemap.xml <lastmod> values are real git commit dates of the page sources, never a fabricated build time", () => {
+  // The old check ("not within 60s of build time") failed whenever CI built a commit pushed less
+  // than a minute earlier, because that fresh commit legitimately IS the last change. Compare
+  // against git itself instead: a truthful lastmod equals the last commit date of a source file.
+  const sources = [
+    "app/content.ts",
+    "app/(pt)/cases/expense-approval-quality-lab/page.tsx",
+    "app/(pt)/cases/quality-change-intelligence-lab/page.tsx",
+  ];
+  let expected;
+  try {
+    expected = new Set(
+      sources.map((file) =>
+        new Date(
+          execFileSync("git", ["log", "-1", "--format=%cI", "--", file], { stdio: ["ignore", "pipe", "ignore"] })
+            .toString()
+            .trim(),
+        ).getTime(),
+      ),
+    );
+  } catch {
+    return; // no git history available: sitemap.ts omits <lastmod> in that case too
+  }
   const lastmods = [...sitemapXml.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => new Date(m[1]).getTime());
   for (const lastmod of lastmods) {
-    assert.ok(
-      Math.abs(buildTime - lastmod) > 60_000,
-      "expected <lastmod> to reflect a real page commit date, not the moment the sitemap was built",
-    );
+    assert.ok(expected.has(lastmod), `expected <lastmod> ${new Date(lastmod).toISOString()} to match a page source's last commit date`);
   }
 });
 
