@@ -36,6 +36,7 @@ O repositório `jonasqasoftware/jonas-davila-portfolio` é a fonte oficial.
 ## Regras permanentes
 
 - Manter as duas versões em paridade: toda mudança de texto em `pt` precisa da equivalente em `en` (a tradução cobre a experiência inteira, não só a navegação). O nome é escrito **Jonas Davila**, sem acento.
+- O currículo existe nas duas línguas: `public/cv-jonas-davila.pdf` (PT) e `public/cv-jonas-davila-en.pdf` (EN); `hero.cvFile` em `app/content.ts` define qual cada versão baixa. Ao atualizar um currículo, atualizar o outro.
 - Não introduzir dependências ou padrões de deploy específicos de Vercel (ex.: `next start`, Vercel Analytics, `vercel.json`) — o app não roda em Vercel.
 - O site oficial deve continuar totalmente estático: não introduzir SSR, API Routes ou dependências de servidor incompatíveis com GitHub Pages.
 - `db/schema.ts` está intencionalmente vazio. Não ativar/usar banco real sem decisão explícita.

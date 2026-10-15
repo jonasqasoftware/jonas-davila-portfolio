@@ -64,7 +64,7 @@ export default function Portfolio({ t }: { t: Content }) {
               </a>
               <a
                 className="button button-primary"
-                href={`${basePath}/cv-jonas-davila.pdf`}
+                href={`${basePath}/${hero.cvFile}`}
                 download
                 data-ga-event="cv_download"
                 data-placement="hero"
