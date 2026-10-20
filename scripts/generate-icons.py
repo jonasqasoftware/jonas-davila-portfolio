@@ -1,74 +1,56 @@
 #!/usr/bin/env python3
-"""Regenerate the JD monogram favicon/icon set from scratch.
+"""Regenerate JD. icons in graphite, off-white and coral.
 
-Design reference: design/jd-monogram.svg (same colors, font and layout).
-This script draws directly with Pillow instead of rasterizing the SVG
-because the build environment has no SVG->raster tool installed (no
-Inkscape/rsvg-convert/cairosvg). If you change the design, update both
-files consistently.
-
-Requires: Python 3 with Pillow (not a project runtime dependency; this is
-a one-off maintenance script, run manually when the mark needs to change).
-
-Usage:
-    python3 scripts/generate-icons.py
+Editable vector reference: design/jd-monogram.svg. Requires local Pillow and
+DejaVu Sans Mono Bold (system font); no font is distributed.
+Usage: python3 scripts/generate-icons.py
 """
-
 from pathlib import Path
-
 from PIL import Image, ImageDraw, ImageFont
+import io
 
-REPO = Path(__file__).resolve().parent.parent
-
-INK = (17, 17, 17, 255)  # --ink (app/globals.css)
-GOLD = (212, 160, 23, 255)  # --gold (app/globals.css)
+REPO = Path(__file__).resolve().parent.parent if "__file__" in globals() else Path.cwd()
+INK = (30, 32, 36, 255)       # dark graphite
+PAPER = (243, 242, 238, 255)  # off-white
+CORAL = (239, 138, 115, 255)  # coral for contrast against graphite
 FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"
 MASTER = 1024
-TEXT = "JD"
-SAFE_WIDTH_RATIO = 0.74
-SAFE_HEIGHT_RATIO = 0.60
+FONT_SIZE = 590
+DOT_RADIUS = 48
+DOT_GAP = 18
 
-
-def make_master() -> Image.Image:
+def make_master():
     img = Image.new("RGBA", (MASTER, MASTER), INK)
     draw = ImageDraw.Draw(img)
-    size = 700
-    font = ImageFont.truetype(FONT_PATH, size)
-    bbox = draw.textbbox((0, 0), TEXT, font=font)
-    w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    budget_w, budget_h = MASTER * SAFE_WIDTH_RATIO, MASTER * SAFE_HEIGHT_RATIO
-    while (w > budget_w or h > budget_h) and size > 10:
-        size -= 4
-        font = ImageFont.truetype(FONT_PATH, size)
-        bbox = draw.textbbox((0, 0), TEXT, font=font)
-        w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    x = (MASTER - w) / 2 - bbox[0]
-    y = (MASTER - h) / 2 - bbox[1]
-    draw.text((x, y), TEXT, font=font, fill=GOLD)
+    font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
+    left, top, right, bottom = draw.textbbox((0, 0), "JD", font=font)
+    width, height = right-left, bottom-top
+    combined_width = width + DOT_GAP + 2*DOT_RADIUS
+    x = (MASTER-combined_width)/2-left
+    y = (MASTER-height)/2-top
+    draw.text((x, y), "JD", font=font, fill=PAPER)
+    dot_x = x+right+DOT_GAP+DOT_RADIUS
+    dot_y = y+bottom-DOT_RADIUS
+    draw.ellipse((dot_x-DOT_RADIUS, dot_y-DOT_RADIUS,
+                  dot_x+DOT_RADIUS, dot_y+DOT_RADIUS), fill=CORAL)
     return img
 
+def save_png(img, dest, size, rgb=False):
+    resized=img.resize((size,size), Image.LANCZOS)
+    if rgb: resized=resized.convert("RGB")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    resized.save(dest, "PNG", optimize=True)
 
-def save_png(im: Image.Image, path: Path, size: int, *, rgb: bool = False) -> None:
-    resized = im.resize((size, size), Image.LANCZOS)
-    if rgb:
-        resized = resized.convert("RGB")
-    path.parent.mkdir(parents=True, exist_ok=True)
-    resized.save(path, format="PNG")
+def main():
+    master=make_master()
+    (REPO/"design").mkdir(parents=True, exist_ok=True)
+    master.save(REPO/"design"/"jd-monogram-master-1024.png", "PNG", optimize=True)
+    save_png(master, REPO/"app"/"icon.png", 512)
+    save_png(master, REPO/"app"/"apple-icon.png", 180, rgb=True)
+    save_png(master, REPO/"public"/"icons"/"icon-192.png", 192)
+    save_png(master, REPO/"public"/"icons"/"icon-512.png", 512)
+    master.save(REPO/"app"/"favicon.ico", "ICO", sizes=[(16,16),(32,32),(48,48)])
+    print("JD. icons regenerated.")
 
-
-def main() -> None:
-    master = make_master()
-    master.save(REPO / "design" / "jd-monogram-master-1024.png")
-
-    save_png(master, REPO / "app" / "icon.png", 512)
-    save_png(master, REPO / "app" / "apple-icon.png", 180, rgb=True)
-    save_png(master, REPO / "public" / "icons" / "icon-192.png", 192)
-    save_png(master, REPO / "public" / "icons" / "icon-512.png", 512)
-
-    master.save(REPO / "app" / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)])
-
-    print("Icons regenerated.")
-
-
-if __name__ == "__main__":
+if __name__=="__main__":
     main()
