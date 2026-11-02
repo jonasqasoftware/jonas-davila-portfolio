@@ -1,5 +1,6 @@
 import type { Content } from "./content";
 import SiteNav from "./site-nav";
+import ShareButton from "./share-button";
 
 const EMAIL = "jonas.qa.software@gmail.com";
 const LINKEDIN = "https://www.linkedin.com/in/jonasdavila/";
@@ -441,7 +442,10 @@ export default function Portfolio({ t }: { t: Content }) {
       <footer>
         <div className="shell">
           <span>{t.footer.left}</span>
-          <span>{t.footer.right} · © {new Date().getFullYear()}</span>
+          <div className="footer-right">
+            <span>{t.footer.right} · © {new Date().getFullYear()}</span>
+            <ShareButton share={t.share} />
+          </div>
         </div>
       </footer>
     </>
