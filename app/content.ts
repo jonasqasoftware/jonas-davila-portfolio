@@ -103,6 +103,7 @@ export type Content = {
     photoAlt: string;
   };
   footer: { left: string; right: string };
+  share: { label: string; copied: string; title: string; text: string };
   newTab: string;
 };
 
@@ -414,6 +415,12 @@ export const pt: Content = {
     photoAlt: "Jonas Davila encostado em uma parede de pedra, segurando a lapela do paletó",
   },
   footer: { left: "Jonas Davila · Quality Engineering", right: "Porto Alegre · Brasil" },
+  share: {
+    label: "Compartilhar",
+    copied: "Link copiado",
+    title: "Jonas Davila · Quality Engineering",
+    text: "Engenharia de qualidade para produtos mais confiáveis.",
+  },
   newTab: "(abre em nova aba)",
 };
 
@@ -711,5 +718,11 @@ export const en: Content = {
     photoAlt: "Jonas Davila leaning against a stone wall, holding his blazer lapel",
   },
   footer: { left: "Jonas Davila · Quality Engineering", right: "Porto Alegre · Brazil" },
+  share: {
+    label: "Share",
+    copied: "Link copied",
+    title: "Jonas Davila · Quality Engineering",
+    text: "Quality engineering that makes products more reliable.",
+  },
   newTab: "(opens in a new tab)",
 };

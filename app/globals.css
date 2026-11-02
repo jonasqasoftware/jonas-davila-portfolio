@@ -295,6 +295,10 @@ section[id], .job[id] { scroll-margin-top:calc(var(--head-h) + 16px); }
 
 footer { border-top:var(--border-w) solid var(--line); padding:32px 0; }
 footer .shell { display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font:400 var(--text-xs)/1.5 var(--font-mono); color:var(--muted); }
+.footer-right { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-3); }
+.share-button { display:inline-flex; align-items:center; gap:7px; min-height:36px; padding:0 2px; background:none; border:0; font:600 var(--text-xs)/1 var(--font-mono); letter-spacing:.02em; color:var(--muted); cursor:pointer; }
+.share-button:hover { color:var(--ink); }
+.share-button svg { flex:none; }
 
 /* case pages */
 .eyebrow { font:600 var(--text-sm)/1.5 var(--font-mono); letter-spacing:.1em; text-transform:uppercase; color:var(--coral-ink); }
